@@ -1,0 +1,30 @@
+function renum {
+  count=1
+  for window in $(tmux list-windows | cut -d: -f1); do
+    tmux movew -s ${window} -t ${count} 2>/dev/null
+    count=$((count + 1))
+  done
+}
+
+function first {
+  awk '{print $1}'
+}
+function second {
+  awk '{print $2}'
+}
+function third {
+  awk '{print $3}'
+}
+function nth {
+  awk -v nth=$1 '{print $nth}'
+}
+
+function command_log () {
+  ret=$?
+  logfile="${HOME}/.shell_logs/${HOSTNAME}"
+  current_time=$(date '+%Y/%m/%d %H:%M:%S')
+  if [ "${BASH_COMMAND}" != '' ]; then
+    echo "${current_time} ${LOGNAME} Status[${ret}] PWD[${PWD}]" \'${BASH_COMMAND}#\' >> ${logfile}
+  fi
+}
+test "$(cat /proc/$$/cmdline)" = "bash" && trap command_log DEBUG
