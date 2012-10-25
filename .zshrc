@@ -50,8 +50,6 @@ local p_prompt="%{$fg_bold[yellow]%}%#${r}"
 PROMPT="${p_return}${p_time} ${p_user}${p_host} ${p_pwd}
 ${p_prompt} "
 
-test -f /usr/bin/dircolors && eval $(/usr/bin/dircolors -b)
-
-for entry in ${HOME}/{.aliases,.functions,.exports,scripts/z.sh}; do
+for entry in ${HOME}/{.exports,.aliases,.functions,,scripts/z.sh}; do
   test -f ${entry} && source ${entry}
 done

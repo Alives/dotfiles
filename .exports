@@ -1,6 +1,13 @@
-export PATH=$PATH:$HOME/scripts:/sbin
-export HOSTNAME=$(hostname)
+OS_TYPE=$(uname)
+PATH=${HOME}/scripts:/sbin:${PATH}
+HOSTNAME=$(hostname)
+LANG=en_US.UTF-8
+EDITOR=/usr/bin/vim
+TERM='xterm-256color'
 unset USERNAME
-export LANG=en_US.UTF-8
-export EDITOR=/usr/bin/vim
-export TERM='xterm-256color'
+test ${OS_TYPE} = "Darwin" && \
+  PATH=/usr/local/homebrew/bin:/usr/local/homebrew/opt/coreutils/libexec/gnubin:${PATH}
+
+eval $(dircolors ${HOME}/.dircolors.ansi-dark)
+
+export EDITOR HOSTNAME LANG LS_COLORS OS_TYPE PATH TERM

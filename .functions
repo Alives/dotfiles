@@ -19,12 +19,14 @@ function nth {
   awk -v nth=$1 '{print $nth}'
 }
 
-function command_log () {
-  ret=$?
-  logfile="${HOME}/.shell_logs/${HOSTNAME}"
-  current_time=$(date '+%Y/%m/%d %H:%M:%S')
-  if [ "${BASH_COMMAND}" != '' ]; then
-    echo "${current_time} ${LOGNAME} Status[${ret}] PWD[${PWD}]" \'${BASH_COMMAND}#\' >> ${logfile}
-  fi
-}
-test "$(cat /proc/$$/cmdline)" = "bash" && trap command_log DEBUG
+if [ ${$(ps -p $$ -o command=)#-} = "bash" ]; then
+  function command_log () {
+    ret=$?
+    logfile="${HOME}/.shell_logs/${HOSTNAME}"
+    current_time=$(date '+%Y/%m/%d %H:%M:%S')
+    if [ "${BASH_COMMAND}" != '' ]; then
+      echo "${current_time} ${LOGNAME} Status[${ret}] PWD[${PWD}]" \'${BASH_COMMAND}#\' >> ${logfile}
+    fi
+  }
+  trap command_log DEBUG
+fi
