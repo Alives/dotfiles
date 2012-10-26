@@ -19,6 +19,10 @@ function nth {
   awk -v nth=$1 '{print $nth}'
 }
 
+function tm {
+  ssh $1 -t 'tmux a || tmux -u new || bash'
+}
+
 if [ ${$(ps -p $$ -o command=)#-} = "bash" ]; then
   function command_log () {
     ret=$?
