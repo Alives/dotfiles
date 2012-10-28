@@ -3,7 +3,6 @@ PATH=${HOME}/scripts:/sbin:${PATH}
 HOSTNAME=$(hostname)
 LANG=en_US.UTF-8
 EDITOR=/usr/bin/vim
-TERM='xterm-256color'
 unset USERNAME
 test ${OS_TYPE} = "Darwin" && \
   PATH=/usr/local/homebrew/bin:/usr/local/homebrew/opt/coreutils/libexec/gnubin:${PATH}
