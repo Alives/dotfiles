@@ -23,7 +23,7 @@ function tm {
   ssh $1 -t 'tmux a || tmux -u new || bash'
 }
 
-if [ ${$(ps -p $$ -o command=)#-} = "bash" ]; then
+if [ $(basename ${SHELL}) = "bash" ]; then
   function command_log () {
     ret=$?
     logfile="${HOME}/.shell_logs/${HOSTNAME}"
