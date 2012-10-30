@@ -23,14 +23,21 @@ function tm {
   ssh $1 -t 'tmux a || tmux -u new || bash'
 }
 
-if [ $(basename ${SHELL}) = "bash" ]; then
-  function command_log () {
-    ret=$?
-    logfile="${HOME}/.shell_logs/${HOSTNAME}"
-    current_time=$(date '+%Y/%m/%d %H:%M:%S')
-    if [ "${BASH_COMMAND}" != '' ]; then
-      echo "${current_time} ${LOGNAME} Status[${ret}] PWD[${PWD}]" \'${BASH_COMMAND}#\' >> ${logfile}
-    fi
-  }
-  trap command_log DEBUG
-fi
+test -d "${HOME}/.shell_logs" || mkdir "${HOME}/.shell_logs"
+command_log () {
+  logfile="${HOME}/.shell_logs/${HOSTNAME}"
+  current_time=$(date '+%Y/%m/%d %H:%M:%S')
+  log_line="${current_time} ${LOGNAME} PWD[${PWD}]"
+  test "$BASH_COMMAND" = '' || \
+    echo "${log_line} ${BASH_COMMAND}" >> ${logfile}
+}
+case $SHELL in
+  *bash)
+    trap command_log DEBUG
+  ;;
+  *zsh)
+    preexec () {
+      echo "$(date '+%Y/%m/%d %H:%M:%S') ${LOGNAME} PWD[${PWD}] $1" >> ${HOME}/.shell_logs/${HOSTNAME}
+    }
+  ;;
+esac

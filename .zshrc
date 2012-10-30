@@ -51,5 +51,5 @@ PROMPT="${p_return}${p_time} ${p_user}${p_host} ${p_pwd}
 ${p_prompt} "
 
 for entry in ${HOME}/{.exports,.aliases,.functions,,scripts/z.sh}; do
-  test -f ${entry} && source ${entry}
+  [ -r ${entry} ] && source ${entry}
 done

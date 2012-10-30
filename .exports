@@ -7,6 +7,10 @@ unset USERNAME
 test ${OS_TYPE} = "Darwin" && \
   PATH=/usr/local/homebrew/bin:/usr/local/homebrew/opt/coreutils/libexec/gnubin:${PATH}
 
-eval $(dircolors ${HOME}/.dircolors.ansi-dark)
+[ -x `which dircolors` ] && \
+  [ -r ${HOME}/.dircolors && eval "$(dircolors -b ${HOME}/.dircolors)" || \
+  eval "$(dircolors -b)"
+[ -x `which lessfile` ] && eval "$(SHELL=/bin/sh lessfile)"
+[ -x `which lesspipe` ] && eval "$(SHELL=/bin/sh lesspipe)"
 
 export EDITOR HOSTNAME LANG LS_COLORS OS_TYPE PATH TERM
