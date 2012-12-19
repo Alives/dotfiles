@@ -23,6 +23,10 @@ function tm {
   ssh $1 -t 'tmux a || tmux -u new || bash'
 }
 
+function gateway {
+  netstat -rn | awk '/default/ {print $2}'
+}
+
 test -d "${HOME}/.shell_logs" || mkdir "${HOME}/.shell_logs"
 command_log () {
   logfile="${HOME}/.shell_logs/${HOSTNAME}"
