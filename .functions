@@ -24,7 +24,7 @@ function tm {
 }
 
 function gateway {
-  netstat -rn | awk '/default/ {print $2}'
+  netstat -rn | head -n 1 | awk '/default/ {print $2}'
 }
 
 test -d "${HOME}/.shell_logs" || mkdir "${HOME}/.shell_logs"
