@@ -1,3 +1,5 @@
+#!/bin/sh
+
 alias cp='cp -i'
 alias exut='exit'
 alias exot='exit'
@@ -8,5 +10,6 @@ alias ls='ls -F --color=yes'
 alias mv='mv -i'
 alias rm='rm -i'
 alias rsyncme='rsync -vaogHDSxP --no-inc-recursive'
+alias sagent="sshagent_init"
 alias vi='vim'
 alias vim='vim -X'
