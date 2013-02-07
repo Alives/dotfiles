@@ -25,6 +25,10 @@ function tm {
   ssh $1 -t 'tmux a || tmux -u new || bash'
 }
 
+function tmm {
+  ssh -p 2222 localhost -t "ssh $1 -t 'tmux a || tmux -u new || bash'"
+}
+
 function gateway {
   netstat -rn | head -n 1 | awk '/default/ {print $2}'
 }
