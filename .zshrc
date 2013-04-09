@@ -50,6 +50,6 @@ local p_prompt="%{$fg_bold[yellow]%}%#${r}"
 PROMPT="${p_return}${p_time} ${p_user}${p_host} ${p_pwd}
 ${p_prompt} "
 
-for entry in ${HOME}/{.exports,.aliases,.functions,.local,scripts/z/z.sh}; do
+for entry in ${HOME}/{scripts/z/z.sh,.exports,.aliases,.functions,.local}; do
   [ -r ${entry} ] && source ${entry}
 done
