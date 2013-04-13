@@ -22,11 +22,18 @@ function nth {
 }
 
 function tm {
-  ssh $1 -t 'tmux a || tmux -u new || bash'
-}
-
-function tmm {
-  ssh -p 2222 localhost -t "ssh $1 -t 'tmux a || tmux -u new || bash'"
+  cmd1="tmux a || tmux -u new || bash"
+  [[ $1 == "turbo" ]] && cmd2="" || cmd2="ssh -t $1"
+  while true; do
+    netstat -an | egrep "tcp.*2222.*LISTEN" >/dev/null
+    if [[ $? = 0 ]]; then
+      ssh -p 2222 -t localhost "${cmd2} ${cmd1}"
+    elif [[ $(host $1 >/dev/null 2>&1; echo $?) = 0 ]]; then
+      ssh -p 8103 -t $1 "${cmd1}"
+    fi
+    sleep 2
+    sagent >/dev/null
+  done
 }
 
 function gateway {
