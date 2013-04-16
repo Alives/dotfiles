@@ -22,16 +22,10 @@ function nth {
 }
 
 function tm {
-  cmd1="tmux a || tmux -u new || bash"
-  [[ $1 == "turbo" ]] && cmd2="" || cmd2="ssh -t $1"
+  cmd="tmux a || tmux -u new || bash"
   while true; do
-    netstat -an | egrep "tcp.*2222.*LISTEN" >/dev/null
-    if [[ $? = 0 ]]; then
-      ssh -p 2222 -t localhost "${cmd2} ${cmd1}"
-    elif [[ $(host $1 >/dev/null 2>&1; echo $?) = 0 ]]; then
-      ssh -p 8103 -t $1 "${cmd1}"
-    fi
-    sleep 2
+    ssh -o ConnectTimeout=1 -o ConnectionAttempts=1 $1 -t "${cmd}" 2>/dev/null
+    ssh -o ConnectTimeout=1 -o ConnectionAttempts=1 localhost -t "ssh $1 -t ${cmd}" 2>/dev/null
     sagent >/dev/null
   done
 }
@@ -54,7 +48,8 @@ case $SHELL in
   ;;
   *zsh)
     preexec () {
-      echo "$(date '+%Y/%m/%d %H:%M:%S') ${LOGNAME} PWD[${PWD}] $1" >> ${HOME}/.shell_logs/${HOSTNAME}
+      echo "$(date '+%Y/%m/%d %H:%M:%S') ${LOGNAME} PWD[${PWD}] $1" >> \
+        ${HOME}/.shell_logs/${HOSTNAME}
     }
     precmd () {
       z --add "$(pwd -P)"
