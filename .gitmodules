@@ -1,0 +1,3 @@
+[submodule "/usr/local/google/home/friedman/scripts/z"]
+	path = /usr/local/google/home/friedman/scripts/z
+	url = http://github.com/rupa/z
