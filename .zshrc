@@ -50,6 +50,8 @@ local p_prompt="%{$fg_bold[yellow]%}%#${r}"
 PROMPT="${p_return}${p_time} ${p_user}${p_host} ${p_pwd}
 ${p_prompt} "
 
+. ~/.setup_repos.sh
+
 for entry in ${HOME}/{scripts/z/z.sh,.exports,.aliases,.functions,.local}; do
   [ -r ${entry} ] && source ${entry}
 done
