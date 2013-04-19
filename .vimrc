@@ -190,9 +190,6 @@ if has('autocmd')
       au BufWinEnter * if &fdm == 'indent' | setlocal foldmethod=manual | endif
     augroup END
 
-    " Better folding
-    au BufRead * if line('$') < &lines*2 | set foldlevel=99 | endif
-
     " Improve legibility
     au BufRead quickfix setlocal nobuflisted wrap number
 
@@ -241,5 +238,7 @@ if has('autocmd')
       nnoremap <Leader>d :DiffOrig<CR>
     endif
 
+    " Better folding
+    au BufRead * if line('$')*10 > &lines | set foldlevel=99 | endif
   endif
 endif
