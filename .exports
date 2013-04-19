@@ -3,6 +3,7 @@
 EDITOR=/usr/bin/vim
 HOSTNAME=$(hostname)
 LANG=en_US.UTF-8
+LANGUAGE=${LANG}
 OS_TYPE=$(uname)
 PATH=${HOME}/scripts:/sbin:${PATH}
 unset USERNAME
@@ -24,4 +25,4 @@ if [ $(which dircolors 2>&1 >/dev/null) ]; then
   fi
 fi
 
-export EDITOR HOSTNAME LANG LESSCLOSE LESSOPEN LS_COLORS OS_TYPE PATH TERM
+export EDITOR HOSTNAME LANG LANGUAGE LESSCLOSE LESSOPEN LS_COLORS OS_TYPE PATH TERM
