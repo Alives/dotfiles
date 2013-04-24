@@ -22,11 +22,15 @@ function nth {
 }
 
 function tm {
+  arg1="-o ConnectTimeout=1"
+  arg2="-o ConnectionAttempts=1"
   cmd="tmux a || tmux -u new || bash"
   while true; do
-    ssh -o ConnectTimeout=1 -o ConnectionAttempts=1 $1 -t "${cmd}" 2>/dev/null
-    ssh -o ConnectTimeout=1 -o ConnectionAttempts=1 localhost -t "ssh $1 -t ${cmd}" 2>/dev/null
+    ssh ${arg1} ${arg2} -qt $1 "${cmd}"
+    ssh ${arg1} ${arg2} -qt localhost "ssh $1 -t ${cmd}"
     sagent >/dev/null
+    echo -n .
+    sleep 1
   done
 }
 
