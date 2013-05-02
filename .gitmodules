@@ -34,6 +34,9 @@
 [submodule ".vim/bundle/jedi-vim"]
 	path = .vim/bundle/jedi-vim
 	url = https://github.com/davidhalter/jedi-vim
-[submodule ".vim/jedi-vim/jedi"]
-	path = .vim/bundle/jedi-vim/jedi
+[submodule ".vim/jedi-vim/plugin/jedi"]
+	path = .vim/bundle/jedi-vim/plugin/jedi
 	url = https://github.com/davidhalter/jedi
+[submodule ".vim/bundle/neocomplcache"]
+	path = .vim/bundle/neocomplcache
+	url = https://github.com/Shougo/neocomplcache
