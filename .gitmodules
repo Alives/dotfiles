@@ -31,3 +31,6 @@
 [submodule "scripts/z"]
 	path = scripts/z
 	url = https://github.com/rupa/z
+[submodule ".vim/bundle/jedi-vim"]
+	path = .vim/bundle/jedi-vim
+	url = https://github.com/davidhalter/jedi-vim
