@@ -166,7 +166,7 @@ set list
 " Maps
 map <silent> <LocalLeader>ri G=gg<CR> " Reindent file
 map <silent> <LocalLeader>Cs :%s/\s\+$//e<CR> " Clear spaces at end of line
-nmap <LocalLeader>pm :set nonumber! nolist! paste<bar>call FoldToggle()<CR> " Toggle paste mode
+nmap <LocalLeader>pm :set nonumber! nolist! paste!<bar>call FoldToggle()<CR> " Toggle paste mode
 nmap <LocalLeader>ww :set wrap!<CR>
 nmap <LocalLeader>wo :set wrap<CR>
 map <LocalLeader>tc :tabnew %<CR>                " New tab
