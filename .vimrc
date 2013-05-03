@@ -81,7 +81,6 @@ set showmatch                     " show matching bracket
 set incsearch                     " search while typing
 set ignorecase                    " default to case-insensitive search
 set smartcase                     " case-sensitive when needed
-set nohlsearch                    " don't highlight until i want it
 set foldenable
 set foldcolumn=2
 set foldminlines=2
@@ -167,14 +166,15 @@ set list
 " Maps
 map <silent> <LocalLeader>ri G=gg<CR> " Reindent file
 map <silent> <LocalLeader>Cs :%s/\s\+$//e<CR> " Clear spaces at end of line
-nmap <LocalLeader>pm :set nonumber! nolist!<bar>call FoldToggle()<CR> " Toggle paste mode
+nmap <LocalLeader>pm :set nonumber! nolist! paste<bar>call FoldToggle()<CR> " Toggle paste mode
 nmap <LocalLeader>ww :set wrap!<CR>
 nmap <LocalLeader>wo :set wrap<CR>
-map <LocalLeader>tc :tabnew %<CR> " New tab
-map <LocalLeader>tk :tabclose<CR> " Close tab
-map <LocalLeader>tn :tabnext<CR>  " Next tab
-map <LocalLeader>tp :tabprev<CR>  " Previous tab
-nmap F zf%                        " Fold with paren begin/end matching
+map <LocalLeader>tc :tabnew %<CR>                " New tab
+map <LocalLeader>tk :tabclose<CR>                " Close tab
+map <LocalLeader>tn :tabnext<CR>                 " Next tab
+map <LocalLeader>tp :tabprev<CR>                 " Previous tab
+nmap F zf%                                       " Fold with paren begin/end matching
+map <LocalLeader>hl :set hlsearch! hlsearch?<CR> " Toggle highlighted search
 
 
 " Commands
