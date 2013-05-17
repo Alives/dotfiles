@@ -21,21 +21,9 @@ function nth {
   awk -v nth=$1 '{print $nth}'
 }
 
-function reset_cur_pos {
-  stty -echo;
-  printf '\e[6n';
-  read -d R _CURPOS;
-  stty echo;
-  _CURPOS=${_CURPOS#??};
-  _CURX=${_CURPOS#*;};
-  _CURY=${_CURPOS%;*}
-  if [[ $_CURY != $(tput lines) ]]; then
-    tput cup $(tput lines) $(tput cols)
-    echo
-  fi
-}
-
 function tm {
+  count=0
+  spinstr='-\|/'
   arg1="-o ConnectTimeout=1"
   arg2="-o ConnectionAttempts=1"
   cmd="tmux a || tmux -u new || bash"
@@ -43,8 +31,9 @@ function tm {
     sagent >/dev/null
     ssh ${arg1} ${arg2} -qt $1 "${cmd}"
     ssh ${arg1} ${arg2} -qt localhost "ssh $1 -t ${cmd}"
-    reset_cur_pos
-    echo -n .
+    tput cup $(tput lines) $(tput cols)
+    printf "%c" "${spinstr:$((${count} % 4)):1}"
+    count=$((${count} + 1))
   done
 }
 
