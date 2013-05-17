@@ -81,7 +81,7 @@ set showmatch                     " show matching bracket
 set incsearch                     " search while typing
 set ignorecase                    " default to case-insensitive search
 set smartcase                     " case-sensitive when needed
-set nohlsearch                    " don't highlight until i want it
+set hlsearch
 set foldenable
 set foldcolumn=2
 set foldminlines=2
