@@ -112,7 +112,7 @@ syntax on
 filetype plugin indent on
 
 
-" Visual Tweaks 
+" Visual Tweaks
 set t_Co=256
 colorscheme solarized
 set background=dark
@@ -120,6 +120,9 @@ set background=dark
 let g:solarized_termcolors=256
 let g:solarized_termtrans=1
 colorscheme solarized
+
+set colorcolumn=81
+highlight ColorColumn ctermfg=none ctermbg=235
 
 " syntastic
 "let g:syntastic_check_on_open=1
