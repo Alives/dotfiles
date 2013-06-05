@@ -22,19 +22,15 @@ function nth {
 }
 
 function tm {
-  count=0
-  spinstr='-\|/'
   arg1="-o ConnectTimeout=1"
   arg2="-o ConnectionAttempts=1"
   cmd="tmux a || tmux -u new || bash"
   while true; do
     tput cup $(tput lines) 0
-    /usr/bin/python ${HOME}/scripts/check_ssh.py $1
+    python ${HOME}/scripts/check_ssh.py $1
     sagent >/dev/null
     ssh ${arg1} ${arg2} -qt $1 "${cmd}"
     ssh ${arg1} ${arg2} -qt localhost "ssh $1 -t ${cmd}"
-    #printf "\x1b[0m%c\x1b[30m" "${spinstr:$((${count} % 4)):1}"
-    #count=$((${count} + 1))
   done
 }
 
