@@ -2,8 +2,13 @@
 
 import socket
 from os.path import expanduser
+from signal import signal, SIGINT
 from sys import argv, stdout
 from time import sleep
+
+
+def SignalHandler(signal, frame):
+  exit(69)
 
 
 def ParseSSHConfig(target):
@@ -33,7 +38,7 @@ def ParseSSHConfig(target):
 
 def TestConnectivity((hostname, port)):
   try:
-    conn = socket.create_connection((hostname, port), 1)
+    conn = socket.create_connection((hostname, port), 0.1)
   except:
     return False
   response = conn.recv(1024)
@@ -44,6 +49,7 @@ def TestConnectivity((hostname, port)):
 
 
 def main():
+  signal(SIGINT, SignalHandler)
   count = 0
   spinner = '-\\|/'
   host = argv[1]
@@ -53,7 +59,7 @@ def main():
     for host in [target, localhost]:
       if TestConnectivity(host):
         exit(0)
-    stdout.write('\r%c' % (spinner[count % 4]))
+    stdout.write('\x1b[0m\r%c\x1b[30m' % (spinner[count % 4]))
     stdout.flush()
     count += 1
     sleep(0.5)
