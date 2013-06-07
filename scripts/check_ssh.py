@@ -39,13 +39,12 @@ def ParseSSHConfig(target):
 def TestConnectivity((hostname, port)):
   try:
     conn = socket.create_connection((hostname, port), 0.1)
+    response = conn.recv(1024)
+    conn.close()
+    if 'SSH' in response:
+      return True
   except:
     return False
-  response = conn.recv(1024)
-  conn.close()
-  if 'SSH' in response:
-    return True
-  return False
 
 
 def main():
