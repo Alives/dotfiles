@@ -11,6 +11,7 @@ if [ "${OS_TYPE}" = "Darwin" ]; then
   LESSCLOSE="lessclose.sh %s %s"
   LESSOPEN="|lesspipe.sh %s"
   local HB=${HOME}/homebrew
+  PATH_NOHB=${PATH}
   PATH=${HB}/bin:${HB}/sbin:${HB}/opt/coreutils/libexec/gnubin:${PATH}
 else
   LESSCLOSE="lessclose %s %s"
@@ -25,4 +26,4 @@ if [ $(which dircolors 2>&1 >/dev/null) ]; then
   fi
 fi
 
-export EDITOR HOSTNAME LANG LANGUAGE LESSCLOSE LESSOPEN LS_COLORS OS_TYPE PATH TERM
+export EDITOR HOSTNAME LANG LANGUAGE LESSCLOSE LESSOPEN LS_COLORS OS_TYPE PATH PATH_NOHB TERM
