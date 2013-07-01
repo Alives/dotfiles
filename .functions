@@ -62,6 +62,17 @@ case $SHELL in
   ;;
 esac
 
+function fix_repo {
+  echo "Before: $(git config remote.origin.url)"
+  URL=$(git config remote.origin.url | \
+    sed -e 's/https:\/\//git@/' \
+      -e 's/github.com\//github.com:\//' \
+      -e '/.git$/! s/$/.git/')
+  git remote set-url origin "${URL}"
+  echo "After: $(git config remote.origin.url)"
+  ssh-add ${HOME}/.ssh/github_rsa
+}
+
 ### SSH AGENT SHIT ############################################################
 function sshagent_findsockets {
   find /tmp -uid $(id -u) -type s -name agent.\* 2>/dev/null
