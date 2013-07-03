@@ -25,6 +25,7 @@ function tm {
   arg1="-o ConnectTimeout=1"
   arg2="-o ConnectionAttempts=1"
   cmd="tmux a || tmux -u new || bash"
+  echo -en '\033k'$1'\033\\'
   while true; do
     tput cup $(tput lines) 0
     python ${HOME}/scripts/check_ssh.py $1

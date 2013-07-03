@@ -37,7 +37,6 @@ set ttyfast                       " fast terminal
 set undolevels=5000               " lots of undos (default: 1000)
 set updatecount=50                " switch every 50 chars (default: 200)
 set whichwrap+=b,s,<,>,h,l,[,]    " wrap on more (default: b,s)
-set title titlelen=150 titlestring=%(\ %M%)%(\ (%{expand(\"%:p:h\")})%)%(\ %a%)\ -\ %{v:servername}
 set nowrap                        " don't wrap long lines
 set autoindent smartindent        " indent sanely
 set autoread                      " watch for changes
