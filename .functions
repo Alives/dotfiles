@@ -73,6 +73,29 @@ function fix_repo {
   ssh-add ${HOME}/.ssh/github_rsa
 }
 
+function cel {
+  if [ "`uname`" = "Darwin" ]; then
+    checker="ls -lRT $1"
+  else
+    checker="ls -lR --full-time $1"
+  fi
+
+  command="${@: 2:$#}"
+  checksum=`eval $checker`
+  watched_file=$1
+
+  # Execute the specified command the first time the script's called
+  eval $command
+
+  while true; do
+    if [ "$checksum" != "`eval $checker`" ]; then
+      checksum="`eval $checker`"
+      eval $command
+    fi
+    sleep 0.1;
+  done
+}
+
 ### SSH AGENT SHIT ############################################################
 function sshagent_findsockets {
   find /tmp -uid $(id -u) -type s -name agent.\* 2>/dev/null
