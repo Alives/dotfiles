@@ -75,7 +75,9 @@ function fix_repo {
 
 ### SSH AGENT SHIT ############################################################
 function sshagent_findsockets {
-  find /tmp -uid $(id -u) -type s -name agent.\* 2>/dev/null
+  # Only find the oldest one.
+  find /tmp -uid $(id -u) -type s -name agent.\* -print0 2>/dev/null | \
+    xargs -0 ls -t1 | head -n 1
 }
 
 function sshagent_testsocket {
