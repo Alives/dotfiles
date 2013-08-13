@@ -122,6 +122,7 @@ colorscheme solarized
 
 set colorcolumn=81
 highlight ColorColumn ctermfg=none ctermbg=235
+highlight Search cterm=none ctermfg=white ctermbg=27
 
 " syntastic
 "let g:syntastic_check_on_open=1
