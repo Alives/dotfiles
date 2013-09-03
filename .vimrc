@@ -86,17 +86,17 @@ set foldcolumn=2
 set foldminlines=2
 
 " create .state directory, readable by the group.
-silent execute '!(umask 027; mkdir -p ~/.vim/.state)'
+silent execute '!(umask 027; mkdir -p ~/.vim/state)'
 
 " buffers
 if has('persistent_undo')
-    set undodir=~/.vim/.state
+    set undodir=~/.vim/state
     set undofile
 endif
 
 " backups
-set backupdir=~/.vim/.state
-set directory=~/.vim/.state
+set backupdir=~/.vim/state
+set directory=~/.vim/state
 
 " statusline
 if has('statusline')
@@ -153,8 +153,8 @@ if has("multi_byte")
   endif
   scriptencoding utf-8
   " renable these to default to utf8 for new files
-  "set encoding=utf-8
-  "set fileencodings=ucs-bom,utf-8,latin1
+  set encoding=utf-8
+  set fileencodings=ucs-bom,utf-8,latin1
 endif
 
 " Show invisibles
@@ -204,7 +204,7 @@ if has('autocmd')
     au BufRead *.sh,*.cron,*.bash setlocal filetype=sh
     au BufRead *.vim,vimrc setlocal filetype=vim
     au BufRead *.c,*.h setlocal filetype=c
-    au BufRead syslog-ng.conf setlocal filetype=syslog-ng  
+    au BufRead syslog-ng.conf setlocal filetype=syslog-ng
 
     au BufRead quickfix setlocal nobuflisted wrap number
 
