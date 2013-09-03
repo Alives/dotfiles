@@ -30,7 +30,7 @@ function tm {
     if [[ $? == 69 ]]; then return; fi
     sagent >/dev/null
     mosh --ssh="ssh -aqt" $1 -- "${cmd}"
-    mosh --ssh="ssh -aqt localhost \"tm $1\""
+    ssh -aqt localhost "tm $1"
   done
 }
 
