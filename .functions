@@ -22,8 +22,6 @@ function nth {
 }
 
 function tm {
-  arg1="-o ConnectTimeout=1"
-  arg2="-o ConnectionAttempts=1"
   cmd="tmux a || tmux -u new || bash"
   echo -en '\033k'$1'\033\\'
   while true; do
@@ -31,8 +29,8 @@ function tm {
     python ${HOME}/scripts/check_ssh.py $1
     if [[ $? == 69 ]]; then return; fi
     sagent >/dev/null
-    ssh ${arg1} ${arg2} -aqt $1 "${cmd}"
-    ssh ${arg1} ${arg2} -aqt localhost "ssh $1 -t ${cmd}"
+    mosh --ssh="ssh -aqt" $1 -- "${cmd}"
+    mosh --ssh="ssh -aqt localhost \"tm $1\""
   done
 }
 
