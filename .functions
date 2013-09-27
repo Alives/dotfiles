@@ -24,7 +24,7 @@ function nth {
 function tm {
   arg1="-o ConnectTimeout=1"
   arg2="-o ConnectionAttempts=1"
-  cmd="tmux a || tmux -u new || bash"
+  cmd="tmux a -d || tmux -u new || bash"
   echo -en '\033k'$1'\033\\'
   while true; do
     tput cup $(tput lines) 0
