@@ -126,6 +126,7 @@ highlight Search cterm=none ctermfg=white ctermbg=27
 
 " syntastic
 "let g:syntastic_check_on_open=1
+let g:syntastic_python_checkers=['gpylint']
 nmap <LocalLeader>s :SyntasticCheck<CR>
 
 " menu
@@ -157,7 +158,7 @@ if has("multi_byte")
   set fileencodings=ucs-bom,utf-8,latin1
 endif
 
-" Show invisibles
+" Show invisibles (whitespace, EOL, etc)
 if has("multi_byte") || (&termencoding == "utf-8")
   set listchars=tab:»\ ,trail:·,extends:…,eol:¬
   if v:version >= 700
