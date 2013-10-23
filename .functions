@@ -31,8 +31,8 @@ function tm {
     python ${HOME}/scripts/check_ssh.py $1
     if [[ $? == 130 ]]; then return; fi
     sagent >/dev/null
-    mosh --ssh="ssh -aqt" $1 -- "${cmd}"
-    ssh -aqt localhost "tm $1"
+    ssh ${arg1} ${arg2} -aqt $1 "${cmd}"
+    ssh ${arg1} ${arg2} -aqt localhost "ssh $1 -t ${cmd}"
   done
 }
 
