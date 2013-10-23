@@ -8,7 +8,7 @@ from time import sleep
 
 
 def SignalHandler(signal, frame):
-  exit(69)
+  exit(130)
 
 
 def ParseSSHConfig(target):

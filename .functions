@@ -29,7 +29,7 @@ function tm {
   while true; do
     tput cup $(tput lines) 0
     python ${HOME}/scripts/check_ssh.py $1
-    if [[ $? == 69 ]]; then return; fi
+    if [[ $? == 130 ]]; then return; fi
     sagent >/dev/null
     mosh --ssh="ssh -aqt" $1 -- "${cmd}"
     ssh -aqt localhost "tm $1"
