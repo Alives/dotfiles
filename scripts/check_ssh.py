@@ -58,7 +58,10 @@ def main():
   while True:
     for host in [target, localhost]:
       if TestConnectivity(host):
-        exit(0)
+        if host[1] == target[1]:
+          exit(131)
+        elif host[1] == localhost[1]:
+          exit(132)
     stdout.write('\x1b[0m\r%c\x1b[30m' % (spinner[count % 4]))
     stdout.flush()
     count += 1
