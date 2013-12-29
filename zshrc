@@ -41,7 +41,7 @@ HISTSIZE=1000000
 SAVEHIST=1000000
 
 # Prompt shit
-source ${HOME}/.dotfiles/scripts/zsh-git-prompt/zshrc.sh
+source ${HOME}/.dotfiles/scripts/zsh-git-prompt/zsh-git-prompt.sh
 local r="%{%b%f%}"
 local p_return="%(?..%{$bg[red]$fg_bold[yellow]%}[%?]${r} )"
 local p_time="%{$fg[white]%}%*${r}"
