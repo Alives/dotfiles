@@ -65,9 +65,6 @@ case $SHELL in
       echo "$(date '+%Y/%m/%d %H:%M:%S') ${LOGNAME} PWD[${PWD}] $1" >> \
         ${HOME}/.shell_logs/${HOSTNAME}
     }
-    precmd () {
-      z --add "$(pwd -P)"
-    }
   ;;
 esac
 
