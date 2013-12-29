@@ -34,3 +34,6 @@
 [submodule "scripts/feather"]
 	path = scripts/feather
 	url = https://github.com/danrue/feather
+[submodule "scripts/zsh-git-prompt"]
+	path = scripts/zsh-git-prompt
+	url = https://github.com/olivierverdier/zsh-git-prompt
