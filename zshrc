@@ -52,7 +52,7 @@ zstyle ':vcs_info:*:prompt:*' check-for-changes true
 PR_RST="%{${reset_color}%}"
 FMT_PREFIX="${PR_RST}%{$fg[green]%}[${PR_RST}"
 FMT_SUFFIX="${PR_RST}%{$fg[green]%}]${PR_RST}"
-FMT_BRANCH="(%{$purple%}3%b%u%c${PR_RST})"
+FMT_BRANCH="(%{$purple%}%b%u%c${PR_RST})"
 FMT_ACTION="(%{$limegreen%}%a${PR_RST})"
 FMT_UNSTAGED="%{$yellow%}●"
 FMT_STAGED="%{$limegreen%}●"
@@ -89,9 +89,9 @@ function dis_precmd {
     # check for untracked files or updated submodules, since vcs_info doesn't
     if [ ! -z "$(git ls-files --other --exclude-standard 2> /dev/null)" ]; then
       PR_GIT_UPDATE=1
-      FMT_BRANCH="${FMT_PREFIX}%{$purple%}1%b%u%c%{$hotpink%}●${FMT_SUFFIX}"
+      FMT_BRANCH="${FMT_PREFIX}%{$purple%}%b%u%c%{$hotpink%}●${FMT_SUFFIX}"
     else
-      FMT_BRANCH="${FMT_PREFIX}%{$purple%}2%b%u%c${FMT_SUFFIX}"
+      FMT_BRANCH="${FMT_PREFIX}%{$purple%}%b%u%c${FMT_SUFFIX}"
     fi
     zstyle ':vcs_info:*:prompt:*' formats       "${FMT_BRANCH}"
     vcs_info 'prompt'
