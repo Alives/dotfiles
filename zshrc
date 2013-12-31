@@ -66,7 +66,7 @@ zstyle ':vcs_info:*:prompt:*' nvcsformats   ""
 zstyle ':completion:*:sudo:*' menu select
 setopt completealiases
 
-function da_preexec {
+function dis_preexec {
   case "$(history $HISTCMD | tail -n5)" in
     *git*)
       PR_GIT_UPDATE=1
@@ -76,15 +76,15 @@ function da_preexec {
       ;;
   esac
 }
-add-zsh-hook preexec da_preexec
+add-zsh-hook preexec dis_preexec
 
-function da_chpwd {
+function dis_chpwd {
   PR_GIT_UPDATE=1
 }
 
-add-zsh-hook chpwd da_chpwd
+add-zsh-hook chpwd dis_chpwd
 
-function da_precmd {
+function dis_precmd {
   if [ -n "$PR_GIT_UPDATE" ] ; then
     # check for untracked files or updated submodules, since vcs_info doesn't
     if [ ! -z "$(git ls-files --other --exclude-standard 2> /dev/null)" ]; then
@@ -98,7 +98,7 @@ function da_precmd {
     PR_GIT_UPDATE=
   fi
 }
-add-zsh-hook precmd da_precmd
+add-zsh-hook precmd dis_precmd
 
 setopt appendhistory autocd nomatch prompt_subst
 bindkey -v
