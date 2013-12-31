@@ -120,8 +120,16 @@ let g:solarized_termcolors=256
 let g:solarized_termtrans=1
 colorscheme solarized
 
+" 80 column vertical bar
 set colorcolumn=81
 highlight ColorColumn ctermfg=none ctermbg=235
+
+" Highlight current line and column to more easily find the cursor
+highlight CursorColumn cterm=NONE ctermbg=235 ctermfg=none guibg=235 guifg=none
+highlight CursorLine   cterm=NONE ctermbg=235 ctermfg=none guibg=235 guifg=none
+nnoremap <Leader>c :set cursorline! cursorcolumn!<CR>
+
+" Search color highlights
 highlight Search cterm=none ctermfg=white ctermbg=27
 
 " syntastic
