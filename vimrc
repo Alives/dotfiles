@@ -80,7 +80,9 @@ set showmatch                     " show matching bracket
 set incsearch                     " search while typing
 set ignorecase                    " default to case-insensitive search
 set smartcase                     " case-sensitive when needed
-set hlsearch
+set hlsearch                      " highlight matching search terms
+set cursorcolumn                  " highlight the current column that the cursor is on
+set cursorline                    " highlight the current line that the cursor is on
 set foldenable
 set foldcolumn=2
 set foldminlines=2

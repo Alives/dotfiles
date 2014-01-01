@@ -80,6 +80,11 @@ function fix_repo {
 }
 
 function cel {
+  # https://github.com/Dinduks/change-execute-loop
+  # Usage:
+  # cel foo.c "gcc foo.c && ./a.out"
+  # cel . cat file.txt
+
   if [ "`uname`" = "Darwin" ]; then
     checker="ls -lRT $1"
   else

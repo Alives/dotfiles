@@ -9,21 +9,33 @@ autoload -Uz vcs_info
 #use extended color pallete if available
 if [ ! -z $terminfo[colors] ] && [ $terminfo[colors] -eq 256 ] ; then
   yellow="$fg_bold[yellow]"
-  gold="$fg[yellow]"
-  red="$fg_bold[red]"
+  gold="%F{184}"
+  lightblue="%F{33}"
+  red="$fg[red]"
+  green="$fg[green]"
   black="$fg[black]"
   darkgrey="$fg_bold[black]"
   lightgrey="$fg[white]"
   white="$fg_bold[white]"
   turquoise="%F{81}"
-  orange="%F{166}"
-  purple="%F{135}"
-  hotpink="%F{161}"
+  orange="%F{208}"
+  purple="%F{91}"
+  hotpink="%F{206}"
   limegreen="%F{118}"
+  c_time="%F{125}"
+  c_user="%F{202}"
+  c_at="%F{184}"
+  c_host="%F{33}"
+  c_pwd="%F{30}"
+  c_presuf="%F{32}"
+  c_branch="%F{148}"
+  c_prompt="%F{196}"
 else
   yellow="$fg_bold[yellow]"
   gold="$fg[yellow]"
-  red="$fg_bold[red]"
+  lightblue="$fg_bold[blue]"
+  red="$fg[red]"
+  green="$fg[green]"
   black="$fg[black]"
   darkgrey="$fg_bold[black]"
   lightgrey="$fg[white]"
@@ -33,6 +45,14 @@ else
   purple="$fg[magenta]"
   hotpink="$fg[red]"
   limegreen="$fg[green]"
+  c_time="$fg[white]"
+  c_user="$fg_bold[green]"
+  c_at="$fg[white]"
+  c_host="$fg_bold[cyan]"
+  c_pwd="$fg_bold[blue]"
+  c_presuf="$fg_bold[blue]"
+  c_branch="$fg[yellow]"
+  c_prompt="$fg_bold[yellow]"
 fi
 
 # enable VCS systems you use
@@ -50,12 +70,12 @@ zstyle ':vcs_info:*:prompt:*' check-for-changes true
 # %R - repository path
 # %S - path in the repository
 PR_RST="%{${reset_color}%}"
-FMT_PREFIX="${PR_RST}%{$fg[green]%}[${PR_RST}"
-FMT_SUFFIX="${PR_RST}%{$fg[green]%}]${PR_RST}"
-FMT_BRANCH="(%{$purple%}%b%u%c${PR_RST})"
-FMT_ACTION="(%{$limegreen%}%a${PR_RST})"
-FMT_UNSTAGED="%{$yellow%}●"
-FMT_STAGED="%{$limegreen%}●"
+FMT_PREFIX="${PR_RST}%{$c_presuf%}[${PR_RST}"
+FMT_SUFFIX="${PR_RST}%{$c_presuf%}]${PR_RST}"
+FMT_BRANCH="(%{$c_branch%}%b%u%c${PR_RST})"
+FMT_ACTION="(%{$red%}%a${PR_RST})"
+FMT_UNSTAGED="%{$yellow%}●${PR_RST}"
+FMT_STAGED="%{$green%}●${PR_RST}"
 
 zstyle ':vcs_info:*:prompt:*' unstagedstr   "${FMT_UNSTAGED}"
 zstyle ':vcs_info:*:prompt:*' stagedstr     "${FMT_STAGED}"
@@ -89,9 +109,9 @@ function dis_precmd {
     # check for untracked files or updated submodules, since vcs_info doesn't
     if [ ! -z "$(git ls-files --other --exclude-standard 2> /dev/null)" ]; then
       PR_GIT_UPDATE=1
-      FMT_BRANCH="${FMT_PREFIX}%{$purple%}%b%u%c%{$hotpink%}●${FMT_SUFFIX}"
+      FMT_BRANCH="${FMT_PREFIX}%{$c_branch%}%b%{$fg[red]%}●%u%c${FMT_SUFFIX}"
     else
-      FMT_BRANCH="${FMT_PREFIX}%{$purple%}%b%u%c${FMT_SUFFIX}"
+      FMT_BRANCH="${FMT_PREFIX}%{$c_branch%}%b%u%c${FMT_SUFFIX}"
     fi
     zstyle ':vcs_info:*:prompt:*' formats       "${FMT_BRANCH}"
     vcs_info 'prompt'
@@ -134,14 +154,25 @@ HISTFILE=~/.histfile
 HISTSIZE=1000000
 SAVEHIST=1000000
 
+## Prompt shit
+#local r="%{%b%f%}"
+#local p_return="%(?..%{$bg[red]$fg_bold[yellow]%}[%?]${r} )"
+#local p_time="%{$fg[white]%}%*${r}"
+#local p_user="%{$fg_bold[green]%}%n${r}"
+#local p_host="%{$fg[white]%}@%{$fg_bold[cyan]%}%m${r}"
+#local p_pwd="%{$fg_bold[blue]%}%~${r}"
+#local p_prompt="%{$fg_bold[yellow]%}%#${r}"
+#PROMPT='${p_return}${p_time} ${p_user}${p_host} ${p_pwd} $vcs_info_msg_0_
+#${p_prompt} '
+
 # Prompt shit
 local r="%{%b%f%}"
 local p_return="%(?..%{$bg[red]$fg_bold[yellow]%}[%?]${r} )"
-local p_time="%{$fg[white]%}%*${r}"
-local p_user="%{$fg_bold[green]%}%n${r}"
-local p_host="%{$fg[white]%}@%{$fg_bold[cyan]%}%m${r}"
-local p_pwd="%{$fg_bold[blue]%}%~${r}"
-local p_prompt="%{$fg_bold[yellow]%}%#${r}"
+local p_time="%{$c_time%}%*${r}"
+local p_user="%{$c_user%}%n${r}"
+local p_host="%{$c_at%}@%{$c_host%}%m${r}"
+local p_pwd="%{$c_pwd%}%~${r}"
+local p_prompt="%{$c_prompt%}%#${r}"
 PROMPT='${p_return}${p_time} ${p_user}${p_host} ${p_pwd} $vcs_info_msg_0_
 ${p_prompt} '
 
