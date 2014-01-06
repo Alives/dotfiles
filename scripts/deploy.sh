@@ -21,3 +21,4 @@ Deploy vim
 mkdir -p ${HOME}/backups/.ssh
 mv -v ${HOME}/.ssh/config ${HOME}/backups/.ssh/
 ln -sv ${REPO}/ssh/config ${HOME}/.ssh/config
+touch ${HOME}/.friedman.local
