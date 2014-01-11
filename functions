@@ -24,7 +24,7 @@ function nth {
 function tm {
   arg1="-o ConnectTimeout=1"
   arg2="-o ConnectionAttempts=1"
-  cmd="tmux a -d || tmux -u new || bash"
+  cmd="tmux a -d -t 0 || tmux -u new || bash"
   echo -en '\033k'$1'\033\\'
   while true; do
     tput cup $(tput lines) 0
@@ -41,10 +41,10 @@ function tm {
         ssh ${arg1} ${arg2} -qt -p 2222 localhost "ssh $1 -t ${cmd}"
         ;;
       "133")
-        ssh ${arg1} ${arg2} -qt -p 2223 localhost "ssh $1 -t ${cmd}"
+        ssh ${arg1} ${arg2} -qt -p 2223 localhost -t "${cmd}"
         ;;
       "134")
-        ssh ${arg1} ${arg2} -qt -p 2224 localhost "ssh $1 -t ${cmd}"
+        ssh ${arg1} ${arg2} -qt -p 2224 localhost -t "${cmd}"
         ;;
     esac
   done
