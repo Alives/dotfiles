@@ -52,9 +52,15 @@ def main():
   signal(SIGINT, SignalHandler)
   count = 0
   spinner = '-\\|/'
-  host = argv[1]
+  dest = argv[1]
+  if 'sizzurp' in dest:
+    if TestConnectivity(('localhost', 2223)):
+        exit(133)
+  if 'ssh-a' in dest:
+    if TestConnectivity(('localhost', 2224)):
+        exit(134)
   localhost = ParseSSHConfig('localhost')
-  target = ParseSSHConfig(host)
+  target = ParseSSHConfig(dest)
   while True:
     for host in [target, localhost]:
       if TestConnectivity(host):

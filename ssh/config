@@ -1,47 +1,43 @@
-Host *.corp *.hot *.cbf *.prod
-  StrictHostKeyChecking no
-  UserKnownHostsFile /dev/null
+StrictHostKeyChecking no
+UserKnownHostsFile /dev/null
 
 Host github.com
   IdentityFile ~/.ssh/github_rsa
+  StrictHostKeyChecking yes
   User git
 
 Host localhost
   ForwardAgent yes
   HostName localhost
+  StrictHostKeyChecking yes
   IdentityFile ~/.ssh/id_rsa
   Port 2222
 
 Host slab
   ForwardAgent yes
   HostName slab.mtv.corp
+  StrictHostKeyChecking yes
   IdentityFile ~/.ssh/id_rsa
   Port 8103
 
 Host sizzurp
   ForwardAgent yes
   HostName sizzurp.dls.corp
+  StrictHostKeyChecking yes
   IdentityFile ~/.ssh/id_rsa
   Port 8103
-
-Host porter
-  ForwardAgent yes
-  HostName porter.eyyit.com
-  Port 222
-  StrictHostKeyChecking no
-  User root
 
 Host dale
   ForwardAgent yes
   HostName mom.eyyit.com
   IdentityFile ~/.ssh/eyyit.key
   Port 222
-  StrictHostKeyChecking no
+  StrictHostKeyChecking yes
   User dale
 
 Host server
   HostName server.eyyit.com
   ForwardAgent yes
   Port 222
-  StrictHostKeyChecking no
+  StrictHostKeyChecking yes
   User root

@@ -29,7 +29,7 @@ function tm {
   while true; do
     tput cup $(tput lines) 0
     sagent >/dev/null
-    python ${HOME}/scripts/check_ssh.py $1
+    python ${HOME}/.dotfiles/scripts/check_ssh.py $1
     case "$?" in
       "130")
         return
@@ -38,7 +38,13 @@ function tm {
         ssh ${arg1} ${arg2} -qt $1 "${cmd}"
         ;;
       "132")
-        ssh ${arg1} ${arg2} -qt localhost "ssh $1 -t ${cmd}"
+        ssh ${arg1} ${arg2} -qt -p 2222 localhost "ssh $1 -t ${cmd}"
+        ;;
+      "133")
+        ssh ${arg1} ${arg2} -qt -p 2223 localhost "ssh $1 -t ${cmd}"
+        ;;
+      "134")
+        ssh ${arg1} ${arg2} -qt -p 2224 localhost "ssh $1 -t ${cmd}"
         ;;
     esac
   done
