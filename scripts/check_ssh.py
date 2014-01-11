@@ -53,6 +53,8 @@ def main():
   count = 0
   spinner = '-\\|/'
   dest = argv[1]
+  if 'server' in dest:
+    exit(131)
   if 'sizzurp' in dest:
     if TestConnectivity(('localhost', 2223)):
         exit(133)
