@@ -112,6 +112,8 @@ call pathogen#infect()
 syntax on
 filetype plugin indent on
 
+" Crontab
+au FileType crontab set nobackup nowritebackup
 
 " Visual Tweaks
 set t_Co=256
