@@ -1,5 +1,6 @@
 #!/bin/bash -e
 REPO=$(git rev-parse --show-toplevel)
+path=$(basename ${REPO})
 
 
 function Deploy {
@@ -8,11 +9,11 @@ function Deploy {
     mkdir ${HOME}/backups 2>/dev/null
     mv -v ${HOME}/.${entry} ${HOME}/backups/${entry}
   fi
-  ln -sv ${REPO}/${entry} ${HOME}/.${entry}
+  ln -sv ${path}/${entry} ${HOME}/.${entry}
 }
 
 export -f Deploy
-export REPO
+export REPO path
 
 find ${REPO} -maxdepth 1 -type f -name '[^.]*' -exec bash -c 'Deploy "$0"' {} \;
 Deploy vim
@@ -20,5 +21,5 @@ Deploy vim
 # Fuck it, it's a one-off.
 mkdir -p ${HOME}/backups/.ssh
 mv -v ${HOME}/.ssh/config ${HOME}/backups/.ssh/
-ln -sv ${REPO}/ssh/config ${HOME}/.ssh/config
+ln -sv ${path}/ssh/config ${HOME}/.ssh/config
 touch ${HOME}/.friedman.local
