@@ -3,6 +3,15 @@
 TMUX_SESSION=$(tmux list-session | awk -F: '/attached/ {print $1}')
 NETWORK_CACHE=/tmp/tmux_network_cache.${TMUX_SESSION}
 
+case ${OS_TYPE} in
+  Darwin)
+    DATA_SOURCE=$(netstat -nbi | awk 'NR>1 && !/^lo/ {rbytes+=$7; tbytes+=$10} END {printf "%0.0f %0.0f\n", rbytes, tbytes}')
+    ;;
+  Linux)
+    DATA_SOURCE=$(awk 'NR>2 && !/^[ ]+lo/ {rbytes+=$2; tbytes+=$10} END {printf "%0.0f %0.0f\n", rbytes, tbytes}' /proc/net/dev)
+    ;;
+esac
+
 function scale {
   rate=$1
   if [ ${rate} -gt 1073741824 ]; then
@@ -23,7 +32,7 @@ function scale {
 }
 
 read prev_time prev_rbytes prev_tbytes <<< $(cat ${NETWORK_CACHE} 2>/dev/null || echo "0 0 0")
-read curr_rbytes curr_tbytes <<< $(awk '/eth0/ {print $2" "$10}' /proc/net/dev)
+read curr_rbytes curr_tbytes <<< ${DATA_SOURCE}
 curr_time=$(date +%s)
 echo -n "${curr_time} ${curr_rbytes} ${curr_tbytes}" > ${NETWORK_CACHE}
 [ ${prev_time} -eq 0 ] && exit
