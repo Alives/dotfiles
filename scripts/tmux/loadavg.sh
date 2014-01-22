@@ -1,5 +1,5 @@
 #!/bin/sh -e
-case ${OS_TYPE} in
+case $(uname) in
   Darwin)
     uptime | awk -F'load average: ' '{gsub(/,/, ""); print $NF}' ;;
   Linux)

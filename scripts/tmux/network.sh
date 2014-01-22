@@ -1,16 +1,6 @@
-#!/bin/bash -e
+#!/bin/bash
 
-TMUX_SESSION=$(tmux list-session | awk -F: '/attached/ {print $1}')
-NETWORK_CACHE=/tmp/tmux_network_cache.${TMUX_SESSION}
-
-case ${OS_TYPE} in
-  Darwin)
-    DATA_SOURCE=$(netstat -nbi | awk 'NR>1 && !/^lo/ {rbytes+=$7; tbytes+=$10} END {printf "%0.0f %0.0f\n", rbytes, tbytes}')
-    ;;
-  Linux)
-    DATA_SOURCE=$(awk 'NR>2 && !/^[ ]+lo/ {rbytes+=$2; tbytes+=$10} END {printf "%0.0f %0.0f\n", rbytes, tbytes}' /proc/net/dev)
-    ;;
-esac
+NETWORK_CACHE=/tmp/tmux_network_cache
 
 function scale {
   rate=$1
@@ -32,9 +22,18 @@ function scale {
 }
 
 read prev_time prev_rbytes prev_tbytes <<< $(cat ${NETWORK_CACHE} 2>/dev/null || echo "0 0 0")
-read curr_rbytes curr_tbytes <<< ${DATA_SOURCE}
+#echo "$prev_time $prev_rbytes $prev_tbytes"
+case $(uname) in
+  Darwin)
+    read curr_rbytes curr_tbytes <<< $(netstat -nbi | awk 'NR>1 && !/^lo/ {rbytes+=$7; tbytes+=$10} END {printf "%0.0f %0.0f\n", rbytes, tbytes}')
+    ;;
+  Linux)
+    read curr_rbytes curr_tbytes <<< $(awk 'NR>2 && !/^[ ]+lo/ {rbytes+=$2; tbytes+=$10} END {printf "%0.0f %0.0f\n", rbytes, tbytes}' /proc/net/dev)
+    ;;
+esac
 curr_time=$(date +%s)
 echo -n "${curr_time} ${curr_rbytes} ${curr_tbytes}" > ${NETWORK_CACHE}
+#echo "${curr_time} ${curr_rbytes} ${curr_tbytes}"
 [ ${prev_time} -eq 0 ] && exit
 d_tbytes=$((${curr_tbytes} - ${prev_tbytes}))
 d_rbytes=$((${curr_rbytes} - ${prev_rbytes}))
