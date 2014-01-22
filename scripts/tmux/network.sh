@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Network output for the status line.
+# ↓12KB/s ↑55MB/s
+
 NETWORK_CACHE=/tmp/tmux_network_cache
 
 function scale {
@@ -21,14 +24,19 @@ function scale {
   return
 }
 
-read prev_time prev_rbytes prev_tbytes <<< $(cat ${NETWORK_CACHE} 2>/dev/null || echo "0 0 0")
+read prev_time prev_rbytes prev_tbytes <<< \
+  $(cat ${NETWORK_CACHE} 2>/dev/null || echo "0 0 0")
 #echo "$prev_time $prev_rbytes $prev_tbytes"
 case $(uname) in
   Darwin)
-    read curr_rbytes curr_tbytes <<< $(netstat -nbi | awk 'NR>1 && !/^lo/ {rbytes+=$7; tbytes+=$10} END {printf "%0.0f %0.0f\n", rbytes, tbytes}')
+    read curr_rbytes curr_tbytes <<< \
+      $(netstat -nbi | awk 'NR>1 && !/^lo/ {rbytes+=$7; tbytes+=$10} END \
+                            {printf "%0.0f %0.0f\n", rbytes, tbytes}')
     ;;
   Linux)
-    read curr_rbytes curr_tbytes <<< $(awk 'NR>2 && !/^[ ]+lo/ {rbytes+=$2; tbytes+=$10} END {printf "%0.0f %0.0f\n", rbytes, tbytes}' /proc/net/dev)
+    read curr_rbytes curr_tbytes <<< \
+      $(awk 'NR>2 && !/^[ ]+lo/ {rbytes+=$2; tbytes+=$10} END \
+             {printf "%0.0f %0.0f\n", rbytes, tbytes}' /proc/net/dev)
     ;;
 esac
 curr_time=$(date +%s)
