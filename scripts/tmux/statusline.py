@@ -4,12 +4,7 @@
 
 import os
 import subprocess
-from time import sleep, time
-
-
-STATUSLINE_FILE = '%s/.tmux.statusline.txt' % os.environ['HOME']
-STATUSLINE_LOCK = '%s/.tmux.statusline.pid' % os.environ['HOME']
-TMUX_CONF = '%s/.tmux.conf' % os.environ['HOME']
+from time import sleep, strftime, time
 
 
 class Network():
@@ -111,26 +106,47 @@ class Network():
 
 class Load():
   PREFIX = '#[fg=colour34,bg=colour0]#[fg=colour255,bg=colour34] '
-  SUFFIX = ' '
-  #SUFFIX = ' #[fg=colour0,bg=colour34]'
+  #SUFFIX = ' '
+  SUFFIX = ' #[fg=colour0,bg=colour34]'
 
   def Update(self):
     load = ' '.join(['%0.2f' % load for load in os.getloadavg()])
     status = '%s%s%s' % (self.PREFIX, load, self.SUFFIX)
     return status
 
-def GetStatusDelay():
-  delay = -1
-  f = open(TMUX_CONF)
-  for line in f.readlines():
-    if 'status-interval' in line:
-      delay = int(line.split(' ')[-1])
-      f.close()
-      break
-  return delay
 
-def GetLock():
-  def CheckPid(pid):
+class Clock():
+  PREFIX = '#[fg=colour220,bg=colour0]#[fg=colour0,bg=colour220] '
+  SUFFIX = ' #[default]'
+
+  def Update(self):
+    time_str = strftime('%l:%M:%S %p').lstrip()
+    status = '%s%s%s' % (self.PREFIX, time_str, self.SUFFIX)
+    return status
+
+
+class StatusLine():
+  STATUSLINE_FILE = '%s/.tmux.statusline.txt' % os.environ['HOME']
+  STATUSLINE_LOCK = '%s/.tmux.statusline.pid' % os.environ['HOME']
+  TMUX_CONF = '%s/.tmux.conf' % os.environ['HOME']
+
+  def __init__(self, modules):
+    self.GetLock()
+    self.delay = self.GetStatusDelay()
+    self.modules = modules
+    self.Update()
+
+  def GetStatusDelay(self):
+    delay = -1
+    f = open(self.TMUX_CONF)
+    for line in f.readlines():
+      if 'status-interval' in line:
+        delay = int(line.split(' ')[-1])
+        f.close()
+        break
+    return delay
+
+  def CheckPid(self, pid):
     try:
       os.kill(pid, 0)
     except:
@@ -138,32 +154,37 @@ def GetLock():
     else:
       return True
 
-  try:
-    lock = open(STATUSLINE_LOCK)
-    pid = lock.readline()
-    lock.close()
-  except:
-    pid = -1
+  def GetLock(self):
+    try:
+      lock = open(self.STATUSLINE_LOCK)
+      pid = lock.readline()
+      lock.close()
+    except:
+      pid = -1
+    if not self.CheckPid(pid):
+      lock = open(self.STATUSLINE_LOCK, 'w')
+      lock.write(str(os.getpid()))
+      lock.close()
+    else:
+      exit(1)
+    return
 
-  if not CheckPid(pid):
-    lock = open(STATUSLINE_LOCK, 'w')
-    lock.write(str(os.getpid()))
-    lock.close()
-  else:
-    exit(1)
-  return
+  def Update(self):
+    # To make sure updates to the statusline file happen before it is read.
+    sleep(self.delay / 4)
+    while True:
+      statusline = ''
+      for module in self.modules:
+        statusline += '%s' % module.Update()
+      status = open(self.STATUSLINE_FILE, 'w')
+      status.write(statusline)
+      status.close()
+      sleep(self.delay)
 
 
-GetLock()
-delay = GetStatusDelay()
-network = Network()
-load = Load()
+if __name__ == "__main__":
+  network = Network()
+  load = Load()
+  clock = Clock()
 
-# To make sure updates to the statusline file happen before it is read.
-sleep(delay / 4)
-
-while True:
-  status = open(STATUSLINE_FILE, 'w')
-  status.write('%s%s' % (network.Update(), load.Update()))
-  status.close()
-  sleep(delay)
+  sl = StatusLine([network, load, clock])
