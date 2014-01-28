@@ -3,9 +3,10 @@
 
 
 import os
+import signal
 import socket
 import subprocess
-from time import sleep, strftime, time
+from time import strftime, time
 
 
 class Network():
@@ -150,11 +151,10 @@ class StatusLine():
   STATUSLINE_LOCK = '%s/.tmux.statusline.pid' % os.environ['HOME']
   TMUX_CONF = '%s/.tmux.conf' % os.environ['HOME']
 
-  def __init__(self, modules):
+  def __init__(self):
     self.GetLock()
-    self.modules = modules
-    self.sock = socket.socket()
-    self.Run()
+    self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
   def CheckPid(self, pid):
     """Check if a pid is valid (running)."""
@@ -165,6 +165,17 @@ class StatusLine():
     else:
       return True
 
+  def UnLock(self):
+    """Give up the lock."""
+    os.unlink(self.STATUSLINE_LOCK)
+    return
+
+  def Lock(self):
+    """Set the lock."""
+    lock = open(self.STATUSLINE_LOCK, 'w')
+    lock.write(str(os.getpid()))
+    lock.close()
+
   def GetLock(self):
     """Simple process locking using a pid."""
     try:
@@ -174,30 +185,44 @@ class StatusLine():
     except:
       pid = None
     if not self.CheckPid(pid):
-      lock = open(self.STATUSLINE_LOCK, 'w')
-      lock.write(str(os.getpid()))
-      lock.close()
+      self.Lock()
     else:
       exit(1)
     return
 
-  def Run(self):
+  def SigHandler(self, SIG, FRM):
+    self.sock.close()
+    self.UnLock()
+    exit(0)
+
+  def Run(self, modules):
     """Listen on self.PORT for a connection and update stats and return them."""
     self.sock.bind((self.HOST, self.PORT))
     self.sock.listen(3)
     while True:
       conn = self.sock.accept()[0]
       statusline = ''
-      for module in self.modules:
+      for module in modules:
         statusline += '%s' % module.Update()
       conn.send(statusline)
       conn.close()
 
 
 if __name__ == "__main__":
+  sl = StatusLine()
+
+  # Setup the signal handler.
+  for i in [x for x in dir(signal) if x.startswith("SIG")]:
+    try:
+      signum = getattr(signal, i)
+      signal.signal(signum, sl.SigHandler)
+    except:
+      continue
+
+  # Setup modules.
   network = Network()
   load = Load()
   clock = Clock()
 
-  # List modules in the order they should appear.
-  sl = StatusLine([network, load, clock])
+  # List modules in the order they should appear in the statusline output.
+  sl.Run([network, load, clock])

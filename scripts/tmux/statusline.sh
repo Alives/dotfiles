@@ -1,17 +1,17 @@
 #!/bin/bash
 
 STATUSLINE_LOCK="${HOME}/.tmux.statusline.pid"
-RUN_STATUSLINE="${HOME}/.dotfiles/scripts/tmux/statusline.py \
-  2>/tmp/tmux.statusline.stderr \
-   >/tmp/tmux.statusline.stdout &"
+STATUSLINE="${HOME}/.dotfiles/scripts/tmux/statusline.py"
+STDERR="/tmp/tmux.statusline.stderr"
+STDOUT="/tmp/tmux.statusline.stdout"
 
 if [ ! -r ${STATUSLINE_LOCK} ]; then
-  ${RUN_STATUSLINE}
+  ${STATUSLINE} >${STDOUT} 2>${STDERR} &
 else
   pid=$(cat ${STATUSLINE_LOCK})
   ps -p ${pid} | grep -qi python
   if [ $? != 0 ]; then
-    ${RUN_STATUSLINE}
+    ${STATUSLINE} >${STDOUT} 2>${STDERR} &
   fi
   nc 127.0.0.1 61234
 fi
