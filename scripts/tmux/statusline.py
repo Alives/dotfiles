@@ -185,10 +185,12 @@ class StatusLine():
     if not self.CheckPid(pid):
       self.Lock()
     else:
+      print 'Can\'t get lock, another process is already running.'
       exit(1)
     return
 
   def SigHandler(self, SIG, FRM):
+    print 'Caught signal %s, exiting.' % SIG
     self.sock.close()
     self.UnLock()
     exit(0)
@@ -210,12 +212,8 @@ if __name__ == "__main__":
   sl = StatusLine()
 
   # Setup the signal handler.
-  for i in [x for x in dir(signal) if x.startswith("SIG")]:
-    try:
-      signum = getattr(signal, i)
-      signal.signal(signum, sl.SigHandler)
-    except:
-      continue
+  for signum in [1, 2, 15]:
+    signal.signal(signum, sl.SigHandler)
 
   # Setup modules.
   network = Network()
