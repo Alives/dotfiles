@@ -5,7 +5,7 @@
 import os
 import signal
 import socket
-import subprocess
+from subprocess import PIPE, Popen
 from time import strftime, time
 
 
@@ -40,8 +40,8 @@ class Network():
     self.curr_stats['txbytes'] = 0
     interfaces = []
     if self.os_type == 'Darwin':
-      output = subprocess.Popen(['netstat', '-nbi'], stdout=subprocess.PIPE,
-                                shell=False).communicate()[0]
+      output = Popen(['netstat', '-nbi'], stdout=PIPE,
+          shell=False).communicate()[0]
       self.curr_stats['time'] = time()
       for line in output.split('\n'):
         data = line.split()
