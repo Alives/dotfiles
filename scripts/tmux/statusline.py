@@ -48,12 +48,11 @@ class Network():
         if len(data) < 10:
           continue
         if 'lo' in data[0] or 'Name' in data[0]:
-            continue
+          continue
         interface = data[0]
         if interface in interfaces:
           continue
         try:
-          mtu = int(data[1])
           self.curr_stats['rxbytes'] += int(data[6])
           self.curr_stats['txbytes'] += int(data[9])
         except:
@@ -84,29 +83,28 @@ class Network():
   def GetRates(self):
     """Determine the rate of change since the last collection."""
     delta_time = self.curr_stats['time'] - self.prev_stats['time']
-    for i in ['rx', 'tx']:
-      key = '%sbytes' % i
+    for key in ['rx', 'tx']:
+      byte_key = '%sbytes' % key
       try:
-        self.rates[i]['rate'] = (
-            (self.curr_stats[key] - self.prev_stats[key]) / delta_time)
+        self.rates[key]['rate'] = (
+            (self.curr_stats[byte_key] - self.prev_stats[byte_key]) / delta_time)
       except:
-        self.rates[i]['rate'] = 0
+        self.rates[key]['rate'] = 0
 
   def GetUnits(self):
     """Convert to human readable units."""
-    KB = 1024
-    for i in ['rx', 'tx']:
-      if self.rates[i]['rate'] >= 1073741824:
-        self.rates[i]['units'] = 'GB/s'
-        self.rates[i]['rate'] /= 1073741824
-      elif self.rates[i]['rate'] >= 1048576:
-        self.rates[i]['units'] = 'MB/s'
-        self.rates[i]['rate'] /= 1048576
-      elif self.rates[i]['rate'] >= 1024:
-        self.rates[i]['units'] = 'KB/s'
-        self.rates[i]['rate'] /= 1024
+    for key in ['rx', 'tx']:
+      if self.rates[key]['rate'] >= 1073741824:
+        self.rates[key]['units'] = 'GB/s'
+        self.rates[key]['rate'] /= 1073741824
+      elif self.rates[key]['rate'] >= 1048576:
+        self.rates[key]['units'] = 'MB/s'
+        self.rates[key]['rate'] /= 1048576
+      elif self.rates[key]['rate'] >= 1024:
+        self.rates[key]['units'] = 'KB/s'
+        self.rates[key]['rate'] /= 1024
       else:
-        self.rates[i]['units'] = 'b/s'
+        self.rates[key]['units'] = 'b/s'
 
   def Update(self):
     """Update the stats and return them."""
@@ -128,7 +126,7 @@ class Load():
   SUFFIX = '#[fg=colour0,bg=colour34]'
 
   def Update(self):
-    load = ' '.join(['%0.2f' % load for load in os.getloadavg()])
+    load = ' '.join(['%0.2f' % x for x in os.getloadavg()])
     status = '%s %s %s' % (self.PREFIX, load, self.SUFFIX)
     return status
 

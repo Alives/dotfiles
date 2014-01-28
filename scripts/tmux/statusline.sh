@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 STATUSLINE_LOCK="${HOME}/.tmux.statusline.pid"
 STATUSLINE="${HOME}/.dotfiles/scripts/tmux/statusline.py"
@@ -13,5 +13,5 @@ else
   if [ $? != 0 ]; then
     ${STATUSLINE} >${STDOUT} 2>${STDERR} &
   fi
-  nc 127.0.0.1 61234
+  nc 127.0.0.1 61234 || kill ${pid}
 fi
