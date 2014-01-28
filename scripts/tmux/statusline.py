@@ -3,6 +3,7 @@
 
 
 import os
+import socket
 import subprocess
 from time import sleep, strftime, time
 
@@ -126,7 +127,8 @@ class Clock():
 
 
 class StatusLine():
-  STATUSLINE_FILE = '%s/.tmux.statusline.txt' % os.environ['HOME']
+  HOST = '127.0.0.1'
+  PORT = 61234
   STATUSLINE_LOCK = '%s/.tmux.statusline.pid' % os.environ['HOME']
   TMUX_CONF = '%s/.tmux.conf' % os.environ['HOME']
 
@@ -134,7 +136,8 @@ class StatusLine():
     self.GetLock()
     self.delay = self.GetStatusDelay()
     self.modules = modules
-    self.Update()
+    self.sock = socket.socket()
+    self.Run()
 
   def GetStatusDelay(self):
     delay = -1
@@ -169,15 +172,16 @@ class StatusLine():
       exit(1)
     return
 
-  def Update(self):
+  def Run(self):
+    self.sock.bind((self.HOST, self.PORT))
+    self.sock.listen(3)
     while True:
+      conn = self.sock.accept()[0]
       statusline = ''
       for module in self.modules:
         statusline += '%s' % module.Update()
-      status = open(self.STATUSLINE_FILE, 'w')
-      status.write(statusline)
-      status.close()
-      sleep(self.delay)
+      conn.send(statusline)
+      conn.close()
 
 
 if __name__ == "__main__":

@@ -1,6 +1,5 @@
 #!/bin/bash
 
-STATUSLINE_FILE="${HOME}/.tmux.statusline.txt"
 STATUSLINE_LOCK="${HOME}/.tmux.statusline.pid"
 RUN_STATUSLINE="/usr/bin/env python ${HOME}/.dotfiles/scripts/tmux/statusline.py \
   2>/tmp/tmux.statusline.stderr \
@@ -14,5 +13,5 @@ else
   if [ $? != 0 ]; then
     ${RUN_STATUSLINE}
   fi
-  cat ${STATUSLINE_FILE}
+  nc 127.0.0.1 61234
 fi
