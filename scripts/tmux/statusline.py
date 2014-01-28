@@ -1,5 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*- 
+"""Generate an informative statusline for tmux.
+
+Using classes defined within, output the right side of the status line for tmux
+as a string when a client connects.  This uses sockets which has the advantage
+of not running when it is not needed as the updates are only generated on
+request.
+"""
 
 
 import os
