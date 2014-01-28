@@ -13,5 +13,5 @@ else
   if [ $? != 0 ]; then
     ${STATUSLINE} >${STDOUT} 2>${STDERR} &
   fi
-  nc 127.0.0.1 61234 || kill ${pid}
+  nc 127.0.0.1 61234
 fi
