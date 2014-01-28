@@ -46,7 +46,7 @@ class Network():
         except:
           continue
         interfaces.append(interface)
-    elif OS_TYPE == 'Linux':
+    elif self.os_type == 'Linux':
       proc_net_dev = open('/proc/net/dev')
       output = proc_net_dev.readlines()
       proc_net_dev.close()
@@ -160,7 +160,7 @@ class StatusLine():
       pid = lock.readline()
       lock.close()
     except:
-      pid = -1
+      pid = None
     if not self.CheckPid(pid):
       lock = open(self.STATUSLINE_LOCK, 'w')
       lock.write(str(os.getpid()))
