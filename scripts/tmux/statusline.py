@@ -170,8 +170,6 @@ class StatusLine():
     return
 
   def Update(self):
-    # To make sure updates to the statusline file happen before it is read.
-    sleep(self.delay / 4)
     while True:
       statusline = ''
       for module in self.modules:
