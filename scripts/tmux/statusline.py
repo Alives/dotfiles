@@ -191,7 +191,6 @@ class StatusLine():
   def SigHandler(self, SIG, FRM):
     self.sock.close()
     self.UnLock()
-    os.unlink(self.STATUSLINE_FILE)
     exit(0)
 
   def Run(self, modules):
