@@ -9,11 +9,17 @@ from time import sleep, strftime, time
 
 
 class Network():
+  """Get network stats and return throughput rates.
+
+  This class determines the statistics for all local network adapters other than
+  lo and determines the rate since the last query. It then humanizes the output
+  into b/s, KB/s, MB/s, or GB/s.
+  """
   RX_ICON = '↓'
   TX_ICON = '↑'
 
-  PREFIX = '#[fg=colour27,bg=colour0]#[fg=colour255,bg=colour27] '
-  SUFFIX = ' #[fg=colour0,bg=colour27]#[bg=colour0]'
+  PREFIX = '#[fg=colour27,bg=colour0]#[fg=colour255,bg=colour27]'
+  SUFFIX = '#[fg=colour0,bg=colour27]#[bg=colour0]'
 
   def __init__(self):
     self.os_type = os.uname()[0]
@@ -24,6 +30,11 @@ class Network():
     self.Update()
 
   def GetNetBytes(self):
+    """Get network statistics depending on platform.
+
+    Sums the interface statistics for all interfaces other than lo and records
+    the time they were captured.
+    """
     self.curr_stats['rxbytes'] = 0
     self.curr_stats['txbytes'] = 0
     interfaces = []
@@ -47,6 +58,7 @@ class Network():
         except:
           continue
         interfaces.append(interface)
+
     elif self.os_type == 'Linux':
       proc_net_dev = open('/proc/net/dev')
       output = proc_net_dev.readlines()
@@ -65,9 +77,11 @@ class Network():
         except:
           continue
         interfaces.append(interface)
+
     return
 
   def GetRates(self):
+    """Determine the rate of change since the last collection."""
     delta_time = self.curr_stats['time'] - self.prev_stats['time']
     for i in ['rx', 'tx']:
       key = '%sbytes' % i
@@ -78,6 +92,7 @@ class Network():
         self.rates[i]['rate'] = 0
 
   def GetUnits(self):
+    """Convert to human readable units."""
     KB = 1024
     for i in ['rx', 'tx']:
       if self.rates[i]['rate'] >= 1073741824:
@@ -93,12 +108,13 @@ class Network():
         self.rates[i]['units'] = 'b/s'
 
   def Update(self):
+    """Update the stats and return them."""
     self.GetNetBytes()
     self.GetRates()
     self.GetUnits()
     for key in self.curr_stats:
       self.prev_stats[key] = self.curr_stats[key]
-    status = ('%s%s%2.0f%s %s%2.0f%s%s' % (self.PREFIX,
+    status = ('%s %s%2.0f%s %s%2.0f%s %s' % (self.PREFIX,
         self.RX_ICON, self.rates['rx']['rate'], self.rates['rx']['units'],
         self.TX_ICON, self.rates['tx']['rate'], self.rates['tx']['units'],
         self.SUFFIX))
@@ -106,27 +122,29 @@ class Network():
 
 
 class Load():
-  PREFIX = '#[fg=colour34,bg=colour0]#[fg=colour255,bg=colour34] '
-  #SUFFIX = ' '
-  SUFFIX = ' #[fg=colour0,bg=colour34]'
+  """Get the current load and return it for output."""
+  PREFIX = '#[fg=colour34,bg=colour0]#[fg=colour255,bg=colour34]'
+  SUFFIX = '#[fg=colour0,bg=colour34]'
 
   def Update(self):
     load = ' '.join(['%0.2f' % load for load in os.getloadavg()])
-    status = '%s%s%s' % (self.PREFIX, load, self.SUFFIX)
+    status = '%s %s %s' % (self.PREFIX, load, self.SUFFIX)
     return status
 
 
 class Clock():
-  PREFIX = '#[fg=colour220,bg=colour0]#[fg=colour0,bg=colour220] '
-  SUFFIX = ' #[default]'
+  """Get the current time and return it for output."""
+  PREFIX = '#[fg=colour220,bg=colour0]#[fg=colour0,bg=colour220]'
+  SUFFIX = '#[default]'
 
   def Update(self):
     time_str = strftime('%l:%M:%S %p').lstrip()
-    status = '%s%s%s' % (self.PREFIX, time_str, self.SUFFIX)
+    status = '%s %s %s' % (self.PREFIX, time_str, self.SUFFIX)
     return status
 
 
 class StatusLine():
+  """The main statusline class."""
   HOST = '127.0.0.1'
   PORT = 61234
   STATUSLINE_LOCK = '%s/.tmux.statusline.pid' % os.environ['HOME']
@@ -134,22 +152,12 @@ class StatusLine():
 
   def __init__(self, modules):
     self.GetLock()
-    self.delay = self.GetStatusDelay()
     self.modules = modules
     self.sock = socket.socket()
     self.Run()
 
-  def GetStatusDelay(self):
-    delay = -1
-    f = open(self.TMUX_CONF)
-    for line in f.readlines():
-      if 'status-interval' in line:
-        delay = int(line.split(' ')[-1])
-        f.close()
-        break
-    return delay
-
   def CheckPid(self, pid):
+    """Check if a pid is valid (running)."""
     try:
       os.kill(pid, 0)
     except:
@@ -158,6 +166,7 @@ class StatusLine():
       return True
 
   def GetLock(self):
+    """Simple process locking using a pid."""
     try:
       lock = open(self.STATUSLINE_LOCK)
       pid = lock.readline()
@@ -173,6 +182,7 @@ class StatusLine():
     return
 
   def Run(self):
+    """Listen on self.PORT for a connection and update stats and return them."""
     self.sock.bind((self.HOST, self.PORT))
     self.sock.listen(3)
     while True:
@@ -189,4 +199,5 @@ if __name__ == "__main__":
   load = Load()
   clock = Clock()
 
+  # List modules in the order they should appear.
   sl = StatusLine([network, load, clock])

@@ -1,9 +1,9 @@
 #!/bin/bash
 
 STATUSLINE_LOCK="${HOME}/.tmux.statusline.pid"
-RUN_STATUSLINE="/usr/bin/env python ${HOME}/.dotfiles/scripts/tmux/statusline.py \
+RUN_STATUSLINE="${HOME}/.dotfiles/scripts/tmux/statusline.py \
   2>/tmp/tmux.statusline.stderr \
-  > /tmp/tmux.statusline.stdout &"
+   >/tmp/tmux.statusline.stdout &"
 
 if [ ! -r ${STATUSLINE_LOCK} ]; then
   ${RUN_STATUSLINE}
