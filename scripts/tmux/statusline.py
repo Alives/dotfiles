@@ -16,9 +16,6 @@ class Network():
   lo and determines the rate since the last query. It then humanizes the output
   into b/s, KB/s, MB/s, or GB/s.
   """
-  RX_ICON = '↓'
-  TX_ICON = '↑'
-
   PREFIX = '#[fg=colour27,bg=colour0]#[fg=colour255,bg=colour27]'
   SUFFIX = '#[fg=colour0,bg=colour27]#[bg=colour0]'
 
@@ -26,8 +23,8 @@ class Network():
     self.os_type = os.uname()[0]
     self.prev_stats = {'rxbytes': 0, 'txbytes': 0, 'time': 0}
     self.curr_stats = {'rxbytes': 0, 'txbytes': 0, 'time': 0}
-    self.rates = {'rx': {'rate': 0, 'units': ''},
-                  'tx': {'rate': 0, 'units': ''}}
+    self.rates = {'rx': {'icon': '↓', 'rate': 0, 'units': ''},
+                  'tx': {'icon': '↑', 'rate': 0, 'units': ''}}
     self.Update()
 
   def GetNetBytes(self):
@@ -83,7 +80,7 @@ class Network():
   def GetRates(self):
     """Determine the rate of change since the last collection."""
     delta_time = self.curr_stats['time'] - self.prev_stats['time']
-    for key in ['rx', 'tx']:
+    for key in self.rates.keys():
       byte_key = '%sbytes' % key
       try:
         self.rates[key]['rate'] = (
@@ -93,16 +90,16 @@ class Network():
 
   def GetUnits(self):
     """Convert to human readable units."""
-    for key in ['rx', 'tx']:
+    for key in self.rates.keys():
       if self.rates[key]['rate'] >= 1073741824:
         self.rates[key]['units'] = 'GB/s'
-        self.rates[key]['rate'] /= 1073741824
+        self.rates[key]['rate'] /= 1073741824.0
       elif self.rates[key]['rate'] >= 1048576:
         self.rates[key]['units'] = 'MB/s'
-        self.rates[key]['rate'] /= 1048576
+        self.rates[key]['rate'] /= 1048576.0
       elif self.rates[key]['rate'] >= 1024:
         self.rates[key]['units'] = 'KB/s'
-        self.rates[key]['rate'] /= 1024
+        self.rates[key]['rate'] /= 1024.0
       else:
         self.rates[key]['units'] = 'b/s'
 
@@ -113,10 +110,17 @@ class Network():
     self.GetUnits()
     for key in self.curr_stats:
       self.prev_stats[key] = self.curr_stats[key]
-    status = ('%s %s%2.0f%s %s%2.0f%s %s' % (self.PREFIX,
-        self.RX_ICON, self.rates['rx']['rate'], self.rates['rx']['units'],
-        self.TX_ICON, self.rates['tx']['rate'], self.rates['tx']['units'],
-        self.SUFFIX))
+    status = '%s ' % self.PREFIX
+    for key in self.rates.keys():
+      if self.rates[key]['units'] not in ['b/s', 'KB/s']:
+        status += ('%s%1.1f%s ' %
+                   (self.rates[key]['icon'], self.rates[key]['rate'],
+                    self.rates[key]['units']))
+      else:
+        status += ('%s%1.0f%s ' %
+                   (self.rates[key]['icon'], self.rates[key]['rate'],
+                    self.rates[key]['units']))
+    status += self.SUFFIX
     return status
 
 
