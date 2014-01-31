@@ -91,10 +91,14 @@ function cel {
   # cel foo.c "gcc foo.c && ./a.out"
   # cel . cat file.txt
 
-  if [ "`uname`" = "Darwin" ]; then
+  ls --version 2>&1 | grep -qi gnu
+  if [ $? = 0 ]; then
+    checker="ls -lR --full-time $1"
+  elif [ "`uname`" = "Darwin" ]; then
     checker="ls -lRT $1"
   else
-    checker="ls -lR --full-time $1"
+    echo "bad ls"
+    exit 1
   fi
 
   command="${@: 2:$#}"
