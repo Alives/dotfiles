@@ -57,10 +57,10 @@ def main():
     exit(131)
   if 'sizzurp' in dest:
     if TestConnectivity(('localhost', 2223)):
-        exit(133)
+        exit(132)
   if 'ssh-a' in dest:
     if TestConnectivity(('localhost', 2224)):
-        exit(134)
+        exit(133)
   localhost = ParseSSHConfig('localhost')
   target = ParseSSHConfig(dest)
   while True:
