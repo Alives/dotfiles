@@ -57,10 +57,10 @@ def main():
     exit(131)
   if 'sizzurp' in dest:
     if TestConnectivity(('localhost', 2223)):
-        exit(133)
+        exit(132)
   if 'ssh-a' in dest:
     if TestConnectivity(('localhost', 2224)):
-        exit(134)
+        exit(133)
   localhost = ParseSSHConfig('localhost')
   target = ParseSSHConfig(dest)
   while True:
@@ -69,7 +69,7 @@ def main():
         if host[1] == target[1]:
           exit(131)
         elif host[1] == localhost[1]:
-          exit(132)
+          exit(140)
     stdout.write('\x1b[0m\r%c\x1b[30m' % (spinner[count % 4]))
     stdout.flush()
     count += 1
