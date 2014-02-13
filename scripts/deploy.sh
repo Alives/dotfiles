@@ -24,5 +24,8 @@ mv -v ${HOME}/.ssh/config ${HOME}/backups/.ssh/
 ln -sv ${path}/ssh/config ${HOME}/.ssh/config
 touch ${HOME}/.friedman.local
 
+mkdir -p ~/scripts
+git clone http://github.com/Alives/tmux-statusline ~/scripts/
+
 git submodule init
 git submodule update
