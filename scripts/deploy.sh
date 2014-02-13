@@ -23,3 +23,6 @@ mkdir -p ${HOME}/backups/.ssh
 mv -v ${HOME}/.ssh/config ${HOME}/backups/.ssh/
 ln -sv ${path}/ssh/config ${HOME}/.ssh/config
 touch ${HOME}/.friedman.local
+
+git submodule init
+git submodule update
