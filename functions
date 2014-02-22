@@ -43,6 +43,9 @@ function tm {
       "133")
         ssh ${arg1} ${arg2} -qt -p 2224 localhost -t "${cmd}"
         ;;
+      "134")
+        ssh ${arg1} ${arg2} -qt -p 2225 localhost -t "${cmd}"
+        ;;
       "140")
         ssh ${arg1} ${arg2} -qt -p 2222 localhost "ssh $1 -t ${cmd}"
         ;;

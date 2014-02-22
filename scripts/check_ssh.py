@@ -61,6 +61,9 @@ def main():
   if 'ssh-a' in dest:
     if TestConnectivity(('localhost', 2224)):
         exit(133)
+  if 'ssh.chr' in dest:
+    if TestConnectivity(('localhost', 2225)):
+        exit(134)
   localhost = ParseSSHConfig('localhost')
   target = ParseSSHConfig(dest)
   while True:
