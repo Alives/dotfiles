@@ -256,7 +256,7 @@ if has('autocmd')
     endif
 
     " Better folding
-    au BufRead * if line('$') > (&lines * 20) | set foldlevel=99 | endif
+    au BufRead * if line('$') > (&lines * 2000) | set foldlevel=99 | endif
 
     " Git autocommit
     autocmd BufWritePost * let message = input('Message? ', 'Auto-commit: saved ' . expand('%')) | execute ':silent ! if git rev-parse --git-dir > /dev/null 2>&1 ; then git add % ; git commit -m ' . shellescape(message, 1) . '; fi > /dev/null 2>&1'
