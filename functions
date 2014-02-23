@@ -38,13 +38,16 @@ function tm {
         ssh ${arg1} ${arg2} -qt $1 "${cmd}"
         ;;
       "132")
-        ssh ${arg1} ${arg2} -qt -p 2222 localhost "ssh $1 -t ${cmd}"
-        ;;
-      "133")
         ssh ${arg1} ${arg2} -qt -p 2223 localhost -t "${cmd}"
         ;;
-      "134")
+      "133")
         ssh ${arg1} ${arg2} -qt -p 2224 localhost -t "${cmd}"
+        ;;
+      "134")
+        ssh ${arg1} ${arg2} -qt -p 2225 localhost -t "${cmd}"
+        ;;
+      "140")
+        ssh ${arg1} ${arg2} -qt -p 2222 localhost "ssh $1 -t ${cmd}"
         ;;
     esac
   done
