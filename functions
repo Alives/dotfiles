@@ -28,7 +28,7 @@ function tm {
   spinstr='-\|/'
   while true; do
     tput cup $(tput lines) 0
-    printf "\x1b[0m%c\x1b[30m" "${spinstr:$((${count} % 4)):1}"
+    printf "%c" "${spinstr:$((${count} % 4)):1}"
     count=$((${count} + 1))
     sagent >/dev/null
     [[ $(host slab.mtv 2>&1 | awk -F. '{print $NF}') != "97" ]] && \

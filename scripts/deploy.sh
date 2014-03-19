@@ -18,10 +18,6 @@ export REPO path
 find ${REPO} -maxdepth 1 -type f -name '[^.]*' -exec bash -c 'Deploy "$0"' {} \;
 Deploy vim
 
-# Fuck it, it's a one-off.
-mkdir -p ${HOME}/backups/.ssh
-mv -v ${HOME}/.ssh/config ${HOME}/backups/.ssh/
-ln -sv ${path}/ssh/config ${HOME}/.ssh/config
 touch ${HOME}/.friedman.local
 
 mkdir -p ~/scripts
