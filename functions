@@ -22,34 +22,20 @@ function nth {
 }
 
 function tm {
-  arg1="-o ConnectTimeout=1"
-  arg2="-o ConnectionAttempts=1"
   cmd="tmux a -d -t 0 || tmux -u new || bash"
   echo -en '\033k'$1'\033\\'
+  count=0
+  spinstr='-\|/'
   while true; do
     tput cup $(tput lines) 0
+    printf "\x1b[0m%c\x1b[30m" "${spinstr:$((${count} % 4)):1}"
+    count=$((${count} + 1))
     sagent >/dev/null
-    python ${HOME}/.dotfiles/scripts/check_ssh.py $1
-    case "$?" in
-      "130")
-        return
-        ;;
-      "131")
-        ssh ${arg1} ${arg2} -qt $1 "${cmd}"
-        ;;
-      "132")
-        ssh ${arg1} ${arg2} -qt -p 2223 localhost -t "${cmd}"
-        ;;
-      "133")
-        ssh ${arg1} ${arg2} -qt -p 2224 localhost -t "${cmd}"
-        ;;
-      "134")
-        ssh ${arg1} ${arg2} -qt -p 2225 localhost -t "${cmd}"
-        ;;
-      "140")
-        ssh ${arg1} ${arg2} -qt -p 2222 localhost "ssh $1 -t ${cmd}"
-        ;;
-    esac
+    [[ $(host slab.mtv 2>&1 | awk -F. '{print $NF}') != "97" ]] && \
+      host=${1}-l || \
+      host=${1}
+    ssh -qt ${host} "${cmd}" || ssh -qt ${1} "${cmd}"
+    sleep 1
   done
 }
 
