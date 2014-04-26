@@ -106,6 +106,17 @@ function cel {
   done
 }
 
+function multi-ssh {
+  pane1=$1
+  shift
+  for host in $*; do
+    tmux splitw "ssh ${host}; ${SHELL}"
+    tmux select-layout tiled
+  done
+  ssh ${pane1}
+  tmux set-window-option synchronize-panes on
+}
+
 ### SSH AGENT SHIT ############################################################
 function sshagent_findsockets {
   # Only find the oldest one.
