@@ -22,7 +22,7 @@ function nth {
 }
 
 function tm {
-  cmd="tmux a -d -t 0 || tmux -u new || zsh || bash"
+  cmd="tmux -u a -d -t 0 || tmux -u new || zsh || bash"
   echo -en '\033k'$1'\033\\'
   count=0
   spinstr='-\|/'
