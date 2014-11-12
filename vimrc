@@ -55,7 +55,7 @@ set noerrorbells visualbell t_vb= " Disable ALL bells
 set nohidden                      " close the buffer when I close a tab (I use tabs more than buffers)
 set nospell                       " no spelling by default
 set swapfile                      " use a swapfile
-set tabstop=8                     " nice tabs
+set tabstop=2                     " nice tabs
 set shiftwidth=2                  " nice tabs, please?
 set softtabstop=2                 " delete expanded tabs with a single keystroke
 set smarttab                      " use shiftwidth not tabstop at the beginning of a line
@@ -85,7 +85,7 @@ set cursorcolumn                  " highlight the current column that the cursor
 set cursorline                    " highlight the current line that the cursor is on
 set foldenable
 set foldcolumn=2
-set foldminlines=2
+set foldminlines=8
 
 " create .state directory, readable by the group.
 silent execute '!(umask 027; mkdir -p ~/.vim/state)'
@@ -110,7 +110,7 @@ runtime bundle/vim-pathogen/autoload/pathogen.vim
 call pathogen#helptags()
 call pathogen#infect()
 syntax on
-filetype plugin indent on
+"filetype plugin indent on
 
 " Crontab
 au FileType crontab set nobackup nowritebackup
@@ -202,10 +202,10 @@ if has('autocmd')
     " Buffer Autocommands
     autocmd BufWritePre *.cpp,*.hpp,*.i :call StripTrailingWhitespace()
 
-    augroup vimrc
-      au BufReadPre * setlocal foldmethod=indent
-      au BufWinEnter * if &fdm == 'indent' | setlocal foldmethod=manual | endif
-    augroup END
+    "augroup vimrc
+    "  au BufReadPre * setlocal foldmethod=indent
+    "  au BufWinEnter * if &fdm == 'indent' | setlocal foldmethod=manual | endif
+    "augroup END
 
     " Improve legibility
     au BufRead quickfix setlocal nobuflisted wrap number
@@ -256,6 +256,9 @@ if has('autocmd')
     endif
 
     " Better folding
-    au BufRead * if line('$')*10 > &lines | set foldlevel=99 | endif
+    "au BufRead * if line('$')*25 > &lines | set foldlevel=99 | endif
+
+    " Git autocommit
+    "autocmd BufWritePost * let message = input('Message? ', 'Auto-commit: saved ' . expand('%')) | execute ':silent ! if git rev-parse --git-dir > /dev/null 2>&1 ; then git add % ; git commit -m ' . shellescape(message, 1) . '; fi > /dev/null 2>&1'
   endif
 endif
