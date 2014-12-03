@@ -22,21 +22,18 @@ function nth {
 }
 
 function tm {
-  cmd="tmux -u a -d -t 0 || tmux -u new || zsh || bash"
+  cmd="tmux -u a -t 0 || tmux -u new || zsh || bash"
   echo -en '\033k'$1'\033\\'
   count=0
   spinstr='-\|/'
-  while true; do
-    tput cup $(tput lines) 0
-    printf "%c" "${spinstr:$((${count} % 4)):1}"
-    count=$((${count} + 1))
-    sagent >/dev/null
-    [[ $(host slab.mtv 2>&1 | awk -F. '{print $NF}') != "97" ]] && \
-      host=${1}-l || \
-      host=${1}
-    ssh -qt ${host} "${cmd}" || ssh -qt ${1} "${cmd}"
-    sleep 1
-  done
+  tput cup $(tput lines) 0
+  printf "%c" "${spinstr:$((${count} % 4)):1}"
+  count=$((${count} + 1))
+  #sagent >/dev/null
+  [[ $(host slab.sfo 2>&1 | awk -F. '{print $NF}') != "97" ]] && \
+    host=${1}-l || \
+    host=${1}
+  ssh -qt ${host} "${cmd}" || ssh -qt ${1} "${cmd}"
 }
 
 function gateway {
