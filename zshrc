@@ -6,6 +6,7 @@ select-word-style whitespace
 
 autoload -Uz vcs_info
 
+host_sum="0x$(/bin/hostname -f | sha1sum)"
 #use extended color pallete if available
 if [ ! -z $terminfo[colors] ] && [ $terminfo[colors] -eq 256 ] ; then
   yellow="$fg_bold[yellow]"
@@ -25,7 +26,10 @@ if [ ! -z $terminfo[colors] ] && [ $terminfo[colors] -eq 256 ] ; then
   c_time="%F{125}"
   c_user="%F{202}"
   c_at="%F{184}"
-  c_host="%F{33}"
+  #c_host="%F{33}"
+  host_colors=(34 97 33 160 166 208 207 226)
+  host_color_id=$(($(printf '%d\n' "${host_sum:0:18}") % ${#host_colors[@]}))
+  c_host="%F{${host_colors[${host_color_id}]}}"
   c_pwd="%F{30}"
   c_presuf="%F{32}"
   c_branch="%F{148}"
@@ -48,7 +52,10 @@ else
   c_time="$fg[white]"
   c_user="$fg_bold[green]"
   c_at="$fg[white]"
-  c_host="$fg_bold[cyan]"
+  #c_host="$fg_bold[cyan]"
+  host_colors=("$fg_bold[cyan]" "$fg[white]" "$fg[yellow]" "$fg_bold[blue]" "$fg[magenta]" "$fg[green]")
+  host_color_id=$(($(printf '%d\n' "${host_sum:0:18}") % ${#host_colors[@]}))
+  c_host="%F{${host_colors[${host_color_id}]}}"
   c_pwd="$fg_bold[blue]"
   c_presuf="$fg_bold[blue]"
   c_branch="$fg[yellow]"
