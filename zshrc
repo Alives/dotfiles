@@ -6,7 +6,6 @@ select-word-style whitespace
 
 autoload -Uz vcs_info
 
-host_sum="0x$(/bin/hostname -f | sha1sum)"
 #use extended color pallete if available
 if [ ! -z $terminfo[colors] ] && [ $terminfo[colors] -eq 256 ] ; then
   yellow="$fg_bold[yellow]"
@@ -26,10 +25,7 @@ if [ ! -z $terminfo[colors] ] && [ $terminfo[colors] -eq 256 ] ; then
   c_time="%F{125}"
   c_user="%F{202}"
   c_at="%F{184}"
-  #c_host="%F{33}"
-  host_colors=(27 33 34 129 166 191 196 202 220 231)
-  host_color_id=$(($(printf '%d\n' "${host_sum:0:15}") % ${#host_colors[@]}))
-  c_host="%F{${host_colors[${host_color_id}]}}"
+  c_host="%F{33}"
   c_pwd="%F{30}"
   c_presuf="%F{32}"
   c_branch="%F{148}"
@@ -170,6 +166,7 @@ SAVEHIST=1000000
 #${p_prompt} '
 
 # Prompt shit
+test -r ${HOME}/.prompt && source ${HOME}/.prompt
 local r="%{%b%f%}"
 local p_return="%(?..%{$bg[red]$fg_bold[yellow]%}[%?]${r} )"
 local p_time="%{$c_time%}%*${r}"
@@ -181,5 +178,5 @@ PROMPT='${p_return}${p_time} ${p_user}${p_host} ${p_pwd} $vcs_info_msg_0_
 ${p_prompt} '
 
 for entry in ${HOME}/{.exports,.aliases,.functions,.friedman.local}; do
-  [[ -r ${entry} ]] && source ${entry}
+  test -r ${entry} && source ${entry}
 done
