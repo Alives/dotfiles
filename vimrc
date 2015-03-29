@@ -218,6 +218,7 @@ if has('autocmd')
     au BufRead *.vim,vimrc setlocal filetype=vim
     au BufRead *.c,*.h setlocal filetype=c
     au BufRead syslog-ng.conf setlocal filetype=syslog-ng
+    au BufRead *.eyaml setlocal filetype=yaml
 
     au BufRead quickfix setlocal nobuflisted wrap number
 

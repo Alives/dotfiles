@@ -26,7 +26,7 @@ function tm {
   cmd="tmux -u a -d -t 0 || (eval `ssh-agent`; tmux -u new) || zsh || bash"
   [[ $(host slab.sfo 2>&1 | awk -F. '{print $NF}') != "97" ]] && \
     suffix="-l" || suffix=
-  ssh -Aqt ${1}${suffix} "${cmd}" || ssh -qt ${1} "${cmd}"
+  ssh -qtA ${1}${suffix} "${cmd}" || ssh -qtA ${1} "${cmd}"
 }
 
 function gateway {
