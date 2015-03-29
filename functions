@@ -23,7 +23,7 @@ function nth {
 
 function tm {
   echo -en '\033k'$1'\033\\'  # Set window title.
-  cmd="tmux -u a -d -t 0 || (eval `ssh-agent`; tmux -u new) || zsh || bash"
+  cmd="tmux -u a -d -t 0 || tmux -u new || zsh || bash"
   [[ $(host slab.sfo 2>&1 | awk -F. '{print $NF}') != "97" ]] && \
     suffix="-l" || suffix=
   ssh -qtA ${1}${suffix} "${cmd}" || ssh -qtA ${1} "${cmd}"
