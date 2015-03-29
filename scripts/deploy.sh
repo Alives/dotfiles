@@ -16,6 +16,7 @@ export -f Deploy
 export REPO path
 
 find ${REPO} -maxdepth 1 -type f -name '[^.]*' -exec bash -c 'Deploy "$0"' {} \;
+mv ${HOME}/.ssh_rc ${HOME}/.ssh/rc
 Deploy vim
 
 touch ${HOME}/.friedman.local
