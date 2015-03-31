@@ -86,39 +86,22 @@ zstyle ':vcs_info:*:prompt:*' nvcsformats   ""
 zstyle ':completion:*:sudo:*' menu select
 setopt completealiases
 
-function dis_preexec {
-  case "$(history $HISTCMD | tail -n5)" in
-    *git*)
-      PR_GIT_UPDATE=1
-      ;;
-    *svn*)
-      PR_GIT_UPDATE=1
-      ;;
-  esac
-}
-add-zsh-hook preexec dis_preexec
-
-function dis_chpwd {
-  PR_GIT_UPDATE=1
-}
-
-add-zsh-hook chpwd dis_chpwd
-
-function dis_precmd {
-  if [ -n "$PR_GIT_UPDATE" ] ; then
-    # check for untracked files or updated submodules, since vcs_info doesn't
-    if [ ! -z "$(git ls-files --other --exclude-standard 2> /dev/null)" ]; then
-      PR_GIT_UPDATE=1
-      FMT_BRANCH="${FMT_PREFIX}%{$c_branch%}%b%{$fg[red]%}●%u%c${FMT_SUFFIX}"
-    else
-      FMT_BRANCH="${FMT_PREFIX}%{$c_branch%}%b%u%c${FMT_SUFFIX}"
-    fi
-    zstyle ':vcs_info:*:prompt:*' formats       "${FMT_BRANCH}"
-    vcs_info 'prompt'
-    PR_GIT_UPDATE=
+function git_precmd {
+  # check for untracked files or updated submodules, since vcs_info doesn't
+  if [ ! -z "$(git ls-files --other --exclude-standard 2> /dev/null)" ]; then
+    FMT_BRANCH="${FMT_PREFIX}%{$c_branch%}%b%{$fg[red]%}●%u%c${FMT_SUFFIX}"
+  else
+    FMT_BRANCH="${FMT_PREFIX}%{$c_branch%}%b%u%c${FMT_SUFFIX}"
   fi
+  zstyle ':vcs_info:*:prompt:*' formats "${FMT_BRANCH}"
+  vcs_info 'prompt'
 }
-add-zsh-hook precmd dis_precmd
+add-zsh-hook precmd git_precmd
+
+function ssh_precmd {
+  export SSH_AUTH_SOCK=$(find /tmp/ssh-*/agent.* -type s)
+}
+add-zsh-hook precmd ssh_precmd
 
 setopt appendhistory autocd nomatch prompt_subst
 bindkey -v
