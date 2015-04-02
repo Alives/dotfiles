@@ -99,7 +99,8 @@ function git_precmd {
 add-zsh-hook precmd git_precmd
 
 function ssh_precmd {
-  export SSH_AUTH_SOCK=$(find /tmp/ssh-*/agent.* -type s)
+  SSH_AUTH_SOCK=$(find /tmp/. -name '*Listeners' -o -name '*agent*' -type s 2>/dev/null)
+  test -n ${SSH_AUTH_SOCK} && export SSH_AUTH_SOCK
 }
 add-zsh-hook precmd ssh_precmd
 
