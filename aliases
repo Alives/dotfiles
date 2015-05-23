@@ -14,4 +14,3 @@ alias rm='rm -i'
 alias rsyncme='rsync -vaogHDSxP --no-inc-recursive'
 alias sagent="sshagent_init"
 alias vi='vim'
-alias vim='vim -X'
