@@ -31,3 +31,6 @@
 [submodule "vim/bundle/tabular"]
 	path = vim/bundle/tabular
 	url = https://github.com/godlygeek/tabular
+[submodule "scripts/z"]
+	path = scripts/z
+	url = https://github.com/rupa/z
