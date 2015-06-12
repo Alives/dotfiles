@@ -162,6 +162,7 @@ local p_prompt="%{$c_prompt%}%#${r}"
 PROMPT='${p_return}${p_time} ${p_user}${p_host} ${p_pwd} $vcs_info_msg_0_
 ${p_prompt} '
 
-for entry in ${HOME}/{.exports,.aliases,.functions,scripts/z/z.sh,.zsh.local}; do
+for entry in \
+  ${HOME}/{.exports,.aliases,.functions,.dotfiles/scripts/z/z.sh,.zsh.local}; do
   test -r ${entry} && source ${entry}
 done
