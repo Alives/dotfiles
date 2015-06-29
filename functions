@@ -24,9 +24,15 @@ function nth {
 function tm {
   echo -en '\033k'$1'\033\\'  # Set window title.
   cmd="tmux -u a -d -t 0 || tmux -u new || zsh || bash"
-  [[ $(host slab.sfo 2>&1 | awk -F. '{print $NF}') != "97" ]] && \
-    suffix="-l" || suffix=
-  ssh -qtA ${1}${suffix} "${cmd}" || ssh -qtA ${1} "${cmd}"
+  echo -n | nc slab.sfo 8103 > /dev/null 2>&1 && \
+    suffix= || suffix="-l"
+  if echo ${1} | egrep -q "(slab|sizzurp)"; then
+    SSH=ssh
+  else
+    SSH=/Users/friedman/homebrew/bin/ssh
+    SSH_AUTH_SOCK=
+  fi
+  ${SSH} -qtA ${1}${suffix} "${cmd}" || ${SSH} -qtA ${1} "${cmd}"
 }
 
 function gateway {
