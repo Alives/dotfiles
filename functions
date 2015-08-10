@@ -103,26 +103,20 @@ function cel {
 }
 
 function multi-ssh {
-  user=${USER}
-  if [ "$1" = "-l" ]; then
-    shift
-    user=$1
-    shift
-  fi
   pane_0=$1
   shift
   for host in "$@"; do
     echo $host
     tmux splitw \
       "echo \"-> Connecting to ${host}...\"; \
-      ssh -l ${user} ${host}; \
+      ssh ${host}; \
       echo \"-> Disconnected from ${host}... status $?\"; \
       ${SHELL}"
     tmux select-layout tiled
   done
   tmux set-window-option synchronize-panes on
   echo "-> Connecting to ${host}..."
-  ssh -l ${user} ${pane_0}
+  ssh ${pane_0}
   echo "-> Disconnected from ${host}... status $?"
   tmux set-window-option synchronize-panes off
 }
