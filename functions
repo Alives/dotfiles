@@ -109,14 +109,14 @@ function multi-ssh {
     echo $host
     tmux splitw \
       "echo \"-> Connecting to ${host}...\"; \
-      ssh ${host}; \
+      export HOST=${host}; ssh ${host}; \
       echo \"-> Disconnected from ${host}... status $?\"; \
       ${SHELL}"
     tmux select-layout tiled
   done
   tmux set-window-option synchronize-panes on
   echo "-> Connecting to ${host}..."
-  ssh ${pane_0}
+  export HOST=${pane_0}; ssh ${pane_0}
   echo "-> Disconnected from ${host}... status $?"
   tmux set-window-option synchronize-panes off
 }
