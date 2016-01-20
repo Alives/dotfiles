@@ -10,4 +10,5 @@ alias mv='mv -i'
 alias rm='rm -i'
 alias rsyncme='rsync -vaogHDSxP --no-inc-recursive'
 alias sagent="sshagent_init"
+alias fix_title="echo -en '\033k  \033\\'"
 alias vi='vim'
