@@ -103,22 +103,29 @@ function cel {
 }
 
 function multi-ssh {
-  pane_0=$1
-  shift
-  for host in "$@"; do
-    echo $host
-    tmux splitw \
-      "echo \"-> Connecting to ${host}...\"; \
-      export HOST=${host}; ssh ${host}; \
-      echo \"-> Disconnected from ${host}... status $?\"; \
-      ${SHELL}"
-    tmux select-layout tiled
-  done
-  tmux set-window-option synchronize-panes on
-  echo "-> Connecting to ${host}..."
-  export HOST=${pane_0}; ssh ${pane_0}
-  echo "-> Disconnected from ${host}... status $?"
-  tmux set-window-option synchronize-panes off
+  pre_check="$(echo $@ | tr ' ' '\n' | sed -e 's/^.*@//g' | \
+    xargs nmap --max-retries 0 --host-timeout 1s -p 22 -PN -oG - | \
+    grep Port | grep -v open)"
+  if [[ "${pre_check}x" != "x" ]]; then
+    echo "${pre_check}"
+  else
+    pane_0=$1
+    shift
+    for host in "$@"; do
+      echo $host
+      tmux splitw \
+        "echo \"-> Connecting to ${host}...\"; \
+        ssh ${host}; \
+        echo \"-> Disconnected from ${host}... status $?\"; \
+        ${SHELL}"
+      tmux select-layout tiled
+    done
+    tmux set-window-option synchronize-panes on
+    echo "-> Connecting to ${host}..."
+    ssh ${pane_0}
+    echo "-> Disconnected from ${host}... status $?"
+    tmux set-window-option synchronize-panes off
+  fi
 }
 
 ### SSH AGENT SHIT ############################################################
