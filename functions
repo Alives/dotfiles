@@ -104,8 +104,7 @@ function cel {
 
 function multi-ssh {
   pre_check="$(echo $@ | tr ' ' '\n' | sed -e 's/^.*@//g' | \
-    xargs nmap --max-retries 0 --host-timeout 1s -p 22 -PN -oG - | \
-    grep Port | grep -v open)"
+               xargs nmap -p 22 -PN -oG - | grep Port | grep -v open)"
   if [[ "${pre_check}x" != "x" ]]; then
     echo "${pre_check}"
   else
