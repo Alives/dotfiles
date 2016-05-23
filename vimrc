@@ -38,7 +38,13 @@ set undolevels=5000               " lots of undos (default: 1000)
 set updatecount=50                " switch every 50 chars (default: 200)
 set whichwrap+=b,s,<,>,h,l,[,]    " wrap on more (default: b,s)
 set nowrap                        " don't wrap long lines
-set autoindent smartindent        " indent sanely
+set autoindent                    " indent sanely
+
+" http://vim.wikia.com/wiki/Restoring_indent_after_typing_hash
+set cindent
+set cinkeys-=0#
+set indentkeys-=0#
+
 set autoread                      " watch for changes
 set backspace=indent,eol,start    " back over anything
 set backup                        " keep a backup file
@@ -129,8 +135,8 @@ set colorcolumn=81
 highlight ColorColumn ctermfg=none ctermbg=235
 
 " Highlight current line and column to more easily find the cursor
-highlight CursorColumn cterm=NONE ctermbg=235 ctermfg=none guibg=235 guifg=none
-highlight CursorLine   cterm=NONE ctermbg=235 ctermfg=none guibg=235 guifg=none
+highlight CursorColumn cterm=NONE ctermbg=235 guibg=#262626
+highlight CursorLine   cterm=NONE ctermbg=235 guibg=#262626
 nnoremap <Leader>c :set cursorline! cursorcolumn!<CR>
 
 " Search color highlights
