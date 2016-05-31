@@ -14,16 +14,12 @@ if [ "${OS_TYPE}" = "Darwin" ]; then
   PATH_NOHB=${PATH}
   PATH=${HB}/bin:${HB}/sbin:${HB}/opt/coreutils/libexec/gnubin:${PATH}
 else
-  LESSCLOSE="lessclose %s %s"
-  LESSOPEN="|lesspipe %s"
+  [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 fi
 
-if [ $(which dircolors 2>&1 >/dev/null) ]; then
-  if [ -r ${HOME}/.dircolors ]; then
-    eval "$(dircolors -b ${HOME}/.dircolors)"
-  else
+if [ -x /usr/bin/dircolors ]; then
+  test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || \
     eval "$(dircolors -b)"
-  fi
 fi
 
 export EDITOR HOSTNAME LANG LANGUAGE LESSCLOSE LESSOPEN LS_COLORS OS_TYPE PATH PATH_NOHB TERM
