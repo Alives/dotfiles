@@ -1,5 +1,17 @@
 #!/bin/sh
 
+function enc {
+  cat | bzip2 | base64
+}
+
+function dec {
+  if [ -r $1 ]; then
+    base64 -d $1 | bzip2 -d
+  else
+    base64 -d < $1 | bzip2 -d
+  fi
+}
+
 function renum {
   count=1
   for window in $(tmux list-windows | cut -d: -f1); do
