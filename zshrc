@@ -98,13 +98,6 @@ function git_precmd {
 }
 add-zsh-hook precmd git_precmd
 
-#function ssh_precmd {
-#  SSH_AUTH_SOCK=$(find /tmp /private/tmp -name '*agent*' -o -name '*Listeners' \
-#                  -user ${USER} -type s 2>/dev/null | head -n 1)
-#  test -n ${SSH_AUTH_SOCK} && export SSH_AUTH_SOCK
-#}
-#add-zsh-hook precmd ssh_precmd
-
 setopt appendhistory autocd nomatch prompt_subst
 bindkey -v
 bindkey '^R'     history-incremental-search-backward
@@ -138,17 +131,6 @@ bindkey '^i'     expand-or-complete-prefix
 HISTFILE=~/.histfile
 HISTSIZE=1000000
 SAVEHIST=1000000
-
-## Prompt shit
-#local r="%{%b%f%}"
-#local p_return="%(?..%{$bg[red]$fg_bold[yellow]%}[%?]${r} )"
-#local p_time="%{$fg[white]%}%*${r}"
-#local p_user="%{$fg_bold[green]%}%n${r}"
-#local p_host="%{$fg[white]%}@%{$fg_bold[cyan]%}%m${r}"
-#local p_pwd="%{$fg_bold[blue]%}%~${r}"
-#local p_prompt="%{$fg_bold[yellow]%}%#${r}"
-#PROMPT='${p_return}${p_time} ${p_user}${p_host} ${p_pwd} $vcs_info_msg_0_
-#${p_prompt} '
 
 # Prompt shit
 test -r ${HOME}/.prompt && source ${HOME}/.prompt

@@ -1,13 +1,20 @@
 #!/bin/sh
 
 alias cp='cp -i'
+alias egrep='egrep --color=auto'
 alias exut='exit'
 alias exot='exit'
+alias fgrep='fgrep --color=auto'
+alias grep='grep --color=auto'
 alias irssi='tmux rename-window irssi; sudo -u elliott HOME=/home/elliott irssi'
 alias less='less -r'
-alias ls='ls -F --color=yes'
+alias l='ls -CF'
+alias la='ls -A'
+alias ll='ls -alF'
+alias ls='ls -F --color=auto'
 alias mv='mv -i'
 alias rm='rm -i'
 alias rsyncme='rsync -vaogHDSxP --no-inc-recursive'
 alias sagent="sshagent_init"
+alias fix_title="echo -en '\033k  \033\\'"
 alias vi='vim'

@@ -1,5 +1,17 @@
 #!/bin/sh
 
+function enc {
+  cat | bzip2 | base64
+}
+
+function dec {
+  if [ -r $1 ]; then
+    base64 -d $1 | bzip2 -d
+  else
+    base64 -d < $1 | bzip2 -d
+  fi
+}
+
 function renum {
   count=1
   for window in $(tmux list-windows | cut -d: -f1); do
@@ -92,22 +104,28 @@ function cel {
 }
 
 function multi-ssh {
-  pane_0=$1
-  shift
-  for host in "$@"; do
-    echo $host
-    tmux splitw \
-      "echo \"-> Connecting to ${host}...\"; \
-      ssh ${host}; \
-      echo \"-> Disconnected from ${host}... status $?\"; \
-      ${SHELL}"
-    tmux select-layout tiled
-  done
-  tmux set-window-option synchronize-panes on
-  echo "-> Connecting to ${host}..."
-  ssh ${pane_0}
-  echo "-> Disconnected from ${host}... status $?"
-  tmux set-window-option synchronize-panes off
+  pre_check="$(echo $@ | tr ' ' '\n' | sed -e 's/^.*@//g' | \
+               xargs nmap -p 22 -PN -oG - | grep Port | grep -v open)"
+  if [[ "${pre_check}x" != "x" ]]; then
+    echo "${pre_check}"
+  else
+    pane_0=$1
+    shift
+    for host in "$@"; do
+      echo $host
+      tmux splitw \
+        "echo \"-> Connecting to ${host}...\"; \
+        ssh ${host}; \
+        echo \"-> Disconnected from ${host}... status $?\"; \
+        ${SHELL}"
+      tmux select-layout tiled
+    done
+    tmux set-window-option synchronize-panes on
+    echo "-> Connecting to ${host}..."
+    ssh ${pane_0}
+    echo "-> Disconnected from ${host}... status $?"
+    tmux set-window-option synchronize-panes off
+  fi
 }
 
 #### SSH AGENT SHIT ############################################################

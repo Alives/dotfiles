@@ -22,7 +22,7 @@ Deploy vim
 touch ${HOME}/.friedman.local
 
 mkdir -p ~/scripts
-git clone http://github.com/Alives/tmux-statusline ~/scripts/
+git clone http://github.com/Alives/tmux-statusline ~/scripts/tmux-statusline
 
 git submodule init
 git submodule update
