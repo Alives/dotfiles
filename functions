@@ -23,20 +23,9 @@ function nth {
 
 function tm {
   echo -en '\033k'$1'\033\\'  # Set window title.
-  cmd="tmux -u a -d -t 0 || tmux -u new || zsh || bash"
-  echo -n | nc slab.sfo 8103 > /dev/null 2>&1 && \
-    suffix= || suffix="-l"
-  if echo ${1} | egrep -q "(slab|sizzurp)"; then
-    SSH=ssh
-  else
-    SSH=/Users/friedman/homebrew/bin/ssh
-    SSH_AUTH_SOCK=
-  fi
-  ${SSH} -qtA ${1}${suffix} "${cmd}" || ${SSH} -qtA ${1} "${cmd}"
-}
-
-function gateway {
-  netstat -rn | head -n 1 | awk '/default/ {print $2}'
+  grep HostName ~/.ssh/config | grep $1 | grep -q corp && \
+    ssh -tA $1 "tmx 0" || \
+    ssh -ta $1 "tmux -u a -d -t 0 || tmux -u new || zsh || bash"
 }
 
 test -d "${HOME}/.shell_logs" || mkdir "${HOME}/.shell_logs"
@@ -121,72 +110,72 @@ function multi-ssh {
   tmux set-window-option synchronize-panes off
 }
 
-### SSH AGENT SHIT ############################################################
-function sshagent_findsockets {
-  # Only find the oldest one.
-  find /tmp -uid $(id -u) -type s -name agent.\* -print0 2>/dev/null | \
-    xargs -0 ls -t1 | head -n 1
-}
-
-function sshagent_testsocket {
-  if [ ! -x "$(which ssh-add)" ] ; then
-    echo "ssh-add is not available; agent testing aborted"
-    return 1
-  fi
-
-  if [ X"$1" != X ] ; then
-    export SSH_AUTH_SOCK=$1
-  fi
-
-  if [ X"$SSH_AUTH_SOCK" = X ] ; then
-    return 2
-  fi
-
-  if [ -S $SSH_AUTH_SOCK ] ; then
-    ssh-add -l > /dev/null
-    if [ $? = 2 ] ; then
-      echo "Socket $SSH_AUTH_SOCK is dead!  Deleting!"
-      rm -f $SSH_AUTH_SOCK
-      return 4
-    else
-      echo "Found ssh-agent $SSH_AUTH_SOCK"
-      return 0
-    fi
-  else
-    echo "$SSH_AUTH_SOCK is not a socket!"
-    return 3
-  fi
-}
-
-function sshagent_init {
-  # ssh agent sockets can be attached to a ssh daemon process or an
-  # ssh-agent process.
-
-  AGENTFOUND=0
-
-  # Attempt to find and use the ssh-agent in the current environment
-  if sshagent_testsocket ; then AGENTFOUND=1 ; fi
-
-  # If there is no agent in the environment, search /tmp for
-  # possible agents to reuse before starting a fresh ssh-agent
-  # process.
-  if [ $AGENTFOUND = 0 ] ; then
-    for agentsocket in $(sshagent_findsockets) ; do
-      if [ $AGENTFOUND != 0 ] ; then break ; fi
-      if sshagent_testsocket $agentsocket ; then AGENTFOUND=1 ; fi
-    done
-  fi
-
-  # If at this point we still haven't located an agent, it's time to
-  # start a new one
-  if [ $AGENTFOUND = 0 ] ; then
-    eval `ssh-agent`
-  fi
-
-  # Clean up
-  unset AGENTFOUND
-  unset agentsocket
-
-  # Finally, show what keys are currently in the agent
-  ssh-add -l
-}
+#### SSH AGENT SHIT ############################################################
+#function sshagent_findsockets {
+#  # Only find the oldest one.
+#  find /tmp -uid $(id -u) -type s -name agent.\* -print0 2>/dev/null | \
+#    xargs -0 ls -t1 | head -n 1
+#}
+#
+#function sshagent_testsocket {
+#  if [ ! -x "$(which ssh-add)" ] ; then
+#    echo "ssh-add is not available; agent testing aborted"
+#    return 1
+#  fi
+#
+#  if [ X"$1" != X ] ; then
+#    export SSH_AUTH_SOCK=$1
+#  fi
+#
+#  if [ X"$SSH_AUTH_SOCK" = X ] ; then
+#    return 2
+#  fi
+#
+#  if [ -S $SSH_AUTH_SOCK ] ; then
+#    ssh-add -l > /dev/null
+#    if [ $? = 2 ] ; then
+#      echo "Socket $SSH_AUTH_SOCK is dead!  Deleting!"
+#      rm -f $SSH_AUTH_SOCK
+#      return 4
+#    else
+#      echo "Found ssh-agent $SSH_AUTH_SOCK"
+#      return 0
+#    fi
+#  else
+#    echo "$SSH_AUTH_SOCK is not a socket!"
+#    return 3
+#  fi
+#}
+#
+#function sshagent_init {
+#  # ssh agent sockets can be attached to a ssh daemon process or an
+#  # ssh-agent process.
+#
+#  AGENTFOUND=0
+#
+#  # Attempt to find and use the ssh-agent in the current environment
+#  if sshagent_testsocket ; then AGENTFOUND=1 ; fi
+#
+#  # If there is no agent in the environment, search /tmp for
+#  # possible agents to reuse before starting a fresh ssh-agent
+#  # process.
+#  if [ $AGENTFOUND = 0 ] ; then
+#    for agentsocket in $(sshagent_findsockets) ; do
+#      if [ $AGENTFOUND != 0 ] ; then break ; fi
+#      if sshagent_testsocket $agentsocket ; then AGENTFOUND=1 ; fi
+#    done
+#  fi
+#
+#  # If at this point we still haven't located an agent, it's time to
+#  # start a new one
+#  if [ $AGENTFOUND = 0 ] ; then
+#    eval `ssh-agent`
+#  fi
+#
+#  # Clean up
+#  unset AGENTFOUND
+#  unset agentsocket
+#
+#  # Finally, show what keys are currently in the agent
+#  ssh-add -l
+#}
