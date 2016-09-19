@@ -122,19 +122,19 @@ function multi-ssh {
   else
     pane_0=$1
     shift
+    test -f ~/scripts/ssh && SSH=~/scripts/ssh || SSH=ssh
     for host in "$@"; do
-      echo $host
       tmux splitw \
-        "echo \"-> Connecting to ${host}...\"; \
-        ssh ${host}; \
-        echo \"-> Disconnected from ${host}... status $?\"; \
-        ${SHELL}"
+        "echo \"-> Connecting to $host\"; \
+        $SSH $host; \
+        echo \"-> Disconnected from $host status $?\"; \
+        $SHELL"
       tmux select-layout tiled
     done
     tmux set-window-option synchronize-panes on
-    echo "-> Connecting to ${host}..."
-    ssh ${pane_0}
-    echo "-> Disconnected from ${host}... status $?"
+    echo "-> Connecting to $host"
+    $SSH $pane_0
+    echo "-> Disconnected from $host status $?"
     tmux set-window-option synchronize-panes off
   fi
 }
