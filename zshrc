@@ -132,17 +132,6 @@ HISTFILE=~/.histfile
 HISTSIZE=1000000
 SAVEHIST=1000000
 
-## Prompt shit
-#local r="%{%b%f%}"
-#local p_return="%(?..%{$bg[red]$fg_bold[yellow]%}[%?]${r} )"
-#local p_time="%{$fg[white]%}%*${r}"
-#local p_user="%{$fg_bold[green]%}%n${r}"
-#local p_host="%{$fg[white]%}@%{$fg_bold[cyan]%}%m${r}"
-#local p_pwd="%{$fg_bold[blue]%}%~${r}"
-#local p_prompt="%{$fg_bold[yellow]%}%#${r}"
-#PROMPT='${p_return}${p_time} ${p_user}${p_host} ${p_pwd} $vcs_info_msg_0_
-#${p_prompt} '
-
 # Prompt shit
 test -r ${HOME}/.prompt && source ${HOME}/.prompt
 local r="%{%b%f%}"

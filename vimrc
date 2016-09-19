@@ -159,11 +159,11 @@ map <F4> :emenu <C-Z>
 nnoremap <F3> :GundoToggle<CR>
 
 " NERDTree
-"let NERDChristmasTree = 1
-"nnoremap <silent> <F2> :NERDTreeToggle<CR>
-"autocmd vimenter * if !argc() | NERDTree | endif
-"autocmd FileType nerdtree setlocal nolist
-"autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
+let NERDChristmasTree = 1
+nnoremap <silent> <F2> :NERDTreeToggle<CR>
+autocmd vimenter * if !argc() | NERDTree | endif
+autocmd FileType nerdtree setlocal nolist
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
 
 " set unicode support if possible
 if has("multi_byte")
