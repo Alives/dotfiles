@@ -126,7 +126,7 @@ function multi-ssh {
     shift
     test -f ~/scripts/ssh && SSH=~/scripts/ssh || SSH=ssh
     for host in "$@"; do
-      tmux splitw \
+      tmux splitw -h \
         "echo \"-> Connecting to $host\"; \
         $SSH $host; \
         echo \"-> Disconnected from $host status $?\"; \
