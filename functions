@@ -116,29 +116,28 @@ function cel {
   done
 }
 
+function multi {
+  tmux set-window-option synchronize-panes on > /dev/null
+  cmd=$1
+  arg=$2
+  shift 2
+  pane=0
+  tmux send-keys -t $pane "$cmd $arg" Enter
+  for arg in "$@"; do
+    tmux splitw -h
+    pane=$((pane+1))
+    tmux select-layout tiled > /dev/null
+    tmux send-keys -t $pane "$cmd $arg" Enter
+  done
+}
+
 function multi-ssh {
-  pre_check="$(echo $@ | tr ' ' '\n' | sed -e 's/^.*@//g' | \
-               xargs nmap -p 22 -PN -oG - | grep Port | grep -v open)"
-  if [[ "${pre_check}x" != "x" ]]; then
-    echo "${pre_check}"
-  else
-    pane_0=$1
-    shift
-    test -f ~/scripts/ssh && SSH=~/scripts/ssh || SSH=ssh
-    for host in "$@"; do
-      tmux splitw -h \
-        "echo \"-> Connecting to $host\"; \
-        $SSH $host; \
-        echo \"-> Disconnected from $host status $?\"; \
-        $SHELL"
-      tmux select-layout tiled
-    done
-    tmux set-window-option synchronize-panes on
-    echo "-> Connecting to $host"
-    $SSH $pane_0
-    echo "-> Disconnected from $host status $?"
-    tmux set-window-option synchronize-panes off
-  fi
+  while true; do
+    pre_check="$(echo $@ | tr ' ' '\n' | sed -e 's/^.*@//g' | \
+                 xargs nmap -p 22 -PN -oG - | grep Port | grep -v open)"
+    test "${pre_check}x" != "x" && (clear; echo "$pre_check") || break
+  done
+  multi $SSH ${@[@]:1}
 }
 
 #### SSH AGENT SHIT ############################################################
