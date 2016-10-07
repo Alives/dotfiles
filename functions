@@ -137,7 +137,7 @@ function multi-ssh {
                  xargs nmap -p 22 -PN -oG - | grep Port | grep -v open)"
     test "${pre_check}x" != "x" && (clear; echo "$pre_check") || break
   done
-  multi $SSH ${@[@]:1}
+  multi ssh ${@[@]:1}
 }
 
 #### SSH AGENT SHIT ############################################################
