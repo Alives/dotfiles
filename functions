@@ -117,10 +117,15 @@ function cel {
 }
 
 function multi {
-  tmux set-window-option synchronize-panes on > /dev/null
   cmd=$1
   arg=$2
   shift 2
+  while [[ $cmd = "ssh" ]]; do
+    pre_check="$(echo $@ | tr ' ' '\n' | sed -e 's/^.*@//g' | \
+                 xargs nmap -p 22 -PN -oG - | grep Port | grep -v open)"
+    test "${pre_check}x" != "x" && (clear; echo "$pre_check") || break
+  done
+  tmux set-window-option synchronize-panes on > /dev/null
   pane=0
   tmux send-keys -t $pane "$cmd $arg" Enter
   for arg in "$@"; do
@@ -129,15 +134,6 @@ function multi {
     tmux select-layout tiled > /dev/null
     tmux send-keys -t $pane "$cmd $arg" Enter
   done
-}
-
-function multi-ssh {
-  while true; do
-    pre_check="$(echo $@ | tr ' ' '\n' | sed -e 's/^.*@//g' | \
-                 xargs nmap -p 22 -PN -oG - | grep Port | grep -v open)"
-    test "${pre_check}x" != "x" && (clear; echo "$pre_check") || break
-  done
-  multi ssh ${@[@]:1}
 }
 
 #### SSH AGENT SHIT ############################################################
