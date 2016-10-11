@@ -143,7 +143,7 @@ function rerun {
   while true; do
     for pane in $@; do
       tmux send-keys -t $pane Up Enter
-      sleep 2
+      sleep $sleep
     done
   done
 }
