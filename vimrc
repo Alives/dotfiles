@@ -80,7 +80,7 @@ set winminheight=0                " smash windows done to the status line (defau
 set equalalways                   " keep windows the same size
 set switchbuf=usetab              " tabs rock
 set tabpagemax=30                 " max out at 30 tabs (increase at own risk)
-set showtabline=2                 " 2 always, 1 only if multiple tabs
+set showtabline=1                 " 2 always, 1 only if multiple tabs - 2 causes flickering in powerline.
 set commentstring=\ #\ %s         " default to shell comments, not C
 set showmatch                     " show matching bracket
 set incsearch                     " search while typing
