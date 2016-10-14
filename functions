@@ -131,6 +131,8 @@ function multi {
     tmux select-layout tiled > /dev/null
   done
   tmux set-window-option synchronize-panes on > /dev/null
+  tmux set-window-option pane-active-border-style fg=red > /dev/null
+  tmux set-window-option pane-border-style fg=yellow > /dev/null
   tmux send-keys Enter
 }
 
