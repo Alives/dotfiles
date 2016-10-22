@@ -5,7 +5,7 @@ HOSTNAME=$(hostname -f)
 LANG=en_US.UTF-8
 LANGUAGE=${LANG}
 OS_TYPE=$(uname)
-PATH=${HOME}/scripts:/sbin:${PATH}
+PATH=${HOME}/scripts:/sbin:/snap/bin:${PATH}
 unset USERNAME
 if [ "${OS_TYPE}" = "Darwin" ]; then
   LESSCLOSE="lessclose.sh %s %s"
