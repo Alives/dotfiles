@@ -14,6 +14,7 @@ alias ll='ls -alF'
 alias ls='ls -F --color=auto'
 alias mv='mv -i'
 alias rm='rm -i'
+alias pylint='pylint --rcfile=~/.pylintrc'
 alias rsyncme='rsync -vaogHDSxP --no-inc-recursive'
 alias sagent="sshagent_init"
 alias fix_title="echo -en '\033k  \033\\'"
