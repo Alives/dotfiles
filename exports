@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 EDITOR=/usr/bin/vim
 HOSTNAME=$(hostname -f)
