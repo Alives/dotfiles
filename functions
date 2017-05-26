@@ -126,7 +126,7 @@ function multi {
   done
   # My tmux panes start at 1.
   tmux send-keys -t 1 "$cmd ${@[1]}"
-  for ((pane = 2; pane < ${#@[@]}; pane++)); do
+  for ((pane = 2; pane <= ${#@[@]}; pane++)); do
     tmux splitw -h
     tmux send-keys -t $pane "$cmd ${@[pane]}"
     tmux select-layout tiled > /dev/null
