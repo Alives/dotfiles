@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 function enc {
   cat | bzip2 | base64
@@ -124,10 +124,11 @@ function multi {
                  xargs nmap -p 22 -PN -oG - | grep Port | grep -v open)"
     test "${pre_check}x" != "x" && (clear; echo "$pre_check") || break
   done
-  tmux send-keys -t 0 "$cmd ${@[1]}"
-  for ((pane = 1; pane < ${#@[@]}; pane++)); do
+  # My tmux panes start at 1.
+  tmux send-keys -t 1 "$cmd ${@[1]}"
+  for ((pane = 2; pane < ${#@[@]}; pane++)); do
     tmux splitw -h
-    tmux send-keys -t $pane "$cmd ${@[pane+1]}"
+    tmux send-keys -t $pane "$cmd ${@[pane]}"
     tmux select-layout tiled > /dev/null
   done
   tmux set-window-option synchronize-panes on > /dev/null

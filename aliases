@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 alias cp='cp -i'
 alias egrep='egrep --color=auto'
