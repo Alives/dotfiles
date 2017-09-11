@@ -183,7 +183,6 @@ inoremap ` <esc>
 inoremap `` `
 command WQ wq
 command Wq wq
-command wQ wq
 command Q q!
 
 " Commands
