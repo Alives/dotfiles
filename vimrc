@@ -6,26 +6,6 @@ if !exists("MyFuncLoad")
   function! SetStatusLineStyle()
     let &stl="%F%m%r%h%w\ [%{&ff}]\ [%Y]\ %P\ %=[a=\%03.3b]\ [h=\%02.2B]\ [%l,%v]"
   endfunc
-
-  " toggle columns on demand
-  function FoldToggle()
-    if &foldenable
-      set nofoldenable
-      set foldcolumn=0
-    else
-      set foldenable
-      set foldcolumn=2
-    endif
-  endfunction
-
-  function! NamedUpdateSoa(date, num)
-    if (strftime("%Y%m%d") == a:date)
-      return a:date . a:num+1
-    endif
-    return strftime("%Y%m%d") . '00'
-  endfunction
-
-  command NamedSoa :%s/\(2[0-9]\{7}\)\([0-9]\{2}\)\(\s*;\s*Serial\)/\=NamedUpdateSoa(submatch(1), submatch(2)) . submatch(3)/gc
 endif
 
 
@@ -52,8 +32,8 @@ set cmdheight=1                   " cmd line (default: 1)
 set complete=.,w,b,u,U,t,i,d      " lots of tab complete goodness
 set nocursorline                  " never show a cursor line
 set history=3000                  " keep more cmd line history (default: 20)
-set keywordprg=TERM=mostlike\ man\ -s\ -Pless " (default man -s) 
-set laststatus=2                  " always show status line 
+set keywordprg=TERM=mostlike\ man\ -s\ -Pless " (default man -s)
+set laststatus=2                  " always show status line
 set lazyredraw                    " don't redraw when don't have to
 set magic                         " Enable the magic
 set noautowrite                   " don't automagically write on :next
@@ -161,7 +141,7 @@ nnoremap <F3> :GundoToggle<CR>
 " NERDTree
 let NERDChristmasTree = 1
 nnoremap <silent> <F2> :NERDTreeToggle<CR>
-autocmd vimenter * if !argc() | NERDTree | endif
+"autocmd vimenter * if !argc() | NERDTree | endif
 autocmd FileType nerdtree setlocal nolist
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
 
@@ -198,7 +178,13 @@ map <LocalLeader>tn :tabnext<CR>                 " Next tab
 map <LocalLeader>tp :tabprev<CR>                 " Previous tab
 nmap F zf%                                       " Fold with paren begin/end matching
 map <LocalLeader>hl :set hlsearch! hlsearch?<CR> " Toggle highlighted search
-
+inoremap jj <esc>
+inoremap ` <esc>
+inoremap `` `
+command WQ wq
+command Wq wq
+command wQ wq
+command Q q!
 
 " Commands
 if has('autocmd')
