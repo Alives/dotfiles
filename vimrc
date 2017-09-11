@@ -61,7 +61,6 @@ set equalalways                   " keep windows the same size
 set switchbuf=usetab              " tabs rock
 set tabpagemax=30                 " max out at 30 tabs (increase at own risk)
 set showtabline=1                 " 2 always, 1 only if multiple tabs - 2 causes flickering in powerline.
-set commentstring=\ #\ %s         " default to shell comments, not C
 set showmatch                     " show matching bracket
 set incsearch                     " search while typing
 set ignorecase                    " default to case-insensitive search
@@ -72,6 +71,7 @@ set cursorline                    " highlight the current line that the cursor i
 set foldenable
 set foldcolumn=2
 set foldminlines=8
+set foldlevelstart=99
 
 " create .state directory, readable by the group.
 silent execute '!(umask 027; mkdir -p ~/.vim/state)'
@@ -221,9 +221,6 @@ if has('autocmd')
     autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
 
     autocmd BufWinLeave * call clearmatches()
-
-    " FileType Autocommands "{{{2
-    au FileType vim setlocal commentstring"%s
 
     " For all text files set 'textwidth' to 80 characters.
     au FileType text setlocal textwidth=80
