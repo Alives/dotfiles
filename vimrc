@@ -68,10 +68,10 @@ set smartcase                     " case-sensitive when needed
 set hlsearch                      " highlight matching search terms
 set cursorcolumn                  " highlight the current column that the cursor is on
 set cursorline                    " highlight the current line that the cursor is on
-set foldenable
-set foldcolumn=2
-set foldminlines=8
-set foldlevelstart=99
+set foldenable                    " enable folding
+set foldlevel=20
+set foldlevelstart=20
+set foldmethod=syntax
 
 " create .state directory, readable by the group.
 silent execute '!(umask 027; mkdir -p ~/.vim/state)'
@@ -193,11 +193,6 @@ if has('autocmd')
     " Buffer Autocommands
     autocmd BufWritePre *.cpp,*.hpp,*.i :call StripTrailingWhitespace()
 
-    "augroup vimrc
-    "  au BufReadPre * setlocal foldmethod=indent
-    "  au BufWinEnter * if &fdm == 'indent' | setlocal foldmethod=manual | endif
-    "augroup END
-
     " Improve legibility
     au BufRead quickfix setlocal nobuflisted wrap number
 
@@ -243,11 +238,5 @@ if has('autocmd')
       command DiffOrig vert new | set bt=nofile | r # | 0d_ | diffthis | wincmd p | diffthis
       nnoremap <Leader>d :DiffOrig<CR>
     endif
-
-    " Better folding
-    "au BufRead * if line('$')*25 > &lines | set foldlevel=99 | endif
-
-    " Git autocommit
-    "autocmd BufWritePost * let message = input('Message? ', 'Auto-commit: saved ' . expand('%')) | execute ':silent ! if git rev-parse --git-dir > /dev/null 2>&1 ; then git add % ; git commit -m ' . shellescape(message, 1) . '; fi > /dev/null 2>&1'
   endif
 endif
