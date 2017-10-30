@@ -35,17 +35,11 @@ function nth {
 
 function t {
   echo -en '\033k'$1'\033\\'  # Set window title.
-  if grep HostName ~/.ssh/config | grep $1 | grep -q corp; then
-    flags="-tA"
-    cmd="tmx 0"
-  else
-    flags="-ta"
-    cmd="tmux -u a -d -t 0 || tmux -u new || zsh || bash"
-  fi
+  cmd="tmx2 a || tmux -u a -d -t 0 || tmux -u new || zsh || bash"
   if [[ $# -eq 2 ]] && [[ $2 = "attach" ]]; then
-    ssh $flags $1 $cmd
+    ssh -ta $1 $cmd
   else
-    ssh $flags $1
+    ssh -ta $1
   fi
 }
 
