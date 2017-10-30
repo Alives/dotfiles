@@ -6,26 +6,6 @@ if !exists("MyFuncLoad")
   function! SetStatusLineStyle()
     let &stl="%F%m%r%h%w\ [%{&ff}]\ [%Y]\ %P\ %=[a=\%03.3b]\ [h=\%02.2B]\ [%l,%v]"
   endfunc
-
-  " toggle columns on demand
-  function FoldToggle()
-    if &foldenable
-      set nofoldenable
-      set foldcolumn=0
-    else
-      set foldenable
-      set foldcolumn=2
-    endif
-  endfunction
-
-  function! NamedUpdateSoa(date, num)
-    if (strftime("%Y%m%d") == a:date)
-      return a:date . a:num+1
-    endif
-    return strftime("%Y%m%d") . '00'
-  endfunction
-
-  command NamedSoa :%s/\(2[0-9]\{7}\)\([0-9]\{2}\)\(\s*;\s*Serial\)/\=NamedUpdateSoa(submatch(1), submatch(2)) . submatch(3)/gc
 endif
 
 
@@ -52,8 +32,8 @@ set cmdheight=1                   " cmd line (default: 1)
 set complete=.,w,b,u,U,t,i,d      " lots of tab complete goodness
 set nocursorline                  " never show a cursor line
 set history=3000                  " keep more cmd line history (default: 20)
-set keywordprg=TERM=mostlike\ man\ -s\ -Pless " (default man -s) 
-set laststatus=2                  " always show status line 
+set keywordprg=TERM=mostlike\ man\ -s\ -Pless " (default man -s)
+set laststatus=2                  " always show status line
 set lazyredraw                    " don't redraw when don't have to
 set magic                         " Enable the magic
 set noautowrite                   " don't automagically write on :next
@@ -81,7 +61,6 @@ set equalalways                   " keep windows the same size
 set switchbuf=usetab              " tabs rock
 set tabpagemax=30                 " max out at 30 tabs (increase at own risk)
 set showtabline=1                 " 2 always, 1 only if multiple tabs - 2 causes flickering in powerline.
-set commentstring=\ #\ %s         " default to shell comments, not C
 set showmatch                     " show matching bracket
 set incsearch                     " search while typing
 set ignorecase                    " default to case-insensitive search
@@ -89,9 +68,10 @@ set smartcase                     " case-sensitive when needed
 set hlsearch                      " highlight matching search terms
 set cursorcolumn                  " highlight the current column that the cursor is on
 set cursorline                    " highlight the current line that the cursor is on
-set foldenable
-set foldcolumn=2
-set foldminlines=8
+set foldenable                    " enable folding
+set foldlevel=20
+set foldlevelstart=20
+set foldmethod=syntax
 
 " create .state directory, readable by the group.
 silent execute '!(umask 027; mkdir -p ~/.vim/state)'
@@ -161,7 +141,7 @@ nnoremap <F3> :GundoToggle<CR>
 " NERDTree
 let NERDChristmasTree = 1
 nnoremap <silent> <F2> :NERDTreeToggle<CR>
-autocmd vimenter * if !argc() | NERDTree | endif
+"autocmd vimenter * if !argc() | NERDTree | endif
 autocmd FileType nerdtree setlocal nolist
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
 
@@ -198,7 +178,12 @@ map <LocalLeader>tn :tabnext<CR>                 " Next tab
 map <LocalLeader>tp :tabprev<CR>                 " Previous tab
 nmap F zf%                                       " Fold with paren begin/end matching
 map <LocalLeader>hl :set hlsearch! hlsearch?<CR> " Toggle highlighted search
-
+inoremap jj <esc>
+inoremap ` <esc>
+inoremap `` `
+command WQ wq
+command Wq wq
+command Q q!
 
 " Commands
 if has('autocmd')
@@ -207,11 +192,6 @@ if has('autocmd')
 
     " Buffer Autocommands
     autocmd BufWritePre *.cpp,*.hpp,*.i :call StripTrailingWhitespace()
-
-    "augroup vimrc
-    "  au BufReadPre * setlocal foldmethod=indent
-    "  au BufWinEnter * if &fdm == 'indent' | setlocal foldmethod=manual | endif
-    "augroup END
 
     " Improve legibility
     au BufRead quickfix setlocal nobuflisted wrap number
@@ -237,9 +217,6 @@ if has('autocmd')
 
     autocmd BufWinLeave * call clearmatches()
 
-    " FileType Autocommands "{{{2
-    au FileType vim setlocal commentstring"%s
-
     " For all text files set 'textwidth' to 80 characters.
     au FileType text setlocal textwidth=80
 
@@ -261,11 +238,5 @@ if has('autocmd')
       command DiffOrig vert new | set bt=nofile | r # | 0d_ | diffthis | wincmd p | diffthis
       nnoremap <Leader>d :DiffOrig<CR>
     endif
-
-    " Better folding
-    "au BufRead * if line('$')*25 > &lines | set foldlevel=99 | endif
-
-    " Git autocommit
-    "autocmd BufWritePost * let message = input('Message? ', 'Auto-commit: saved ' . expand('%')) | execute ':silent ! if git rev-parse --git-dir > /dev/null 2>&1 ; then git add % ; git commit -m ' . shellescape(message, 1) . '; fi > /dev/null 2>&1'
   endif
 endif
