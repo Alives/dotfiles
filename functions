@@ -33,6 +33,10 @@ function nth {
   awk -v nth=$1 '{print $nth}'
 }
 
+function title {
+  echo -ne "\033]0;$1\007"
+}
+
 function t {
   echo -en '\033k'$1'\033\\'  # Set window title.
   if grep HostName ~/.ssh/config | grep $1 | grep -q corp; then
