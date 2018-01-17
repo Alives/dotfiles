@@ -36,6 +36,7 @@ function nth {
 function title {
   echo -ne "\033]0;$1\007"
 }
+export -f title
 
 function t {
   echo -en '\033k'$1'\033\\'  # Set window title.
