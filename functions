@@ -33,6 +33,16 @@ function nth {
   awk -v nth=$1 '{print $nth}'
 }
 
+function spin {
+  s=0.2
+  sp='/-\|'
+  while true; do
+    printf '\b%.1s' "$sp"
+    sp=${sp#?}${sp%???}
+    sleep $s
+  done
+}
+
 function title {
   echo -ne "\033]0;$1\007"
 }
