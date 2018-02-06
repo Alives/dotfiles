@@ -147,14 +147,19 @@ function multi {
 
 function rerun {
   sleep=2
-  if [[ ${@[1]} = "-d" ]]; then
-    sleep=${@[2]}
+  keys="Up Enter"
+  if [[ $1 = "-d" ]]; then
+    sleep=$2
+    shift 2
+  fi
+  if [[ $1 = "-k" ]]; then
+    keys=$2
     shift 2
   fi
   while true; do
-    for pane in $@; do
-      tmux send-keys -t $pane Up Enter
-      sleep $sleep
+    for pane in "$@"; do
+      tmux send-keys -t "$pane" "$keys"
+      sleep "$sleep"
     done
   done
 }
