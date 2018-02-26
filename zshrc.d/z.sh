@@ -1,0 +1,1 @@
+../scripts/z/z.sh
