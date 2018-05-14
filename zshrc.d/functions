@@ -1,4 +1,13 @@
 #!/bin/bash
+function sock {
+  if [[ -z $1 ]]; then
+    echo 'Provide a sock name.'
+  else
+    export SSH_AUTH_SOCK=${HOME}/.ssh_agent.$1.sock
+    rm -f $SSH_AUTH_SOCK
+    eval $(ssh-agent -a $SSH_AUTH_SOCK)
+  fi
+}
 
 function enc {
   cat | bzip2 | base64
