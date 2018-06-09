@@ -37,3 +37,6 @@
 [submodule "vim/bundle/nerdtree"]
 	path = vim/bundle/nerdtree
 	url = https://github.com/scrooloose/nerdtree
+[submodule "scripts/zsh-autosuggestions"]
+	path = scripts/zsh-autosuggestions
+	url = https://github.com/zsh-users/zsh-autosuggestions
