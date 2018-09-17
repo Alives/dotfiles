@@ -66,8 +66,8 @@ set incsearch                     " search while typing
 set ignorecase                    " default to case-insensitive search
 set smartcase                     " case-sensitive when needed
 set hlsearch                      " highlight matching search terms
-set cursorcolumn                  " highlight the current column that the cursor is on
-set cursorline                    " highlight the current line that the cursor is on
+"set cursorcolumn                  " highlight the current column that the cursor is on
+"set cursorline                    " highlight the current line that the cursor is on
 set foldenable                    " enable folding
 set foldlevel=20
 set foldlevelstart=20
