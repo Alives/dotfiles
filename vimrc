@@ -21,9 +21,9 @@ set nowrap                        " don't wrap long lines
 set autoindent                    " indent sanely
 
 " http://vim.wikia.com/wiki/Restoring_indent_after_typing_hash
-set cindent
-set cinkeys-=0#
-set indentkeys-=0#
+"set cindent
+"set cinkeys-=0#
+"set indentkeys-=0#
 
 set autoread                      " watch for changes
 set backspace=indent,eol,start    " back over anything
