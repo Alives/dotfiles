@@ -136,22 +136,23 @@ function cel {
 function multi {
   cmd=$1
   shift
+  window=$(tmux display-message -p '#S:#I')
   while [[ $cmd = "ssh" ]]; do
     pre_check="$(echo $@ | tr ' ' '\n' | sed -e 's/^.*@//g' | \
                  xargs nmap -p 22 -PN -oG - | grep Port | grep -v open)"
     test "${pre_check}x" != "x" && (clear; echo "$pre_check") || break
   done
   # My tmux panes start at 1.
-  tmux send-keys -t 1 "$cmd ${@[1]}"
+  tmux send-keys -t ${window}.1 "$cmd ${@[1]}"
   for ((pane = 2; pane <= ${#@[@]}; pane++)); do
-    tmux splitw -h
-    tmux send-keys -t $pane "$cmd ${@[pane]}"
-    tmux select-layout tiled > /dev/null
+    tmux splitw -h -t $window
+    tmux send-keys -t ${window}.${pane} "$cmd ${@[pane]}"
+    tmux select-layout -t $window tiled > /dev/null
   done
-  tmux set-window-option synchronize-panes on > /dev/null
-  tmux set-window-option pane-active-border-style fg=red > /dev/null
-  tmux set-window-option pane-border-style fg=yellow > /dev/null
-  tmux send-keys Enter
+  tmux set-window-option -t $window synchronize-panes on > /dev/null
+  tmux set-window-option -t $window pane-active-border-style fg=red > /dev/null
+  tmux set-window-option -t $window pane-border-style fg=yellow > /dev/null
+  tmux send-keys -t ${window}.1 Enter
 }
 
 function rerun {
