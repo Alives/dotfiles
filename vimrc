@@ -20,6 +20,11 @@ set whichwrap+=b,s,<,>,h,l,[,]    " wrap on more (default: b,s)
 set nowrap                        " don't wrap long lines
 set autoindent                    " indent sanely
 
+" http://vim.wikia.com/wiki/Restoring_indent_after_typing_hash
+"set cindent
+"set cinkeys-=0#
+"set indentkeys-=0#
+
 set autoread                      " watch for changes
 set backspace=indent,eol,start    " back over anything
 set backup                        " keep a backup file
@@ -41,7 +46,7 @@ set shiftwidth=2                  " nice tabs, please?
 set softtabstop=2                 " delete expanded tabs with a single keystroke
 set smarttab                      " use shiftwidth not tabstop at the beginning of a line
 set expandtab                     " tabs become spaces
-set scrolloff=3                   " show a few lines above/below cursor
+set scrolloff=5                   " show a few lines above/below cursor
 set number                        " line numbers
 set showcmd                       " show the cmd i'm typing
 set showfulltag                   " show full completion tags
@@ -61,7 +66,12 @@ set incsearch                     " search while typing
 set ignorecase                    " default to case-insensitive search
 set smartcase                     " case-sensitive when needed
 set hlsearch                      " highlight matching search terms
-set tw=0                          " disable automatic wrapping
+"set cursorcolumn                  " highlight the current column that the cursor is on
+"set cursorline                    " highlight the current line that the cursor is on
+set foldenable                    " enable folding
+set foldlevel=20
+set foldlevelstart=20
+set foldmethod=syntax
 
 " create .state directory, readable by the group.
 silent execute '!(umask 027; mkdir -p ~/.vim/state)'
@@ -86,23 +96,31 @@ runtime bundle/vim-pathogen/autoload/pathogen.vim
 call pathogen#helptags()
 call pathogen#infect()
 syntax on
+"filetype plugin indent on
 
 " Crontab
 au FileType crontab set nobackup nowritebackup
 
 " Visual Tweaks
-"set t_Co=256
-"set background=dark
-"let g:solarized_termtrans=1
-"let g:solarized_termcolors=256
-"colorscheme solarized
-colorscheme one-dark
+set t_Co=256
+colorscheme solarized
+set background=dark
+
+let g:solarized_termcolors=256
+let g:solarized_termtrans=1
+colorscheme solarized
 
 " indentLine
 let g:indentLine_char = '│'
 
 " 80 column vertical bar
 set colorcolumn=81
+highlight ColorColumn ctermfg=none ctermbg=235
+
+" Highlight current line and column to more easily find the cursor
+highlight CursorColumn cterm=NONE ctermbg=235 guibg=#262626
+highlight CursorLine   cterm=NONE ctermbg=235 guibg=#262626
+nnoremap <Leader>c :set cursorline! cursorcolumn!<CR>
 
 " Search color highlights
 highlight Search cterm=none ctermfg=white ctermbg=27
@@ -142,12 +160,18 @@ if has("multi_byte")
 endif
 
 " Show invisibles (whitespace, EOL, etc)
-set listchars=tab:»\ ,trail:·,extends:…,eol:¬
+if has("multi_byte") || (&termencoding == "utf-8")
+  set listchars=tab:»\ ,trail:·,extends:…,eol:¬
+  if v:version >= 700
+    let &showbreak='->  '
+  endif
+endif
 set list
 
 
 " Maps
 map <silent> <LocalLeader>ri G=gg<CR> " Reindent file
+map <silent> <LocalLeader>Cs :%s/\s\+$//e<CR> " Clear spaces at end of line
 nmap <LocalLeader>pm :set number!<CR>:set list!<CR>:set paste!<CR>:silent! IndentLinesToggle<CR> " Toggle paste mode
 nmap <LocalLeader>ww :set wrap!<CR>
 nmap <LocalLeader>wo :set wrap<CR>
@@ -170,17 +194,22 @@ if has('autocmd')
     let autocommands_loaded = 1
 
     " Buffer Autocommands
-    autocmd BufWritePre *.cpp,*.hpp,*.i,*.py :call StripTrailingWhitespace()
+    autocmd BufWritePre *.cpp,*.hpp,*.i :call StripTrailingWhitespace()
+
+    " Improve legibility
+    au BufRead quickfix setlocal nobuflisted wrap number
 
     " Save backupfile as backupdir/filename-06-13-1331
     au BufWritePre * let &bex = strftime("-%m-%d-%H%M")
 
-    au BufRead *apache*.conf setlocal filetype=apache2
+    au BufRead /etc/apache/* setlocal filetype=apache2
     au BufRead *.sh,*.cron,*.bash setlocal filetype=sh
     au BufRead *.vim,vimrc setlocal filetype=vim
     au BufRead *.c,*.h setlocal filetype=c
     au BufRead syslog-ng.conf setlocal filetype=syslog-ng
     au BufRead *.eyaml setlocal filetype=yaml
+
+    au BufRead quickfix setlocal nobuflisted wrap number
 
     au BufWinLeave *.sh,*.conf,*.vim,vimrc,*.c,*.txt mkview
     au BufWinEnter *.sh,*.conf,*.vim,vimrc,*.c,*.txt silent loadview
@@ -190,6 +219,9 @@ if has('autocmd')
     autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
 
     autocmd BufWinLeave * call clearmatches()
+
+    " For all text files set 'textwidth' to 80 characters.
+    au FileType text setlocal textwidth=80
 
     " Turn on omni-completion for the appropriate file types.
     autocmd FileType python set omnifunc=pythoncomplete#Complete
