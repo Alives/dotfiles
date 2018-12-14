@@ -106,7 +106,7 @@ set t_Co=256
 set background=dark
 let g:solarized_termcolors=256
 let g:solarized_termtrans=1
-colorscheme solarized
+colorscheme my-custom-solarized
 
 " indentLine
 let g:indentLine_char = '│'
