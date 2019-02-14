@@ -179,9 +179,6 @@ map <LocalLeader>tn :tabnext<CR>                 " Next tab
 map <LocalLeader>tp :tabprev<CR>                 " Previous tab
 nmap F zf%                                       " Fold with paren begin/end matching
 map <LocalLeader>hl :set hlsearch! hlsearch?<CR> " Toggle highlighted search
-inoremap jj <esc>
-inoremap ` <esc>
-inoremap `` `
 command WQ wq
 command Wq wq
 command Q q!
