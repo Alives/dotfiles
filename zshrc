@@ -88,7 +88,7 @@ setopt completealiases
 
 function git_precmd {
   # check for untracked files or updated submodules, since vcs_info doesn't
-  if [[ -n "$(git status --porcelain)" ]]; then
+  if [[ -n "$(git status --porcelain 2>/dev/null)" ]]; then
     FMT_BRANCH="${FMT_PREFIX}%{$c_branch%}%b%{$fg[red]%}●%u%c${FMT_SUFFIX}"
   else
     FMT_BRANCH="${FMT_PREFIX}%{$c_branch%}%b%u%c${FMT_SUFFIX}"
