@@ -98,7 +98,7 @@ function git_precmd {
 }
 add-zsh-hook precmd git_precmd
 
-setopt appendhistory autocd nomatch prompt_subst
+setopt appendhistory autocd interactivecomments nomatch prompt_subst
 bindkey -v
 bindkey '^R'     history-incremental-search-backward
 bindkey "^K"     kill-line
