@@ -118,18 +118,16 @@ function cel {
   fi
 
   command="${@: 2:$#}"
-  checksum=`eval $checker`
+  checksum=
   watched_file=$1
-
-  # Execute the specified command the first time the script's called
-  eval $command
 
   while true; do
     if [ "$checksum" != "`eval $checker`" ]; then
       checksum="`eval $checker`"
+      clear
       eval $command
     fi
-    sleep 0.1;
+    sleep 0.1
   done
 }
 
@@ -137,11 +135,13 @@ function multi {
   cmd=$1
   shift
   window=$(tmux display-message -p '#S:#I')
-  while [[ $cmd = "ssh" ]]; do
-    pre_check="$(echo $@ | tr ' ' '\n' | sed -e 's/^.*@//g' | \
-                 xargs nmap -p 22 -PN -oG - | grep Port | grep -v open)"
-    test "${pre_check}x" != "x" && (clear; echo "$pre_check") || break
-  done
+  if [[ "$(which ssh)" = "/usr/bin/ssh" ]]; then
+    while [[ $cmd = "ssh" ]]; do
+      pre_check="$(echo $@ | tr ' ' '\n' | sed -e 's/^.*@//g' | \
+                   xargs nmap -p 22 -PN -oG - | grep Port | grep -v open)"
+      test "${pre_check}x" != "x" && (clear; echo "$pre_check") || break
+    done
+  fi
   # My tmux panes start at 1.
   tmux send-keys -t ${window}.1 "$cmd ${@[1]}"
   for ((pane = 2; pane <= ${#@[@]}; pane++)); do
