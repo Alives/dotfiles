@@ -215,9 +215,6 @@ if has('autocmd')
 
     autocmd BufWinLeave * call clearmatches()
 
-    " For all text files set 'textwidth' to 80 characters.
-    au FileType text setlocal textwidth=80
-
     " Turn on omni-completion for the appropriate file types.
     autocmd FileType python set omnifunc=pythoncomplete#Complete
     autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS

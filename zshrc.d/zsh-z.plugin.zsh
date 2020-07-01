@@ -1,0 +1,1 @@
+../scripts/zsh-z/zsh-z.plugin.zsh

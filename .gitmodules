@@ -1,6 +1,3 @@
-[submodule "scripts/z"]
-	path = scripts/z
-	url = https://github.com/rupa/z
 [submodule "vim/powerline"]
 	path = vim/powerline
 	url = https://github.com/Lokaltog/powerline
@@ -40,3 +37,6 @@
 [submodule "vim/bundle/indentLine"]
 	path = vim/bundle/indentLine
 	url = https://github.com/Yggdroot/indentLine
+[submodule "scripts/zsh-z"]
+	path = scripts/zsh-z
+	url = https://github.com/agkozak/zsh-z
