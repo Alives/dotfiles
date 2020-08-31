@@ -1,5 +1,5 @@
 #!/bin/bash -e
-DATA=/var/run/tmux.data_${USER}
+DATA=${XDG_RUNTIME_DIR}/tmux.data
 NICS=("eth0" "eno1")
 
 network_tab () {
@@ -24,7 +24,7 @@ network_tab () {
 
   diff_ts=$((curr_ts-prev_ts))
   if [[ $diff_ts = 0 ]]; then
-    rate_rx="---.-KB/s"
+    rate_rx="#[fg=colour249]        "
     rate_tx="${rate_rx}"
   else
     diff_rx=$(echo | awk "{printf(\"%f\", (($curr_rx-$prev_rx)/$diff_ts))}")
