@@ -1,14 +1,19 @@
 #!/bin/bash -e
 DATA=${HOME}/.tmux.data
+NICS=("eth0" "eno1")
 
 # Network
-curr=($(awk '/eth0:/ {printf $2" "$10}' /proc/net/dev))
+net="$(cat /proc/net/dev)"
+for nic in "${NICS[@]}"; do
+  curr=($(echo "$net" | awk "/$nic:/ {printf \$2\" \"\$10}"))
+  test "${#curr[@]}" -eq "2" && break
+done
 curr_rx=${curr[0]}
 curr_tx=${curr[1]}
 curr_ts=$(date +%s)
 
 test -r ${DATA} \
-  && prev=($(cat ${DATA} 2>/dev/nulli))
+  && prev=($(cat ${DATA} 2>/dev/null))
 [[ -z "${prev[0]}" || -z "${prev[1]}" || -z "${prev[2]}" ]] \
   && prev=(${curr_rx} ${curr_tx} ${curr_ts})
 prev_rx=${prev[0]}
