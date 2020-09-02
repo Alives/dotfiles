@@ -1,3 +1,19 @@
+" vim-plug
+call plug#begin('~/.vim_plugins')
+Plug 'powerline/powerline'
+Plug 'scrooloose/syntastic'
+Plug 'sjl/gundo.vim'
+Plug 'tsaleh/vim-align'
+Plug 'tpope/vim-pathogen'
+Plug 'tpope/vim-git'
+Plug 'vim-scripts/taglist.vim'
+Plug 'rodjek/vim-puppet'
+Plug 'godlygeek/tabular'
+Plug 'scrooloose/nerdtree'
+call plug#end()
+
+set rtp+=~/.vim_plugins/powerline/powerline/bindings/vim
+
 " Custom Functions
 if !exists("MyFuncLoad")
   let MyFuncLoad=1
