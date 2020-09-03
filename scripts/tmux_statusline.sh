@@ -48,7 +48,7 @@ load_tab () {
 
 time_tab () {
   echo -n "#[fg=colour220,bg=colour0]#[fg=colour0,bg=colour220] "
-  echo -n "$(date +'%l:%M:%S %p') #[default]"
+  echo -n "$(date +'%l:%M:%S %p' | tr -d ' ') #[default]"
 }
 
 network_tab
