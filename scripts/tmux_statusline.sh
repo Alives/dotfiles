@@ -1,44 +1,47 @@
 #!/bin/bash -e
 DATA=${XDG_RUNTIME_DIR}/tmux.data
-NICS=("eth0" "eno1")
+# Init file with name of local default nic for later use.
+test -e "${DATA}" || ip route | grep -Pom1 --color=none 'dev \K\w+' > "${DATA}"
+
+rate () {
+  echo | \
+    awk -v curr="$1" -v prev="$2" -v sec="$3" '{
+      c=1;
+      rate=((curr-prev)/sec);
+      split("b KB MB GB", u);
+      while(rate>1024){rate/=1024; c++}
+      printf("%.1f#[fg=colour249]%s", rate, u[c])}' | \
+    sed -e 's/b/ b/g'
+}
 
 network_tab () {
-  declare -a curr prev rate
-  printf "#[fg=colour27,bg=colour0]#[bg=colour27] "
-  net="$(cat /proc/net/dev)"
-  for nic in "${NICS[@]}"; do
-    readarray -t curr < <(echo "$net" | awk "/$nic:/ {printf \$2\"\n\"\$10}")
-    test "${#curr[@]}" -eq "2" && break
-  done
-  curr_rx=${curr[0]}
-  curr_tx=${curr[1]}
-  curr_ts=$(date +%s)
+  declare -a curr prev
+  readarray -t prev < "${DATA}" 2>/dev/null
+  local -r nic="${prev[0]}"
+  readarray -t curr < <(grep "${nic}: " /proc/net/dev | \
+    awk '{gsub(":",""); printf $1"\n"$2"\n"$10}')
+  curr+=( "$(date +%s)" )
+  local -ir curr_rx=${curr[1]}
+  local -ir curr_tx=${curr[2]}
+  local -ir curr_ts=${curr[3]}
 
-  readarray -t prev < "${DATA}"
-  [[ -z "${prev[0]}" || -z "${prev[1]}" || -z "${prev[2]}" ]] \
-    && prev=("${curr_rx}" "${curr_tx}" "${curr_ts}")
-  prev_rx=${prev[0]}
-  prev_tx=${prev[1]}
-  prev_ts=${prev[2]}
-  echo -e "${curr_rx}\n${curr_tx}\n${curr_ts}" > "${DATA}"
+  test "${#prev[@]}" -ne "4" && prev=( "${curr[@]}" )
+  local -ir prev_rx=${prev[1]}
+  local -ir prev_tx=${prev[2]}
+  local -ir prev_ts=${prev[3]}
+  echo "${curr[@]}" | tr ' ' '\n' > "${DATA}"
 
-  diff_ts=$((curr_ts-prev_ts))
+  local -ir diff_ts=$((curr_ts-prev_ts))
   if [[ $diff_ts = 0 ]]; then
-    rate_rx="#[fg=colour249]        "
-    rate_tx="${rate_rx}"
+    local -r rate_rx="#[fg=colour249]        "
+    local -r rate_tx="${rate_rx}"
   else
-    diff_rx=$(echo | awk "{printf(\"%f\", (($curr_rx-$prev_rx)/$diff_ts))}")
-    diff_tx=$(echo | awk "{printf(\"%f\", (($curr_tx-$prev_tx)/$diff_ts))}")
-    readarray -t rate < \
-      <(numfmt --format='%.1fB/s' --to=iec "${diff_rx}" "${diff_tx}" | \
-        sed -r 's/([0-9])B/\1 b/g')
-    rate_rx="$(echo "${rate[0]}" | \
-               sed -r 's/([0-9])([ A-Za-z])/\1#[fg=colour249]\2/g')"
-    rate_tx="$(echo "${rate[1]}" | \
-               sed -r 's/([0-9])([ A-Za-z])/\1#[fg=colour249]\2/g')"
+    local -r rate_rx=$(rate "${curr_rx}" "${prev_rx}" "${diff_ts}")
+    local -r rate_tx=$(rate "${curr_tx}" "${prev_tx}" "${diff_ts}")
   fi
-  printf "#[fg=colour249]↓#[fg=colour255]%25s " "${rate_rx}"
-  printf "#[fg=colour249]↑#[fg=colour255]%25s " "${rate_tx}"
+  printf "#[fg=colour27,bg=colour0]#[bg=colour27] "
+  printf "#[fg=colour249]↓#[fg=colour255]%23s " "${rate_rx}"
+  printf "#[fg=colour249]↑#[fg=colour255]%23s " "${rate_tx}"
   printf "#[fg=colour0,bg=colour27]#[bg=colour0]"
 }
 
