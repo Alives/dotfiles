@@ -20,18 +20,18 @@ network_tab () {
   local -r nic="${prev[0]}"
   readarray -t curr < <(grep "${nic}: " /proc/net/dev | \
     awk '{gsub(":",""); printf $1"\n"$2"\n"$10}')
-  curr+=( "$(date +%s)" )
+  curr+=( "$(date +%s.%N)" )
   local -ir curr_rx=${curr[1]}
   local -ir curr_tx=${curr[2]}
-  local -ir curr_ts=${curr[3]}
+  local -r curr_ts=${curr[3]}
 
   test "${#prev[@]}" -ne "4" && prev=( "${curr[@]}" )
   local -ir prev_rx=${prev[1]}
   local -ir prev_tx=${prev[2]}
-  local -ir prev_ts=${prev[3]}
+  local -r prev_ts=${prev[3]}
   echo "${curr[@]}" | tr ' ' '\n' > "${DATA}"
 
-  local -ir diff_ts=$((curr_ts-prev_ts))
+  local -r diff_ts=$(echo "${curr_ts}" "${prev_ts}" | awk '{print $1-$2}')
   if [[ $diff_ts = 0 ]]; then
     local -r rate_rx="#[fg=colour249]        "
     local -r rate_tx="${rate_rx}"
