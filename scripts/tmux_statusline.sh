@@ -1,7 +1,5 @@
 #!/bin/bash -e
 DATA=${XDG_RUNTIME_DIR}/tmux.data
-# Init file with name of local default nic for later use.
-test -e "${DATA}" || ip route | grep -Pom1 --color=none 'dev \K\w+' > "${DATA}"
 
 rate () {
   echo | \
@@ -15,9 +13,9 @@ rate () {
 }
 
 network_tab () {
+  local -r nic="$(awk '$2 == "00000000" {print $1}' /proc/net/route)"
   declare -a curr prev
   readarray -t prev < "${DATA}" 2>/dev/null
-  local -r nic="${prev[0]}"
   readarray -t curr < <(grep "${nic}: " /proc/net/dev | \
     awk '{gsub(":",""); printf $1"\n"$2"\n"$10}')
   curr+=( "$(date +%s.%N)" )
@@ -33,6 +31,7 @@ network_tab () {
 
   local -r diff_ts=$(echo "${curr_ts}" "${prev_ts}" | awk '{print $1-$2}')
   if [[ $diff_ts = 0 ]]; then
+    sleep "$(echo "${curr_ts}" | awk '{print 1-($1 % 1)}')"
     local -r rate_rx="#[fg=colour249]        "
     local -r rate_tx="${rate_rx}"
   else
