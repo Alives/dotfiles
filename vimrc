@@ -1,4 +1,8 @@
 " vim-plug
+" :PlugInstall to install the plugins
+" :PlugUpdate to update them
+" :PlugClean will remove unused plugins
+" :PlugUpgrade will update vim-plug
 call plug#begin('~/.vim_plugins')
 Plug 'powerline/powerline'
 Plug 'scrooloose/syntastic'
@@ -94,8 +98,8 @@ silent execute '!(umask 027; mkdir -p ~/.vim/state)'
 
 " buffers
 if has('persistent_undo')
-    set undodir=~/.vim/state
-    set undofile
+  set undodir=~/.vim/state
+  set undofile
 endif
 
 " backups
@@ -104,15 +108,17 @@ set directory=~/.vim/state
 
 " statusline
 if has('statusline')
-    call SetStatusLineStyle()
+  call SetStatusLineStyle()
 endif
 
 " Init Pathogen (https://github.com/tpope/vim-pathogen)
-runtime bundle/vim-pathogen/autoload/pathogen.vim
-call pathogen#helptags()
-call pathogen#infect()
-syntax on
-"filetype plugin indent on
+if has('pathogen')
+  runtime bundle/vim-pathogen/autoload/pathogen.vim
+  call pathogen#helptags()
+  call pathogen#infect()
+  syntax on
+  "filetype plugin indent on
+endif
 
 " Crontab
 au FileType crontab set nobackup nowritebackup
