@@ -1,6 +1,6 @@
 #!/bin/bash -e
-DATA=${XDG_RUNTIME_DIR}/tmux.data
-test -r ${DATA} || touch ${DATA}
+DATA="${XDG_RUNTIME_DIR}/tmux.data"
+test -r "${DATA}" || touch "${DATA}"
 
 rate () {
   echo | \
