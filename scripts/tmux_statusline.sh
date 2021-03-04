@@ -1,6 +1,6 @@
 #!/bin/bash -e
-DATA=${XDG_RUNTIME_DIR}/tmux.data
-test -r ${DATA} || touch ${DATA}
+DATA="${XDG_RUNTIME_DIR}/tmux.data"
+test -r "${DATA}" || touch "${DATA}"
 
 rate () {
   echo | \
@@ -14,7 +14,8 @@ rate () {
 }
 
 network_tab () {
-  local -r nic="$(awk '$2 == "00000000" {print $1}' /proc/net/route)"
+  local -r nic="$(awk '$2 == "00000000" && $7 == "0" {print $1}' \
+                  /proc/net/route)"
   declare -a curr prev
   readarray -t prev < "${DATA}" 2>/dev/null
   readarray -t curr < <(grep "${nic}: " /proc/net/dev | \
