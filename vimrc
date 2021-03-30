@@ -4,7 +4,7 @@
 " :PlugClean will remove unused plugins
 " :PlugUpgrade will update vim-plug
 call plug#begin('~/.vim_plugins')
-Plug 'powerline/powerline'
+Plug 'vim-airline/vim-airline'
 Plug 'scrooloose/syntastic'
 Plug 'sjl/gundo.vim'
 Plug 'tsaleh/vim-align'
