@@ -92,6 +92,7 @@ set foldenable                    " enable folding
 set foldlevel=20
 set foldlevelstart=20
 set foldmethod=syntax
+set indentkeys-=0#                " Disable indent on # keys https://stackoverflow.com/a/54175510
 
 " create .state directory, readable by the group.
 silent execute '!(umask 027; mkdir -p ~/.vim/state)'
