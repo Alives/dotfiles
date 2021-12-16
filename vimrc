@@ -39,11 +39,7 @@ set updatecount=50                " switch every 50 chars (default: 200)
 set whichwrap+=b,s,<,>,h,l,[,]    " wrap on more (default: b,s)
 set nowrap                        " don't wrap long lines
 set autoindent                    " indent sanely
-
-" http://vim.wikia.com/wiki/Restoring_indent_after_typing_hash
-"set cindent
-"set cinkeys-=0#
-"set indentkeys-=0#
+set smartindent
 
 set autoread                      " watch for changes
 set backspace=indent,eol,start    " back over anything
@@ -92,7 +88,6 @@ set foldenable                    " enable folding
 set foldlevel=20
 set foldlevelstart=20
 set foldmethod=syntax
-set indentkeys-=0#                " Disable indent on # keys https://stackoverflow.com/a/54175510
 
 " create .state directory, readable by the group.
 silent execute '!(umask 027; mkdir -p ~/.vim/state)'
@@ -170,23 +165,16 @@ autocmd FileType nerdtree setlocal nolist
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
 
 " set unicode support if possible
-if has("multi_byte")
-  if &termencoding == ""
-    let &termencoding = &encoding
-  endif
-  scriptencoding utf-8
-  " renable these to default to utf8 for new files
-  set encoding=utf-8
-  set fileencodings=ucs-bom,utf-8,latin1
+if &termencoding == ""
+  let &termencoding = &encoding
 endif
+scriptencoding utf-8
+" renable these to default to utf8 for new files
+set encoding=utf-8
+set fileencodings=ucs-bom,utf-8,latin1
 
-" Show invisibles (whitespace, EOL, etc)
-if has("multi_byte") || (&termencoding == "utf-8")
-  set listchars=tab:»\ ,trail:·,extends:…,eol:¬
-  if v:version >= 700
-    let &showbreak='->  '
-  endif
-endif
+" Show invisibles (whitespace, etc)
+set listchars=tab:»\ ,trail:·,extends:…
 set list
 
 
