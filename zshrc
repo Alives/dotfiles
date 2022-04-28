@@ -7,6 +7,28 @@ select-word-style whitespace
 autoload -Uz vcs_info
 
 #use extended color pallete if available
+local yellow="$fg_bold[yellow]"
+local gold="$fg[yellow]"
+local lightblue="$fg_bold[blue]"
+local red="$fg[red]"
+local green="$fg[green]"
+local black="$fg[black]"
+local darkgrey="$fg_bold[black]"
+local lightgrey="$fg[white]"
+local white="$fg_bold[white]"
+local turquoise="$fg[cyan]"
+local orange="$fg[yellow]"
+local purple="$fg[magenta]"
+local hotpink="$fg[red]"
+local limegreen="$fg[green]"
+local c_time="$fg[white]"
+local c_user="$fg_bold[green]"
+local c_at="$fg[white]"
+local c_host="$fg_bold[cyan]"
+local c_pwd="$fg_bold[blue]"
+local c_presuf="$fg_bold[blue]"
+local c_branch="$fg[yellow]"
+local c_prompt="$fg_bold[yellow]"
 if [ ! -z $terminfo[colors] ] && [ $terminfo[colors] -eq 256 ] ; then
   yellow="$fg_bold[yellow]"
   gold="%F{184}"
@@ -30,29 +52,6 @@ if [ ! -z $terminfo[colors] ] && [ $terminfo[colors] -eq 256 ] ; then
   c_presuf="%F{32}"
   c_branch="%F{148}"
   c_prompt="%F{196}"
-else
-  yellow="$fg_bold[yellow]"
-  gold="$fg[yellow]"
-  lightblue="$fg_bold[blue]"
-  red="$fg[red]"
-  green="$fg[green]"
-  black="$fg[black]"
-  darkgrey="$fg_bold[black]"
-  lightgrey="$fg[white]"
-  white="$fg_bold[white]"
-  turquoise="$fg[cyan]"
-  orange="$fg[yellow]"
-  purple="$fg[magenta]"
-  hotpink="$fg[red]"
-  limegreen="$fg[green]"
-  c_time="$fg[white]"
-  c_user="$fg_bold[green]"
-  c_at="$fg[white]"
-  c_host="$fg_bold[cyan]"
-  c_pwd="$fg_bold[blue]"
-  c_presuf="$fg_bold[blue]"
-  c_branch="$fg[yellow]"
-  c_prompt="$fg_bold[yellow]"
 fi
 
 # enable VCS systems you use
@@ -69,13 +68,13 @@ zstyle ':vcs_info:*:prompt:*' check-for-changes true
 # %a - action (e.g. rebase-i)
 # %R - repository path
 # %S - path in the repository
-PR_RST="%{${reset_color}%}"
-FMT_PREFIX="${PR_RST}%{$c_presuf%}[${PR_RST}"
-FMT_SUFFIX="${PR_RST}%{$c_presuf%}]${PR_RST}"
-FMT_BRANCH="(%{$c_branch%}%b%u%c${PR_RST})"
-FMT_ACTION="(%{$red%}%a${PR_RST})"
-FMT_UNSTAGED="%{$yellow%}●${PR_RST}"
-FMT_STAGED="%{$green%}●${PR_RST}"
+local PR_RST="%{${reset_color}%}"
+local FMT_PREFIX="${PR_RST}%{$c_presuf%}[${PR_RST}"
+local FMT_SUFFIX="${PR_RST}%{$c_presuf%}]${PR_RST}"
+local FMT_BRANCH="(%{$c_branch%}%b%u%c${PR_RST})"
+local FMT_ACTION="(%{$red%}%a${PR_RST})"
+local FMT_UNSTAGED="%{$yellow%}●${PR_RST}"
+local FMT_STAGED="%{$green%}●${PR_RST}"
 
 zstyle ':vcs_info:*:prompt:*' unstagedstr   "${FMT_UNSTAGED}"
 zstyle ':vcs_info:*:prompt:*' stagedstr     "${FMT_STAGED}"
@@ -88,10 +87,9 @@ setopt completealiases
 
 function git_precmd {
   # check for untracked files or updated submodules, since vcs_info doesn't
+  local FMT_BRANCH="${FMT_PREFIX}%{$c_branch%}%b%u%c${FMT_SUFFIX}"
   if [[ -n "$(git status --porcelain 2>/dev/null | grep '^?? ')" ]]; then
     FMT_BRANCH="${FMT_PREFIX}%{$c_branch%}%b%{$fg[red]%}●%u%c${FMT_SUFFIX}"
-  else
-    FMT_BRANCH="${FMT_PREFIX}%{$c_branch%}%b%u%c${FMT_SUFFIX}"
   fi
   zstyle ':vcs_info:*:prompt:*' formats "${FMT_BRANCH}"
   vcs_info 'prompt'
@@ -133,15 +131,22 @@ HISTSIZE=1000000
 SAVEHIST=1000000
 
 # Prompt shit
+# %f resets fg color
+# %k resets bg color
+# %b resets bold
 test -r ${HOME}/.prompt && source ${HOME}/.prompt
-local r="%{%b%f%}"
-local p_return="%(?..%{$bg[red]$fg_bold[yellow]%}[%?]${r} )"
-local p_time="%{$c_time%}%*${r}"
-local p_user="%{$c_user%}%n${r}"
-local p_host="%{$c_at%}@%{$c_host%}%m${r}"
-local p_pwd="%{$c_pwd%}%~${r}"
-local p_prompt="%{$c_prompt%}%#${r}"
-PROMPT='${p_return}${p_time} ${p_user}${p_host} ${p_pwd} $vcs_info_msg_0_
+local p_return="%(?..%{$bg[red]$fg_bold[yellow]%}[%?]%b%f%k )"
+local p_docker=""
+if [[ -n "${DOCKER}" ]]; then
+  local p_docker="%K{91}%{$fg_bold[yellow]%}DOCKER%b%f%k "
+fi
+local p_time="%{$c_time%}%*%f"
+local p_user="%{$c_user%}%n%f"
+local p_host="%{$c_at%}@%{$c_host%}%m%f"
+local p_pwd="%{$c_pwd%}%~%f"
+local p_prompt="%{$c_prompt%}%#%f"
+#local p_prompt="%{$c_prompt%}%#${r}"
+PROMPT='${p_return}${p_docker}${p_time} ${p_user}${p_host} ${p_pwd} $vcs_info_msg_0_
 ${p_prompt} '
 
 for entry in ${HOME}/.dotfiles/zshrc.d/* ~/.zsh.local; do
