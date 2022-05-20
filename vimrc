@@ -215,6 +215,9 @@ if has('autocmd')
     au BufRead syslog-ng.conf setlocal filetype=syslog-ng
     au BufRead *.eyaml setlocal filetype=yaml
     au BufRead *.go setlocal filetype=go
+    au BufRead *.pp setlocal filetype=puppet
+    au BufRead *.plist setlocal noexpandtab
+    au BufRead *.plist.erb setlocal noexpandtab
 
     au BufRead quickfix setlocal nobuflisted wrap number
 
@@ -237,7 +240,9 @@ if has('autocmd')
     autocmd FileType c set omnifunc=ccomplete#Complete
     autocmd FileType ruby,eruby set omnifunc=rubycomplete#Complete
     autocmd FileType ruby,eruby let g:rubycomplete_rails = 1  " Rails support
-    autocmd FileType go,java setlocal noexpandtab " don't expand tabs to spaces for Java and Golang
+    autocmd FileType go,java setlocal noexpandtab
+    autocmd FileType go set colorcolumn=100
+    autocmd FileType puppet set colorcolumn=0
 
     " Convenient command to see the difference between the current buffer and the
     " file it was loaded from, thus the changes you made.  Only define it when not defined already.
