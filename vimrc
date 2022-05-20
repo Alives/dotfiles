@@ -146,6 +146,10 @@ highlight Search cterm=none ctermfg=white ctermbg=27
 let g:syntastic_python_checkers=['gpylint']
 nmap <LocalLeader>s :SyntasticCheck<CR>
 
+" airline
+let g:airline#extensions#tabline#enabled = 1
+let g:airline_powerline_fonts = 1
+
 " menu
 set wildmenu
 set wildmode=longest:full,full
