@@ -221,6 +221,8 @@ if has('autocmd')
     au BufRead syslog-ng.conf setlocal filetype=syslog-ng
     au BufRead *.erb setlocal indentexpr= " disable auto indent
     au BufRead *.eyaml setlocal filetype=yaml
+    au BufRead *.yml setlocal filetype=yaml
+    au BufRead *.yml setlocal indentexpr= " disable auto indent
     au BufRead *.go setlocal filetype=go
     au BufRead *.pp setlocal filetype=puppet
     au BufRead *.plist setlocal noexpandtab
