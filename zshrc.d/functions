@@ -13,6 +13,12 @@ function enc {
   cat | bzip2 | base64
 }
 
+function dc {
+  conf='/root/docker/docker-compose.yml'
+  test -r ./docker-compose.yml && conf='./docker-compose.yml'
+  docker-compose -f "${conf}" "$@"
+}
+
 function dec {
   if [ -r $1 ]; then
     base64 -d $1 | bzip2 -d
