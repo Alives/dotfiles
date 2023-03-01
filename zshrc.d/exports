@@ -1,19 +1,21 @@
 #!/bin/bash
 
-EDITOR=/usr/bin/vim
-FZF_TMUX_OPTS="-p 80%,80%"
-HOSTNAME=$(hostname -f)
-LANG=en_US.UTF-8
-LANGUAGE=${LANG}
-OS_TYPE=$(uname)
-PATH=${HOME}/scripts:/snap/bin:/sbin:${PATH}
+export EDITOR=/usr/bin/vim
+echo -e "$(tmux -V | cut -d' ' -f2)\n3.2" | \
+  sort -V | \
+  tail -1 | \
+  grep -q 3.2 && \
+  export FZF_TMUX=1 || \
+  export FZF_TMUX_OPTS="-p 80%,80%"
+export HOSTNAME=$(hostname -f)
+export LANG=en_US.UTF-8
+export LANGUAGE=${LANG}
+export OS_TYPE=$(uname)
+export PATH=${HOME}/scripts:/snap/bin:/sbin:${PATH}
 unset USERNAME
 if [ "${OS_TYPE}" = "Darwin" ]; then
-  LESSCLOSE="lessclose.sh %s %s"
-  LESSOPEN="|lesspipe.sh %s"
-  local HB=${HOME}/homebrew
-  PATH_NOHB=${PATH}
-  PATH=${HB}/bin:${HB}/sbin:${HB}/opt/coreutils/libexec/gnubin:${PATH}
+  export LESSCLOSE="lessclose.sh %s %s"
+  export LESSOPEN="|lesspipe.sh %s"
 else
   [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 fi
@@ -22,5 +24,3 @@ if [ -x /usr/bin/dircolors ]; then
   test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || \
     eval "$(dircolors -b)"
 fi
-
-export EDITOR HOSTNAME LANG LANGUAGE LESSCLOSE LESSOPEN LS_COLORS OS_TYPE PATH PATH_NOHB TERM
