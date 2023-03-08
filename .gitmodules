@@ -4,6 +4,3 @@
 [submodule "vim/bundle/indentLine"]
 	path = vim/bundle/indentLine
 	url = https://github.com/Yggdroot/indentLine
-[submodule "scripts/zsh-z"]
-	path = scripts/zsh-z
-	url = https://github.com/agkozak/zsh-z
