@@ -1,3 +1,4 @@
+which zoxide >/dev/null 2>&1 || return
 # Output from `zoxide init zsh`:
 _z_cd() {
     cd "$@" || return "$?"
