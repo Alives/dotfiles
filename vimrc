@@ -4,23 +4,18 @@
 " :PlugClean will remove unused plugins
 " :PlugUpgrade will update vim-plug
 call plug#begin('~/.vim_plugins')
-Plug 'vim-airline/vim-airline'
-Plug 'scrooloose/syntastic'
-Plug 'sjl/gundo.vim'
-Plug 'tsaleh/vim-align'
-Plug 'tpope/vim-pathogen'
-Plug 'tpope/vim-git'
-Plug 'vim-scripts/taglist.vim'
-Plug 'rodjek/vim-puppet'
-Plug 'godlygeek/tabular'
-Plug 'scrooloose/nerdtree'
+Plug 'dense-analysis/ale'      " Asynchronous Lint Engine.
+Plug 'godlygeek/tabular'       " Align text on specific characters.
+Plug 'rodjek/vim-puppet'       " Make vim more Puppet friendly.
+Plug 'tpope/vim-fugitive'      " Git integration.
+Plug 'vim-airline/vim-airline' " Airline statusbar.
 call plug#end()
 
 set rtp+=~/.vim_plugins/powerline/powerline/bindings/vim
 
 " Custom Functions
 if !exists('MyFuncLoad')
-  let MyFuncLoad=1
+  let MyFuncLoad = 1
 
   " customize status line
   function! SetStatusLineStyle()
@@ -30,60 +25,60 @@ endif
 
 
 " Setup
-set modeline                      " Allows specifing settings in a file's header or footer.
-set ttyfast                       " Optimizes Vim for fast terminals.
-set undolevels=5000               " Sets a large number of undo levels (default is 1000).
-set updatecount=50                " Switches to the backup file every 50 characters (default is 200).
-set whichwrap+=b,s,<,>,h,l,[,]    " Enables wrapping at the beginning or end of lines, brackets, and other characters (default: b,s).
-set nowrap                        " Disables line wrapping.
-set autoindent                    " Automatically indents lines.
-set smartindent                   " Enables smart indenting.
-set autoread                      " Automatically reloads the file if it changes outside of Vim.
-set backspace=indent,eol,start    " Defines backspace behavior.
-set backup                        " Creates backup files.
-set complete=.,w,b,u,U,t,i,d      " Configures tab completion options.
-set nocursorline                  " Disables the cursor line.
-set history=3000                  " Increases the command-line history size. (default: 20)
+set modeline                                  " Allows specifing settings in a file's header or footer.
+set ttyfast                                   " Optimizes Vim for fast terminals.
+set undolevels=5000                           " Sets a large number of undo levels (default is 1000).
+set updatecount=50                            " Switches to the backup file every 50 characters (default is 200).
+set whichwrap+=b,s,<,>,h,l,[,]                " Enables wrapping at the beginning or end of lines, brackets, and other characters (default: b,s).
+set nowrap                                    " Disables line wrapping.
+set autoindent                                " Automatically indents lines.
+set smartindent                               " Enables smart indenting.
+set autoread                                  " Automatically reloads the file if it changes outside of Vim.
+set backspace=indent,eol,start                " Defines backspace behavior.
+set backup                                    " Creates backup files.
+set complete=.,w,b,u,U,t,i,d                  " Configures tab completion options.
+set nocursorline                              " Disables the cursor line.
+set history=3000                              " Increases the command-line history size. (default: 20)
 set keywordprg=TERM=mostlike\ man\ -s\ -Pless " (default man -s)
-set laststatus=2                  " Always shows the status line.
-set lazyredraw                    " Avoids unnecessary redrawing.
-set noautowrite                   " Disables automatic writing on :next.
-set noerrorbells visualbell t_vb= " Disable all bells
-set nohidden                      " Closes the buffer when closing a tab.
-set nospell                       " Disables spelling checking by default.
-set swapfile                      " Use a swapfile.
-set tabstop=2                     " Sets the width of a tab character.
-set shiftwidth=2                  " Sets the number of spaces for each level of indentation.
-set softtabstop=2                 " Deletes expanded tabs with a single keystroke.
-set smarttab                      " Uses shiftwidth instead of tabstop at the beginning of a line.
-set scrolloff=5                   " Shows a few lines above/below the cursor while scrolling.
-set number                        " Displays line numbers.
-set showcmd                       " Shows the command being typed.
-set ruler                         " Displays the cursor position.
-set showmode                      " Always shows the mode.
-set sidescroll=2                  " Faster horizontal scrolling if wrap is off.
-set sidescrolloff=5               " Keeps at least 5 lines left/right while scrolling horizontally.
-set splitright splitbelow         " Splits open windows to the right or below.
-set winheight=2                   " Sets more room for windows if possible.
-set winminheight=0                " Allows smashing windows down to the status line.
-set equalalways                   " Keeps windows the same size.
-set switchbuf=usetab              " Switches buffers using tabs.
-set tabpagemax=30                 " Limits the number of tabs to 30.
-set showtabline=1                 " Shows the tabline if there are multiple tabs.
-set showmatch                     " Shows matching brackets.
-set incsearch                     " Searches while typing.
-set ignorecase                    " Default to case-insensitive search.
-set smartcase                     " Case-sensitive search when needed.
-set hlsearch                      " Highlights matching search terms.
-set foldenable                    " Enables folding.
-set foldlevel=20                  " Sets the initial folding level.
-set foldlevelstart=20             " Sets the initial folding level for when the file is opened.
-set foldmethod=syntax             " Uses syntax highlighting for folding.
-set wildmenu                      " Enables visual command-line completion menu.
-set wildmode=longest:full,full    " Defines the behavior of command-line completion modes.
-set wildignore=*.o,*.obj*.bak,*.so,*.exe " Specifies file patterns to be ignored during command-line completion.
-set listchars=tab:»\ ,trail:·,extends:… " Sets the characters used to represent specific non-printable characters.
-set list                          " Eables non-printable characters display according to the listchars setting.
+set laststatus=2                              " Always shows the status line.
+set lazyredraw                                " Avoids unnecessary redrawing.
+set noautowrite                               " Disables automatic writing on :next.
+set noerrorbells visualbell t_vb=             " Disable all bells
+set nohidden                                  " Closes the buffer when closing a tab.
+set nospell                                   " Disables spelling checking by default.
+set swapfile                                  " Use a swapfile.
+set tabstop=2                                 " Sets the width of a tab character.
+set shiftwidth=2                              " Sets the number of spaces for each level of indentation.
+set softtabstop=2                             " Deletes expanded tabs with a single keystroke.
+set smarttab                                  " Uses shiftwidth instead of tabstop at the beginning of a line.
+set scrolloff=5                               " Shows a few lines above/below the cursor while scrolling.
+set number                                    " Displays line numbers.
+set showcmd                                   " Shows the command being typed.
+set ruler                                     " Displays the cursor position.
+set showmode                                  " Always shows the mode.
+set sidescroll=2                              " Faster horizontal scrolling if wrap is off.
+set sidescrolloff=5                           " Keeps at least 5 lines left/right while scrolling horizontally.
+set splitright splitbelow                     " Splits open windows to the right or below.
+set winheight=2                               " Sets more room for windows if possible.
+set winminheight=0                            " Allows smashing windows down to the status line.
+set equalalways                               " Keeps windows the same size.
+set switchbuf=usetab                          " Switches buffers using tabs.
+set tabpagemax=30                             " Limits the number of tabs to 30.
+set showtabline=1                             " Shows the tabline if there are multiple tabs.
+set showmatch                                 " Shows matching brackets.
+set incsearch                                 " Searches while typing.
+set ignorecase                                " Default to case-insensitive search.
+set smartcase                                 " Case-sensitive search when needed.
+set hlsearch                                  " Highlights matching search terms.
+set foldenable                                " Enables folding.
+set foldlevel=20                              " Sets the initial folding level.
+set foldlevelstart=20                         " Sets the initial folding level for when the file is opened.
+set foldmethod=syntax                         " Uses syntax highlighting for folding.
+set wildmenu                                  " Enables visual command-line completion menu.
+set wildmode=longest:full,full                " Defines the behavior of command-line completion modes.
+set wildignore=*.o,*.obj*.bak,*.so,*.exe      " Specifies file patterns to be ignored during command-line completion.
+set listchars=tab:»\ ,trail:·,extends:…       " Sets the characters used to represent specific non-printable characters.
+set list                                      " Eables non-printable characters display according to the listchars setting.
 
 " create .state directory, readable by the group.
 silent execute '!(umask 027; mkdir -p ~/.vim/state)'
@@ -99,15 +94,13 @@ set backupdir=~/.vim/state
 set directory=~/.vim/state
 
 " statusline
-if has('statusline')
-  call SetStatusLineStyle()
-endif
+if has('statusline') | call SetStatusLineStyle() | endif
 
 " Visual Tweaks
 set t_Co=256
 set background=dark
-let g:solarized_termcolors=256
-let g:solarized_termtrans=1
+let g:solarized_termcolors = 256
+let g:solarized_termtrans = 1
 colorscheme my-custom-solarized
 
 " indentLine
@@ -120,10 +113,12 @@ highlight ColorColumn ctermfg=none ctermbg=235
 " Search color highlights
 highlight Search cterm=none ctermfg=white ctermbg=27
 
-" syntastic
-"let g:syntastic_check_on_open=1
-let g:syntastic_python_checkers=['gpylint']
-nmap <LocalLeader>s :SyntasticCheck<CR>
+" ALE
+let g:airline#extensions#ale#enabled = 1
+let g:ale_change_sign_column_color = 1
+let g:ale_lint_on_enter = 0
+let g:ale_lint_on_save = 1
+let g:ale_virtualtext_cursor = 0
 
 " airline
 let g:airline#extensions#tabline#enabled = 1
@@ -151,9 +146,15 @@ map <LocalLeader>tn :tabnext<CR>                 " Next tab
 map <LocalLeader>tp :tabprev<CR>                 " Previous tab
 nmap F zf%                                       " Fold with paren begin/end matching
 map <LocalLeader>hl :set hlsearch! hlsearch?<CR> " Toggle highlighted search
-command WQ wq
-command Wq wq
-command Q q!
+if !exists(':WQ')
+  silent! command WQ wq
+endif
+if !exists(':Wq')
+  silent! command Wq wq
+endif
+if !exists(':Q')
+  silent! command Q q!
+endif
 
 " Commands
 if has('autocmd')
