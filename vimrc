@@ -19,75 +19,71 @@ call plug#end()
 set rtp+=~/.vim_plugins/powerline/powerline/bindings/vim
 
 " Custom Functions
-if !exists("MyFuncLoad")
+if !exists('MyFuncLoad')
   let MyFuncLoad=1
 
   " customize status line
   function! SetStatusLineStyle()
-    let &stl="%F%m%r%h%w\ [%{&ff}]\ [%Y]\ %P\ %=[a=\%03.3b]\ [h=\%02.2B]\ [%l,%v]"
+    let &stl='%F%m%r%h%w\ [%{&ff}]\ [%Y]\ %P\ %=[a=\%03.3b]\ [h=\%02.2B]\ [%l,%v]'
   endfunc
 endif
 
 
 " Setup
-set nocompatible                  " turn off vi compatiblity. first. always.
-set modeline                      " enable modelines
-set tags=tags;/                   " search recursively for tags
-set ttyfast                       " fast terminal
-set undolevels=5000               " lots of undos (default: 1000)
-set updatecount=50                " switch every 50 chars (default: 200)
-set whichwrap+=b,s,<,>,h,l,[,]    " wrap on more (default: b,s)
-set nowrap                        " don't wrap long lines
-set autoindent                    " indent sanely
-set smartindent
-
-set autoread                      " watch for changes
-set backspace=indent,eol,start    " back over anything
-set backup                        " keep a backup file
-set cmdheight=1                   " cmd line (default: 1)
-set complete=.,w,b,u,U,t,i,d      " lots of tab complete goodness
-set nocursorline                  " never show a cursor line
-set history=3000                  " keep more cmd line history (default: 20)
+set modeline                      " Allows specifing settings in a file's header or footer.
+set ttyfast                       " Optimizes Vim for fast terminals.
+set undolevels=5000               " Sets a large number of undo levels (default is 1000).
+set updatecount=50                " Switches to the backup file every 50 characters (default is 200).
+set whichwrap+=b,s,<,>,h,l,[,]    " Enables wrapping at the beginning or end of lines, brackets, and other characters (default: b,s).
+set nowrap                        " Disables line wrapping.
+set autoindent                    " Automatically indents lines.
+set smartindent                   " Enables smart indenting.
+set autoread                      " Automatically reloads the file if it changes outside of Vim.
+set backspace=indent,eol,start    " Defines backspace behavior.
+set backup                        " Creates backup files.
+set complete=.,w,b,u,U,t,i,d      " Configures tab completion options.
+set nocursorline                  " Disables the cursor line.
+set history=3000                  " Increases the command-line history size. (default: 20)
 set keywordprg=TERM=mostlike\ man\ -s\ -Pless " (default man -s)
-set laststatus=2                  " always show status line
-set lazyredraw                    " don't redraw when don't have to
-set magic                         " Enable the magic
-set noautowrite                   " don't automagically write on :next
-set noerrorbells visualbell t_vb= " Disable ALL bells
-set nohidden                      " close the buffer when I close a tab (I use tabs more than buffers)
-set nospell                       " no spelling by default
-set swapfile                      " use a swapfile
-set tabstop=2                     " nice tabs
-set shiftwidth=2                  " nice tabs, please?
-set softtabstop=2                 " delete expanded tabs with a single keystroke
-set smarttab                      " use shiftwidth not tabstop at the beginning of a line
-set expandtab                     " tabs become spaces
-set scrolloff=5                   " show a few lines above/below cursor
-set number                        " line numbers
-set showcmd                       " show the cmd i'm typing
-set showfulltag                   " show full completion tags
-set ruler                         " tell me where i am
-set showmode                      " always show mode (default: on)
-set sidescroll=2                  " if wrap is off, this is fasster for horizontal scrolling
-set sidescrolloff=5               " keep at least 5 lines left/right
-set splitright splitbelow         " split out of the way
-set winheight=2                   " more room if possible (default: 1)
-set winminheight=0                " smash windows done to the status line (default: 1)
-set equalalways                   " keep windows the same size
-set switchbuf=usetab              " tabs rock
-set tabpagemax=30                 " max out at 30 tabs (increase at own risk)
-set showtabline=1                 " 2 always, 1 only if multiple tabs - 2 causes flickering in powerline.
-set showmatch                     " show matching bracket
-set incsearch                     " search while typing
-set ignorecase                    " default to case-insensitive search
-set smartcase                     " case-sensitive when needed
-set hlsearch                      " highlight matching search terms
-"set cursorcolumn                  " highlight the current column that the cursor is on
-"set cursorline                    " highlight the current line that the cursor is on
-set foldenable                    " enable folding
-set foldlevel=20
-set foldlevelstart=20
-set foldmethod=syntax
+set laststatus=2                  " Always shows the status line.
+set lazyredraw                    " Avoids unnecessary redrawing.
+set noautowrite                   " Disables automatic writing on :next.
+set noerrorbells visualbell t_vb= " Disable all bells
+set nohidden                      " Closes the buffer when closing a tab.
+set nospell                       " Disables spelling checking by default.
+set swapfile                      " Use a swapfile.
+set tabstop=2                     " Sets the width of a tab character.
+set shiftwidth=2                  " Sets the number of spaces for each level of indentation.
+set softtabstop=2                 " Deletes expanded tabs with a single keystroke.
+set smarttab                      " Uses shiftwidth instead of tabstop at the beginning of a line.
+set scrolloff=5                   " Shows a few lines above/below the cursor while scrolling.
+set number                        " Displays line numbers.
+set showcmd                       " Shows the command being typed.
+set ruler                         " Displays the cursor position.
+set showmode                      " Always shows the mode.
+set sidescroll=2                  " Faster horizontal scrolling if wrap is off.
+set sidescrolloff=5               " Keeps at least 5 lines left/right while scrolling horizontally.
+set splitright splitbelow         " Splits open windows to the right or below.
+set winheight=2                   " Sets more room for windows if possible.
+set winminheight=0                " Allows smashing windows down to the status line.
+set equalalways                   " Keeps windows the same size.
+set switchbuf=usetab              " Switches buffers using tabs.
+set tabpagemax=30                 " Limits the number of tabs to 30.
+set showtabline=1                 " Shows the tabline if there are multiple tabs.
+set showmatch                     " Shows matching brackets.
+set incsearch                     " Searches while typing.
+set ignorecase                    " Default to case-insensitive search.
+set smartcase                     " Case-sensitive search when needed.
+set hlsearch                      " Highlights matching search terms.
+set foldenable                    " Enables folding.
+set foldlevel=20                  " Sets the initial folding level.
+set foldlevelstart=20             " Sets the initial folding level for when the file is opened.
+set foldmethod=syntax             " Uses syntax highlighting for folding.
+set wildmenu                      " Enables visual command-line completion menu.
+set wildmode=longest:full,full    " Defines the behavior of command-line completion modes.
+set wildignore=*.o,*.obj*.bak,*.so,*.exe " Specifies file patterns to be ignored during command-line completion.
+set listchars=tab:»\ ,trail:·,extends:… " Sets the characters used to represent specific non-printable characters.
+set list                          " Eables non-printable characters display according to the listchars setting.
 
 " create .state directory, readable by the group.
 silent execute '!(umask 027; mkdir -p ~/.vim/state)'
@@ -107,18 +103,6 @@ if has('statusline')
   call SetStatusLineStyle()
 endif
 
-" Init Pathogen (https://github.com/tpope/vim-pathogen)
-if has('pathogen')
-  runtime bundle/vim-pathogen/autoload/pathogen.vim
-  call pathogen#helptags()
-  call pathogen#infect()
-  syntax on
-  "filetype plugin indent on
-endif
-
-" Crontab
-au FileType crontab set nobackup nowritebackup
-
 " Visual Tweaks
 set t_Co=256
 set background=dark
@@ -132,11 +116,6 @@ let g:indentLine_char = '│'
 " 80 column vertical bar
 set colorcolumn=81
 highlight ColorColumn ctermfg=none ctermbg=235
-
-" Highlight current line and column to more easily find the cursor
-highlight CursorColumn cterm=NONE ctermbg=235 guibg=#262626
-highlight CursorLine   cterm=NONE ctermbg=235 guibg=#262626
-nnoremap <Leader>c :set cursorline! cursorcolumn!<CR>
 
 " Search color highlights
 highlight Search cterm=none ctermfg=white ctermbg=27
@@ -152,37 +131,13 @@ let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#buffer_nr_show = 1
 let g:airline#extensions#tabline#buffer_min_count = 2
 
-" menu
-set wildmenu
-set wildmode=longest:full,full
-set wildignore=*.o,*.obj*.bak,*.so,*.exe
-set cpo-=<
-set wcm=<C-Z>
-map <F4> :emenu <C-Z>
-
-" gundo
-nnoremap <F3> :GundoToggle<CR>
-
-" NERDTree
-let NERDChristmasTree = 1
-nnoremap <silent> <F2> :NERDTreeToggle<CR>
-"autocmd vimenter * if !argc() | NERDTree | endif
-autocmd FileType nerdtree setlocal nolist
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
-
-" set unicode support if possible
-if &termencoding == ""
+" Set unicode support if possible.
+if &termencoding == ''
   let &termencoding = &encoding
 endif
-scriptencoding utf-8
-" renable these to default to utf8 for new files
-set encoding=utf-8
-set fileencodings=ucs-bom,utf-8,latin1
-
-" Show invisibles (whitespace, etc)
-set listchars=tab:»\ ,trail:·,extends:…
-set list
-
+scriptencoding utf-8                   " Set character encodings for vimscripts.
+set encoding=utf-8                     " Sets the default encoding for text in buffers to UTF-8.
+set fileencodings=ucs-bom,utf-8,latin1 " Defines the order of encoding detection when reading a file.
 
 " Maps
 map <silent> <LocalLeader>ri G=gg<CR> " Reindent file
@@ -202,36 +157,28 @@ command Q q!
 
 " Commands
 if has('autocmd')
-  if !exists("autocommands_loaded")
+  if !exists('autocommands_loaded')
     let autocommands_loaded = 1
 
-    " Buffer Autocommands
-    autocmd BufWritePre *.cpp,*.hpp,*.i :call StripTrailingWhitespace()
-
-    " Improve legibility
-    au BufRead quickfix setlocal nobuflisted wrap number
-
     " Save backupfile as backupdir/filename-06-13-1331
-    au BufWritePre * let &bex = strftime("-%m-%d-%H%M")
+    autocmd BufWritePre * let &bex = strftime('-%m-%d-%H%M')
 
-    au BufRead /etc/apache/* setlocal filetype=apache2
-    au BufRead *.sh,*.cron,*.bash setlocal filetype=sh
-    au BufRead *.vim,vimrc setlocal filetype=vim
-    au BufRead *.c,*.h setlocal filetype=c
-    au BufRead syslog-ng.conf setlocal filetype=syslog-ng
-    au BufRead *.erb setlocal indentexpr= " disable auto indent
-    au BufRead *.eyaml setlocal filetype=yaml
-    au BufRead *.yml setlocal filetype=yaml
-    au BufRead *.yml setlocal indentexpr= " disable auto indent
-    au BufRead *.go setlocal filetype=go
-    au BufRead *.pp setlocal filetype=puppet
-    au BufRead *.plist setlocal noexpandtab
-    au BufRead *.plist.erb setlocal noexpandtab
+    autocmd BufRead /etc/apache/* setlocal filetype=apache2
+    autocmd BufRead *.sh,/etc/cron* setlocal filetype=sh
+    autocmd BufRead *.vim,vimrc setlocal filetype=vim
+    autocmd BufRead *.c,*.h setlocal filetype=c
+    autocmd BufRead syslog-ng.conf setlocal filetype=syslog-ng
+    autocmd BufRead *.erb setlocal indentexpr= " disable auto indent
+    autocmd BufRead *.eyaml setlocal filetype=yaml
+    autocmd BufRead *.yml setlocal filetype=yaml
+    autocmd BufRead *.yml setlocal indentexpr= " disable auto indent
+    autocmd BufRead *.go setlocal filetype=go
+    autocmd BufRead *.pp setlocal filetype=puppet
+    autocmd BufRead *.plist setlocal noexpandtab
+    autocmd BufRead *.plist.erb setlocal noexpandtab
 
-    au BufRead quickfix setlocal nobuflisted wrap number
-
-    au BufWinLeave *.sh,*.conf,*.vim,vimrc,*.c,*.txt mkview
-    au BufWinEnter *.sh,*.conf,*.vim,vimrc,*.c,*.txt silent loadview
+    autocmd BufWinLeave *.sh,*.conf,*.vim,vimrc,*.c,*.txt mkview
+    autocmd BufWinEnter *.sh,*.conf,*.vim,vimrc,*.c,*.txt silent loadview
 
     " When editing a file, always jump to the last known cursor position. Don't do it when the position is invalid or when inside an event handler
     " (happens when dropping a file on gvim). Also don't do it when the mark is in the first line, that is the default position when opening a file.
@@ -240,6 +187,7 @@ if has('autocmd')
     autocmd BufWinLeave * call clearmatches()
 
     " Turn on omni-completion for the appropriate file types.
+    autocmd FileType crontab set nobackup nowritebackup
     autocmd FileType python set omnifunc=pythoncomplete#Complete
     autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
     autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
@@ -255,7 +203,7 @@ if has('autocmd')
 
     " Convenient command to see the difference between the current buffer and the
     " file it was loaded from, thus the changes you made.  Only define it when not defined already.
-    if !exists(":DiffOrig")
+    if !exists(':DiffOrig')
       command DiffOrig vert new | set bt=nofile | r # | 0d_ | diffthis | wincmd p | diffthis
       nnoremap <Leader>d :DiffOrig<CR>
     endif
