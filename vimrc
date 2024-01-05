@@ -134,18 +134,32 @@ scriptencoding utf-8                   " Set character encodings for vimscripts.
 set encoding=utf-8                     " Sets the default encoding for text in buffers to UTF-8.
 set fileencodings=ucs-bom,utf-8,latin1 " Defines the order of encoding detection when reading a file.
 
+" Paste Mode
+function! TogglePasteMode()
+  set number!
+  set list!
+  set paste!
+  silent! IndentLinesToggle
+  if &signcolumn == 'auto'
+      set signcolumn=no
+  else
+      set signcolumn=auto
+  endif
+endfunction
+
 " Maps
-map <silent> <LocalLeader>ri G=gg<CR> " Reindent file
-map <silent> <LocalLeader>Cs :%s/\s\+$//e<CR> " Clear spaces at end of line
-nmap <LocalLeader>pm :set number!<CR>:set list!<CR>:set paste!<CR>:silent! IndentLinesToggle<CR> " Toggle paste mode
-nmap <LocalLeader>ww :set wrap!<CR>
-nmap <LocalLeader>wo :set wrap<CR>
-map <LocalLeader>tc :tabnew %<CR>                " New tab
-map <LocalLeader>tk :tabclose<CR>                " Close tab
-map <LocalLeader>tn :tabnext<CR>                 " Next tab
-map <LocalLeader>tp :tabprev<CR>                 " Previous tab
-nmap F zf%                                       " Fold with paren begin/end matching
-map <LocalLeader>hl :set hlsearch! hlsearch?<CR> " Toggle highlighted search
+map <silent> <LocalLeader>ri G=gg<CR>                " Reindent file
+map <silent> <LocalLeader>Cs :%s/\s\+$//e<CR>        " Clear spaces at end of line
+nnoremap <LocalLeader>pm :call TogglePasteMode()<CR> " Toggle paste mode.
+noremap <LocalLeader>ww :set wrap!<CR>               " Toggle line wrapping.
+map <LocalLeader>tc :tabnew %<CR>                    " New tab
+map <LocalLeader>tk :tabclose<CR>                    " Close tab
+map <LocalLeader>tn :tabnext<CR>                     " Next tab
+map <LocalLeader>tp :tabprev<CR>                     " Previous tab
+noremap F zf%                                        " Fold with paren begin/end matching
+map <LocalLeader>hl :set hlsearch! hlsearch?<CR>     " Toggle highlighted search
+
+" Commands
 if !exists(':WQ')
   silent! command WQ wq
 endif
@@ -155,8 +169,6 @@ endif
 if !exists(':Q')
   silent! command Q q!
 endif
-
-" Commands
 if has('autocmd')
   if !exists('autocommands_loaded')
     let autocommands_loaded = 1
