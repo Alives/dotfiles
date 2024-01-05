@@ -17,10 +17,23 @@ set rtp+=~/.vim_plugins/powerline/powerline/bindings/vim
 if !exists('MyFuncLoad')
   let MyFuncLoad = 1
 
-  " customize status line
+  " Customize the status line
   function! SetStatusLineStyle()
     let &stl='%F%m%r%h%w\ [%{&ff}]\ [%Y]\ %P\ %=[a=\%03.3b]\ [h=\%02.2B]\ [%l,%v]'
   endfunc
+
+  " Paste Mode
+  function! TogglePasteMode()
+    set number!
+    set list!
+    set paste!
+    silent! IndentLinesToggle
+    if &signcolumn == 'auto'
+      set signcolumn=no
+    else
+      set signcolumn=auto
+    endif
+  endfunction
 endif
 
 
@@ -80,20 +93,20 @@ set wildignore=*.o,*.obj*.bak,*.so,*.exe      " Specifies file patterns to be ig
 set listchars=tab:»\ ,trail:·,extends:…       " Sets the characters used to represent specific non-printable characters.
 set list                                      " Eables non-printable characters display according to the listchars setting.
 
-" create .state directory, readable by the group.
+" Create .state directory, readable by the group.
 silent execute '!(umask 027; mkdir -p ~/.vim/state)'
 
-" buffers
+" Buffers
 if has('persistent_undo')
   set undodir=~/.vim/state
   set undofile
 endif
 
-" backups
+" Backups
 set backupdir=~/.vim/state
 set directory=~/.vim/state
 
-" statusline
+" Statusline
 if has('statusline') | call SetStatusLineStyle() | endif
 
 " Visual Tweaks
@@ -103,15 +116,18 @@ let g:solarized_termcolors = 256
 let g:solarized_termtrans = 1
 colorscheme my-custom-solarized
 
-" indentLine
-let g:indentLine_char = '│'
-
 " 80 column vertical bar
 set colorcolumn=81
 highlight ColorColumn ctermfg=none ctermbg=235
 
 " Search color highlights
 highlight Search cterm=none ctermfg=white ctermbg=27
+
+" Airline
+let g:airline#extensions#tabline#enabled = 1
+let g:airline_powerline_fonts = 1
+let g:airline#extensions#tabline#buffer_nr_show = 1
+let g:airline#extensions#tabline#buffer_min_count = 2
 
 " ALE
 let g:airline#extensions#ale#enabled = 1
@@ -120,12 +136,6 @@ let g:ale_lint_on_enter = 0
 let g:ale_lint_on_save = 1
 let g:ale_virtualtext_cursor = 0
 
-" airline
-let g:airline#extensions#tabline#enabled = 1
-let g:airline_powerline_fonts = 1
-let g:airline#extensions#tabline#buffer_nr_show = 1
-let g:airline#extensions#tabline#buffer_min_count = 2
-
 " Set unicode support if possible.
 if &termencoding == ''
   let &termencoding = &encoding
@@ -133,19 +143,6 @@ endif
 scriptencoding utf-8                   " Set character encodings for vimscripts.
 set encoding=utf-8                     " Sets the default encoding for text in buffers to UTF-8.
 set fileencodings=ucs-bom,utf-8,latin1 " Defines the order of encoding detection when reading a file.
-
-" Paste Mode
-function! TogglePasteMode()
-  set number!
-  set list!
-  set paste!
-  silent! IndentLinesToggle
-  if &signcolumn == 'auto'
-      set signcolumn=no
-  else
-      set signcolumn=auto
-  endif
-endfunction
 
 " Maps
 map <silent> <LocalLeader>ri G=gg<CR>                " Reindent file
