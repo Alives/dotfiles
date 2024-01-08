@@ -134,6 +134,8 @@ let g:airline#extensions#ale#enabled = 1
 let g:ale_change_sign_column_color = 1
 let g:ale_lint_on_enter = 0
 let g:ale_lint_on_save = 1
+let g:ale_lint_on_text_changed = 0
+let g:ale_python_pylint_use_msg_id = 1
 let g:ale_virtualtext_cursor = 0
 
 " Set unicode support if possible.
