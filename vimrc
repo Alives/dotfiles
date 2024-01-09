@@ -4,7 +4,8 @@
 " :PlugClean will remove unused plugins
 " :PlugUpgrade will update vim-plug
 call plug#begin('~/.vim_plugins')
-Plug 'dense-analysis/ale'      " Asynchronous Lint Engine.
+"Plug 'dense-analysis/ale'      " Asynchronous Lint Engine.
+Plug 'scrooloose/syntastic'    " Waiting on Bionic.
 Plug 'godlygeek/tabular'       " Align text on specific characters.
 Plug 'rodjek/vim-puppet'       " Make vim more Puppet friendly.
 Plug 'tpope/vim-fugitive'      " Git integration.
