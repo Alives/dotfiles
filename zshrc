@@ -55,7 +55,7 @@ if [ ! -z $terminfo[colors] ] && [ $terminfo[colors] -eq 256 ] ; then
 fi
 
 # enable VCS systems you use
-zstyle ':vcs_info:*' enable git svn
+zstyle ':vcs_info:*' enable git
 
 # check-for-changes can be really slow.
 # you should disable it, if you work with large repositories
