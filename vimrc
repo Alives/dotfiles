@@ -111,6 +111,10 @@ set directory=~/.vim/state
 " Statusline
 if has('statusline') | call SetStatusLineStyle() | endif
 
+" Syntastic
+let g:syntastic_python_pylint_args = '--rcfile=~/.pylintrc'
+nmap <LocalLeader>s :SyntasticCheck<CR>
+
 " Visual Tweaks
 set t_Co=256
 set background=dark
