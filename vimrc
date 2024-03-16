@@ -5,6 +5,7 @@
 " :PlugUpgrade will update vim-plug
 call plug#begin('~/.vim_plugins')
 "Plug 'dense-analysis/ale'      " Asynchronous Lint Engine.
+Plug 'elzr/vim-json'           " Better json highlighting.
 Plug 'scrooloose/syntastic'    " Waiting on Bionic.
 Plug 'godlygeek/tabular'       " Align text on specific characters.
 Plug 'rodjek/vim-puppet'       " Make vim more Puppet friendly.
