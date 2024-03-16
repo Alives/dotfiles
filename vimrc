@@ -114,6 +114,8 @@ if has('statusline') | call SetStatusLineStyle() | endif
 
 " Syntastic
 let g:syntastic_python_pylint_args = '--rcfile=~/.pylintrc'
+let g:syntastic_python_checkers = ['python']
+let g:syntastic_python_python_exec = 'python3'
 nmap <LocalLeader>s :SyntasticCheck<CR>
 
 " Visual Tweaks
