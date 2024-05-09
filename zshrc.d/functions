@@ -16,7 +16,7 @@ function enc {
 function dc {
   conf='/root/docker/docker-compose.yml'
   test -r ./docker-compose.yml && conf='./docker-compose.yml'
-  docker-compose -f "${conf}" "$@"
+  docker compose -f "${conf}" "$@"
 }
 
 function dec {
