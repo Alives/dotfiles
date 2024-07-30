@@ -154,3 +154,7 @@ for entry in ${HOME}/.dotfiles/zshrc.d/* \
              /usr/share/doc/fzf/examples/key-bindings.zsh; do
   test -r ${entry} && source ${entry} || :
 done
+
+# Install zsh-syntax-highlighting package first.
+test -r /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh \
+  && source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
