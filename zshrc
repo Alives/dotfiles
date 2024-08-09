@@ -156,5 +156,8 @@ for entry in ${HOME}/.dotfiles/zshrc.d/* \
 done
 
 # Install zsh-syntax-highlighting package first.
-test -r /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh \
-  && source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh || :
+if [[ -r /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]]; then
+  source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+  export ZSH_HIGHLIGHT_STYLES[globbing]='fg=blue,bold'
+  export ZSH_HIGHLIGHT_STYLES[path]='fg=blue,bold'
+fi
