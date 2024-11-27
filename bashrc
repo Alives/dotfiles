@@ -9,3 +9,7 @@ export PS1
 for entry in ${HOME}/{.exports,.aliases,.functions,.friedman.local}; do
   [ -r ${entry} ] && source ${entry}
 done
+
+# Hishtory Config:
+export PATH="$PATH:/root/.hishtory"
+source /root/.hishtory/config.sh

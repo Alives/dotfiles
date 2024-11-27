@@ -152,6 +152,8 @@ ${p_prompt} '
 for entry in ${HOME}/.dotfiles/zshrc.d/* \
              ${HOME}/.zsh.local \
              /usr/share/doc/fzf/examples/key-bindings.zsh; do
+  # Skip zoxide if hishtory is installed.
+  [[ $str == *zoxide* ]] && [[ -d ~/.hishtory ]] && continue
   test -r ${entry} && source ${entry} || :
 done
 
@@ -161,3 +163,7 @@ if [[ -r /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]]; then
   export ZSH_HIGHLIGHT_STYLES[globbing]='fg=blue,bold'
   export ZSH_HIGHLIGHT_STYLES[path]='fg=blue,bold'
 fi
+
+# Hishtory Config:
+export PATH="$PATH:/root/.hishtory"
+source /root/.hishtory/config.zsh
