@@ -150,10 +150,7 @@ PROMPT='${p_return}${p_docker}${p_time} ${p_user}${p_host} ${p_pwd} $vcs_info_ms
 ${p_prompt} '
 
 for entry in ${HOME}/.dotfiles/zshrc.d/* \
-             ${HOME}/.zsh.local \
-             /usr/share/doc/fzf/examples/key-bindings.zsh; do
-  # Skip zoxide if hishtory is installed.
-  [[ $str == *zoxide* ]] && [[ -d ~/.hishtory ]] && continue
+             ${HOME}/.zsh.local; do
   test -r ${entry} && source ${entry} || :
 done
 

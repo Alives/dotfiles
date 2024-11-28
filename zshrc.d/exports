@@ -1,13 +1,15 @@
 #!/bin/bash
 
 export EDITOR=/usr/bin/vim
-which tmux >/dev/null 2>&1 && \
-  echo -e "$(tmux -V | cut -d' ' -f2)\n3.2" | \
-    sort -V | \
-    tail -1 | \
-    grep -q 3.2 && \
-    export FZF_TMUX=1 || \
-    export FZF_TMUX_OPTS="-p 80%,80%"
+test -d ~/.hishtory || \
+  which tmux >/dev/null 2>&1 && \
+    echo -e "$(tmux -V | cut -d' ' -f2)\n3.2" | \
+      sort -V | \
+      tail -1 | \
+      grep -q 3.2 && \
+      export FZF_TMUX=1 || \
+      export FZF_TMUX_OPTS="-p 80%,80%"
+      source /usr/share/doc/fzf/examples/key-bindings.zsh
 export HOSTNAME=$(hostname -f)
 export LANG=en_US.UTF-8
 export LANGUAGE=${LANG}
