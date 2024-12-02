@@ -162,5 +162,5 @@ if [[ -r /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]]; then
 fi
 
 # Hishtory Config:
-export PATH="$PATH:/root/.hishtory"
-source /root/.hishtory/config.zsh
+export PATH="$PATH:${HOME}/.hishtory"
+source ${HOME}/.hishtory/config.zsh

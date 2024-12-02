@@ -11,5 +11,5 @@ for entry in ${HOME}/{.exports,.aliases,.functions,.friedman.local}; do
 done
 
 # Hishtory Config:
-export PATH="$PATH:/root/.hishtory"
-source /root/.hishtory/config.sh
+export PATH="$PATH:${HOME}/.hishtory"
+source ${HOME}/.hishtory/config.sh

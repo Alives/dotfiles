@@ -14,7 +14,7 @@ function enc {
 }
 
 function dc {
-  conf='/root/docker/docker-compose.yml'
+  conf="${HOME}/docker/docker-compose.yml"
   test -r ./docker-compose.yml && conf='./docker-compose.yml'
   docker compose -f "${conf}" "$@"
 }
@@ -141,7 +141,7 @@ function multi {
   cmd=$1
   shift
   window=$(tmux display-message -p '#S:#I')
-  if [[ "$(which ssh)" = "/usr/bin/ssh" ]]; then
+  if [[ "$(command -v ssh)" = "/usr/bin/ssh" ]]; then
     while [[ $cmd = "ssh" ]]; do
       pre_check="$(echo $@ | tr ' ' '\n' | sed -e 's/^.*@//g' | \
                    xargs nmap -p 22 -PN -oG - | grep Port | grep -v open)"
