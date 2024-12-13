@@ -3,7 +3,6 @@ colors
 compinit
 promptinit
 select-word-style whitespace
-
 autoload -Uz vcs_info
 
 #use extended color pallete if available
@@ -30,28 +29,28 @@ local c_presuf="$fg_bold[blue]"
 local c_branch="$fg[yellow]"
 local c_prompt="$fg_bold[yellow]"
 if [ ! -z $terminfo[colors] ] && [ $terminfo[colors] -eq 256 ] ; then
-  yellow="$fg_bold[yellow]"
-  gold="%F{184}"
-  lightblue="%F{33}"
-  red="$fg[red]"
-  green="$fg[green]"
-  black="$fg[black]"
-  darkgrey="$fg_bold[black]"
-  lightgrey="$fg[white]"
-  white="$fg_bold[white]"
-  turquoise="%F{81}"
-  orange="%F{208}"
-  purple="%F{91}"
-  hotpink="%F{206}"
-  limegreen="%F{118}"
-  c_time="%F{125}"
-  c_user="%F{202}"
-  c_at="%F{184}"
-  c_host="%F{33}"
-  c_pwd="%F{30}"
-  c_presuf="%F{32}"
-  c_branch="%F{148}"
-  c_prompt="%F{196}"
+  local yellow="$fg_bold[yellow]"
+  local gold="%F{184}"
+  local lightblue="%F{33}"
+  local red="$fg[red]"
+  local green="$fg[green]"
+  local black="$fg[black]"
+  local darkgrey="$fg_bold[black]"
+  local lightgrey="$fg[white]"
+  local white="$fg_bold[white]"
+  local turquoise="%F{81}"
+  local orange="%F{208}"
+  local purple="%F{91}"
+  local hotpink="%F{206}"
+  local limegreen="%F{118}"
+  local c_time="%F{125}"
+  local c_user="%F{202}"
+  local c_at="%F{184}"
+  local c_host="%F{33}"
+  local c_pwd="%F{30}"
+  local c_presuf="%F{32}"
+  local c_branch="%F{148}"
+  local c_prompt="%F{196}"
 fi
 
 # enable VCS systems you use
@@ -68,13 +67,12 @@ zstyle ':vcs_info:*:prompt:*' check-for-changes true
 # %a - action (e.g. rebase-i)
 # %R - repository path
 # %S - path in the repository
-local PR_RST="%{${reset_color}%}"
-local FMT_PREFIX="${PR_RST}%{$c_presuf%}[${PR_RST}"
-local FMT_SUFFIX="${PR_RST}%{$c_presuf%}]${PR_RST}"
-local FMT_BRANCH="(%{$c_branch%}%b%u%c${PR_RST})"
-local FMT_ACTION="(%{$red%}%a${PR_RST})"
-local FMT_UNSTAGED="%{$yellow%}●${PR_RST}"
-local FMT_STAGED="%{$green%}●${PR_RST}"
+local FMT_PREFIX="%{$c_presuf%}["
+local FMT_SUFFIX="%{$c_presuf%}]"
+local FMT_BRANCH="(%{$c_branch%}%b%u%c)"
+local FMT_ACTION="(%{$red%}%a)"
+local FMT_UNSTAGED="%{$yellow%} ●"
+local FMT_STAGED="%{$green%} ●"
 
 zstyle ':vcs_info:*:prompt:*' unstagedstr   "${FMT_UNSTAGED}"
 zstyle ':vcs_info:*:prompt:*' stagedstr     "${FMT_STAGED}"
@@ -89,7 +87,10 @@ function git_precmd {
   # check for untracked files or updated submodules, since vcs_info doesn't
   local FMT_BRANCH="${FMT_PREFIX}%{$c_branch%}%b%u%c${FMT_SUFFIX}"
   if [[ -n "$(git status --porcelain 2>/dev/null | grep '^?? ')" ]]; then
-    FMT_BRANCH="${FMT_PREFIX}%{$c_branch%}%b%{$fg[red]%}●%u%c${FMT_SUFFIX}"
+    local blink='%{[5m%}'
+    local reset='%{[0m%}'
+    local BLINK_PART="%{$red%}${blink} ⚠️ ${reset}"
+    FMT_BRANCH="${FMT_PREFIX}%{$c_branch%}%b${BLINK_PART}%u%c${FMT_SUFFIX}"
   fi
   zstyle ':vcs_info:*:prompt:*' formats "${FMT_BRANCH}"
   vcs_info 'prompt'
@@ -145,7 +146,6 @@ local p_user="%{$c_user%}%n%f"
 local p_host="%{$c_at%}@%{$c_host%}%m%f"
 local p_pwd="%{$c_pwd%}%~%f"
 local p_prompt="%{$c_prompt%}%#%f"
-#local p_prompt="%{$c_prompt%}%#${r}"
 PROMPT='${p_return}${p_docker}${p_time} ${p_user}${p_host} ${p_pwd} $vcs_info_msg_0_
 ${p_prompt} '
 
