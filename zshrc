@@ -3,6 +3,7 @@ colors
 compinit
 promptinit
 select-word-style whitespace
+
 autoload -Uz vcs_info
 
 #use extended color pallete if available
