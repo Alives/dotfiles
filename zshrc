@@ -139,7 +139,7 @@ SAVEHIST=1000000
 test -r ${HOME}/.prompt && source ${HOME}/.prompt
 local p_return="%(?..%{$bg[red]$fg_bold[yellow]%}[%?]%b%f%k )"
 local p_docker=""
-if [[ -n "${DOCKER}" ]]; then
+if [[ -e /.dockerenv ]]; then
   local p_docker="%K{91}%{$fg_bold[yellow]%}DOCKER%b%f%k "
 fi
 local p_time="%{$c_time%}%*%f"
