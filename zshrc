@@ -45,7 +45,7 @@ if [ ! -z $terminfo[colors] ] && [ $terminfo[colors] -eq 256 ] ; then
   local hotpink="%F{206}"
   local limegreen="%F{118}"
   local c_time="%F{125}"
-  local c_user="%F{202}"
+  test "${USER}" = 'root' && local c_user="%F{202}" || local c_user="${green}"
   local c_at="%F{184}"
   local c_host="%F{33}"
   local c_pwd="%F{30}"
