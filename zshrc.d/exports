@@ -1,7 +1,8 @@
 #!/bin/bash
 
 export EDITOR=/usr/bin/vim
-if [[ ! -d ~/.hishtory ]] && command -v tmux >/dev/null 2>&1; then
+if [[ ! -x ${HOME}/.hishtory/hishtory ]] \
+   && command -v tmux >/dev/null 2>&1; then
   if echo -e "$(tmux -V | cut -d' ' -f2)\n3.2" | \
        sort -V | \
        tail -1 | \
