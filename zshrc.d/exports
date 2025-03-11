@@ -17,7 +17,6 @@ export HOSTNAME=$(hostname -f)
 export LANG=en_US.UTF-8
 export LANGUAGE=${LANG}
 export OS_TYPE=$(uname)
-export PATH=${HOME}/scripts:/snap/bin:/sbin:${PATH}
 unset USERNAME
 if [ "${OS_TYPE}" = "Darwin" ]; then
   export LESSCLOSE="lessclose.sh %s %s"
