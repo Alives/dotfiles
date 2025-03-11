@@ -167,3 +167,6 @@ if [[ -x ${HOME}/.hishtory/hishtory ]]; then
   export PATH="$PATH:${HOME}/.hishtory"
   source ${HOME}/.hishtory/config.zsh
 fi
+
+# Remove duplicate PATH entries while keeping order:
+typeset -U path
