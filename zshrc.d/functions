@@ -1,30 +1,8 @@
 #!/bin/bash
-function sock {
-  if [[ -z $1 ]]; then
-    echo 'Provide a sock name.'
-  else
-    export SSH_AUTH_SOCK=${HOME}/.ssh_agent.$1.sock
-    rm -f $SSH_AUTH_SOCK
-    eval $(ssh-agent -a $SSH_AUTH_SOCK)
-  fi
-}
-
-function enc {
-  cat | bzip2 | base64
-}
-
 function dc {
   conf="${HOME}/docker/docker-compose.yml"
   test -r ./docker-compose.yml && conf='./docker-compose.yml'
   docker compose -f "${conf}" "$@"
-}
-
-function dec {
-  if [ -r $1 ]; then
-    base64 -d $1 | bzip2 -d
-  else
-    base64 -d < $1 | bzip2 -d
-  fi
 }
 
 function renum {
@@ -62,20 +40,6 @@ function title {
   echo -ne "\033]0;$1\007"
 }
 
-function t {
-  echo -en '\033k'$1'\033\\'  # Set window title.
-  cmd="tmx2 a || tmux -u a -d -t 0 || tmux -u new || zsh || bash"
-  if [[ $# -eq 2 ]] && [[ $2 = "attach" ]]; then
-    ssh -ta $1 $cmd
-  else
-    ssh -ta $1
-  fi
-}
-
-function tm {
-  t $1 attach
-}
-
 test -d "${HOME}/.shell_logs" || mkdir "${HOME}/.shell_logs"
 case $SHELL in
   *bash)
@@ -96,42 +60,47 @@ case $SHELL in
   ;;
 esac
 
-function fix_repo {
-  echo "Before: $(git config remote.origin.url)"
-  URL=$(git config remote.origin.url | \
-    sed -e 's/https:\/\//git@/' \
-      -e 's/github.com\//github.com:\//' \
-      -e '/.git$/! s/$/.git/')
-  git remote set-url origin "${URL}"
-  echo "After: $(git config remote.origin.url)"
-  ssh-add ${HOME}/.ssh/github_rsa
-}
-
 function cel {
-  # https://github.com/Dinduks/change-execute-loop
-  # Usage:
-  # cel foo.c "gcc foo.c && ./a.out"
-  # cel . cat file.txt
+  # Usage: cel file1 file2 ... fileN "command"
 
-  ls --version 2>&1 | grep -qi gnu
-  if [ $? = 0 ]; then
-    checker="ls -lR --full-time $1"
-  elif [ "`uname`" = "Darwin" ]; then
-    checker="ls -lRT $1"
-  else
-    echo "bad ls"
-    exit 1
+  local files=()
+  local command="$@"
+  local num_args=$#
+
+  if [ $num_args -lt 2 ]; then
+    echo "Usage: cel file1 file2 ... fileN \"command\""
+    return 1
   fi
 
-  command="${@: 2:$#}"
-  checksum=
-  watched_file=$1
+  # Extract command (last argument)
+  command="${@:$num_args:1}"
+
+  if [[ -n "$ZSH_VERSION" ]]; then
+    # Zsh array slicing
+    files=("${@:1:$((num_args - 1))}")
+  else
+    # Bash compatible array creation
+    for ((i=1; i<num_args; i++)); do
+      files+=("${@:$i:1}")
+    done
+  fi
+
+  local checksum=""
 
   while true; do
-    if [ "$checksum" != "`eval $checker`" ]; then
-      checksum="`eval $checker`"
+    local current_checksum=""
+    for file in "${files[@]}"; do
+      if [[ -e "$file" ]]; then
+        current_checksum+="$(stat -c '%Y:%s' "$file")"
+      else
+        current_checksum+="FILE_DOES_NOT_EXIST_$file"
+      fi
+    done
+
+    if [[ "$checksum" != "$current_checksum" ]]; then
+      checksum="$current_checksum"
       clear
-      eval $command
+      eval "$command"
     fi
     sleep 0.1
   done
